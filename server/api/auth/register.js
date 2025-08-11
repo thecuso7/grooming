@@ -5,8 +5,6 @@ export default defineEventHandler(async (event) => {
 		const credentials = await readBody(event)
 		const result = await RegService.register(event, credentials);
 
-		console.log('regresult', result);
-
 		return result;
 	} catch(error) {
 		throw error;

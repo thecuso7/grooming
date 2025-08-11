@@ -18,10 +18,8 @@ export async function getUser(event, email) {
 export async function createUser(event, data) {
     try {
         const { name, lastName, email } = data;
-        console.log('data', data);
         const hashedPassword = await bcrypt.hash(data.password, 10);
 
-        console.log('hashedPassword', hashedPassword);
         const result = await User.create({ name, lastName, email, password: hashedPassword });
 
         if(!result) {

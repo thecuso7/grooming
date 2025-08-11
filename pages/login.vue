@@ -49,11 +49,10 @@ export default {
                     password: formData.value.password
                 }
             }).then(res => {
-                authStore.setAccessToken(res.access); // стоит ли хранить его в сторе?
+                console.log('res', res.redirect);
+                // authStore.setAccessToken(res.access); // стоит ли хранить его в сторе?
 
-                navigateTo('/admin');
-                
-                console.log('res', res);
+                navigateTo(res.redirect);
             }).catch(err => {
                 console.log('error', err);
             })

@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema({
   },
   roleId: {
     type: BigInt,
-    required: true,
     unique: true,
   },
   createdAt: {

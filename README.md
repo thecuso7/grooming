@@ -71,5 +71,12 @@ yarn preview
 # bun
 bun run preview
 ```
+# Авторизацию по jwt токену
+# Маршрутизацию роутера
+# Работа с pinia/vuex
+
+# Простая админка с заказами и CRUD
+# Оформление заказа (без онлайн записи)
+
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

@@ -1,5 +1,5 @@
 # frontend/Dockerfile
-FROM node:18-alpine
+FROM node:22-alpine
 
 RUN apk add --no-cache git python3 make g++ && \
     npm install -g yarn esbuild@0.21.5 --force

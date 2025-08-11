@@ -5,5 +5,5 @@
 </template>
 
 <script setup>
-    
+    console.log('profile');
 </script>

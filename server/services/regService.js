@@ -15,8 +15,6 @@ export const RegService = {
 
 			const result = await createUser(event, credentials);
 
-			console.log('result create', result);
-
 			return {
 				register: 'success',
 				id: result._id.toString(),
