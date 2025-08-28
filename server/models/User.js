@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { defaultRoles } from './Role';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -19,8 +20,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   roleId: {
-    type: BigInt,
-    unique: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Role',
+    required: true,
+    default: defaultRoles[1]._id
   },
   createdAt: {
     type: Date,
@@ -28,6 +31,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-const User = mongoose.models.User || mongoose.model('User ', userSchema);
-
-export default User;
+export const User = mongoose.models.User || mongoose.model('User', userSchema);

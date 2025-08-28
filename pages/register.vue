@@ -48,9 +48,7 @@
 import { ref } from 'vue';
 
 export default {
-    setup() {
-        console.log('regvue');
-        
+    setup() {    
         const formData = ref({
             name: '',
             lastName: '',
@@ -75,7 +73,7 @@ export default {
                     password: formData.value.password,
                 }
             }).then(res => {
-                console.log(res);
+                navigateTo('/profile');
             }).catch(err => {
                 console.log(err.response);
                 error = err.response._data.message;

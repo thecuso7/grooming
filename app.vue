@@ -1,12 +1,15 @@
 <template>
   <div>
-    <NuxtLayout></NuxtLayout>
+    <NuxtLayout :name="layout"></NuxtLayout>
   </div>
 </template>
 
-<script>
-import '~/assets/js/main.js'
-</script>
+<script setup>
+  import '~/assets/js/main.js'
 
-<style lang="scss">
-</style>
+  const route = useRoute()
+
+  const layout = computed(() => {
+    return route.path.startsWith('/admin') ? 'admin' : 'default';
+  });
+</script>

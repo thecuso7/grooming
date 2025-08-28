@@ -1,12 +1,11 @@
 import { getUser, createUser } from "~/server/utils/user";
 
-
 export const RegService = {
 	async register(event, credentials) {
 		try {
 			const user = await getUser(event, credentials.email)
 
-			if (user?._id.toString()) {
+			if (user) {
 				throw createError({
 					statusCode: 400,
 					statusMessage: 'Такой пользователь уже существует',

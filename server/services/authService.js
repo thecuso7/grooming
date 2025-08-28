@@ -1,9 +1,7 @@
 import { getUser } from "~/server/utils/user";
 import bcrypt from 'bcryptjs';
-
-// отдельные методы есть для пользователя типа get create delete update
-
-// логические которые связаны с сущностью auth: login, destroy, unlogin
+import { useAuthStore } from "~/stores/auth";
+import { JwtService } from "~/server/services/jwtService";
 
 export const AuthService = {
 	async login(event, email, password) {
@@ -37,4 +35,9 @@ export const AuthService = {
 			});
 		}
 	},
+	async unlogin(event, userId) {
+		const authStore = useAuthStore($pinia);
+		authStore.logout();
+		JwtService.clear();
+	}
 };

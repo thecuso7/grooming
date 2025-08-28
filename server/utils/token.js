@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import RefreshToken from "~/server/models/RefreshToken";
+import crypto from 'crypto';
 
 export async function create(data) {
     const token = jwt.sign(
@@ -35,4 +37,8 @@ export async function clear(data) {
     return { message: 'Token cleared', token: newToken };
 
     // Удаляем токены из базы, что делать с
+}
+
+export async function generateJTI() {
+    return crypto.randomBytes(16).toString('hex');
 }

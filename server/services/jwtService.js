@@ -5,26 +5,20 @@ import jwt from 'jsonwebtoken'
 // начать делать вывод статей через ssr
 
 export const JwtService = {
-	create(user) { // если функция объявлена ассинхронной, то она возвращает promise
-		const runtimeConfig = useRuntimeConfig()
-	
-		console.log('user', user._id.toString());
+	create(user) {
+		const runtimeConfig = useRuntimeConfig();
 
 		const token = jwt.sign(
-			{ userId: user._id.toString() },
+			{ uid: user.id, role: user.role },
 			runtimeConfig.jwtAccessSecret,
 			{ expiresIn: runtimeConfig.jwtAccessLife }
 		)
 	
 		const refresh = jwt.sign(
-			{ userId: user._id.toString() },
+			{ uid: user.id, role: user.role },
 			runtimeConfig.jwtRefreshSecret,
 			{ expiresIn: runtimeConfig.jwtRefreshLife }
 		)
-
-		console.log('token', token);
-		console.log('refresh', refresh);
-
 		return { token, refresh };
 	},
 	refresh(token) {
@@ -32,26 +26,13 @@ export const JwtService = {
 
 		try {
 			const payload = this.verifyRefresh(token);
-			// Отзываем страый токен
-			({ token: newToken, refresh: newRefresh } = this.create({_id: payload.userId}));
+			({ token: newToken, refresh: newRefresh } = this.create({id: payload.uid, role: payload.role }));
 
 		} catch(err) {
 			throw err;
 		}
-		 // Логика для создания токена
-		// Здесь вы можете добавить логику, например, сохранение токена в БД
+
 		return { newToken, newRefresh };
-
-		// Добавляем сущность refresh токенов, которые связываем с пользователем, по связи (хотя её вроде нет), или по id в записи
-		// Получаем токен и проверяем, есть ли он среди доступных для пользователя токенов. Если есть, то всё ок
-	},
-	async clear(data) {
-		// Логика для создания токена
-		const newToken = data.token; // Пример получения токена из переданных данных
-		// Здесь вы можете добавить логику, например, сохранение токена в БД
-		return { message: 'Token cleared', token: newToken };
-
-		// Удаляем токены из базы, что делать с
 	},
 	verifyAccess(token) {
 		const runtimeConfig = useRuntimeConfig();
@@ -64,5 +45,14 @@ export const JwtService = {
 		const decoded = jwt.verify(token, runtimeConfig.jwtRefreshSecret);
 
 		return decoded;
-	}
+	},
+	async clear() {
+		deleteCookie(event, 'accessToken', {
+			path: '/',
+		});
+
+		deleteCookie(event, 'refreshToken', {
+			path: '/',
+		});
+	},
 };

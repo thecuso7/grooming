@@ -1,10 +1,19 @@
-import User from "~/server/models/User";
+import { User } from "~/server/models";
 import bcrypt from 'bcryptjs';
 
 export async function getUser(event, email) {
     try {
-        const user = await User.findOne({email});
-        // Какие ошибкии возвращает mongoose
+        const data = await User.findOne({email}).populate('roleId');
+
+        if (!data?._id.toString()) {
+            return null;
+        }
+
+        const user = {
+            id: data._id.toString(),
+            role: data.roleId.code,
+            password: data.password
+        };
 
         return user;
     } catch (error) {
