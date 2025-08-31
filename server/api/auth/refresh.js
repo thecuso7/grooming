@@ -1,10 +1,14 @@
 import { JwtService } from "~/server/services/jwtService";
 
 export default defineEventHandler((event) => {
-    const refresh = getCookie(event, 'refreshToken');
+    const header = getHeader(event, 'Authorization');
+    const token = header?.replace('Bearer', '');
+
+    console.log('token', token);
 
     try {
-        const { newToken, newRefresh } = JwtService.refresh(refresh);
+        
+        const { newToken, newRefresh, payload } = JwtService.refresh(token);
 
         setCookie(event, 'accessToken', newToken, {
             httpOnly: true,
@@ -28,5 +32,5 @@ export default defineEventHandler((event) => {
         });
     }
         
-    return { isAuthenticated: true }
+    return { newToken, payload };
 })

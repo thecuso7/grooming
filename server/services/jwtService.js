@@ -32,7 +32,7 @@ export const JwtService = {
 			throw err;
 		}
 
-		return { newToken, newRefresh };
+		return { newToken, newRefresh, payload };
 	},
 	verifyAccess(token) {
 		const runtimeConfig = useRuntimeConfig();

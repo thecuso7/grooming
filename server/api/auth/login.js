@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
 		setCookie(event, 'accessToken', token, {
 			httpOnly: true,
 			secure: false,
-			sameSite: 'lax',
+			sameSite: 'strict',
 			path: '/',
 			maxAge: 60*60*24*30
 		})
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
 		setCookie(event, 'refreshToken', refresh, {
 			httpOnly: true,
 			secure: false,
-			sameSite: 'lax',
+			sameSite: 'strict',
 			path: '/',
 			maxAge: 60*60*24*30
 		})

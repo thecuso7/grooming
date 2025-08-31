@@ -8,8 +8,11 @@ export const useAuthStore = defineStore('auth', {
     }),
     actions: {
         async checkAuth() {
+            console.log('cccccc');
             try {
                 const token = useCookie('accessToken').value;
+
+                console.log('accessToken', token);
                 const data = await $fetch('/api/auth/check-auth', {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -20,10 +23,12 @@ export const useAuthStore = defineStore('auth', {
                 this.role = data.payload.role;
             } catch(err) {
                 try {
-                    // Здесь заменяем на вызов composable
-                    const data = await $fetch('/api/auth/refresh');
+                    console.log('refresh');
 
-                    this.role = data.payload.role;
+                    const { refreshToken } = useRefreshToken();
+                    const { payload } = await refreshToken();
+
+                    this.role = payload.role;
                     this.isAuthenticated = true;
                 } catch(refreshError) {
                     this.logout();
