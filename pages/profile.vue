@@ -103,6 +103,8 @@
 <script setup>
     import { onMounted } from 'vue';
 
+    const { $api } = useNuxtApp();
+
     const showFields = reactive({
         email: false,
         firstName: false,
@@ -127,6 +129,7 @@
 
     onMounted(async() => {
         // Получаем данные пользователя
-       const resp = await useFetch('/api/users/1/');
+       const resp = await $api('/api/users/1');
+       console.log('resp', resp);
     })
 </script>

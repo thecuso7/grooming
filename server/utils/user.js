@@ -24,6 +24,20 @@ export async function getUser(event, email) {
     }
 }
 
+export async function getUserList(event) {
+    try {
+        const data = await User.find();
+        console.log('data', data);
+
+        return data;
+    } catch (error) {
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Ошибка при запросе к базе данных',
+        });
+    }
+}
+
 export async function createUser(event, data) {
     try {
         const { name, lastName, email } = data;

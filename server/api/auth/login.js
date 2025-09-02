@@ -14,23 +14,15 @@ export default defineEventHandler(async (event) => {
 			});
 		}
 
-		setCookie(event, 'accessToken', token, {
-			httpOnly: true,
-			secure: false,
-			sameSite: 'strict',
-			path: '/',
-			maxAge: 60*60*24*30
-		})
-
 		setCookie(event, 'refreshToken', refresh, {
 			httpOnly: true,
 			secure: false,
 			sameSite: 'strict',
-			path: '/',
+			path: '/api/auth/refresh',
 			maxAge: 60*60*24*30
-		})
+		});
 
-		 return { redirect: user.role == 'user' ? '/profile' : '/admin' };
+		 return { redirect: user.role == 'user' ? '/profile' : '/admin', token: token };
 	} catch(error) {
 		throw error;
 	}

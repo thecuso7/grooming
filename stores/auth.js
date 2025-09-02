@@ -5,17 +5,23 @@ export const useAuthStore = defineStore('auth', {
         user: null,
         isAuthenticated: false,
         role: null,
+        token: '',
     }),
     actions: {
         async checkAuth() {
-            console.log('cccccc');
+            const { refreshToken } = useRefreshToken();
+            
             try {
-                const token = useCookie('accessToken').value;
-
-                console.log('accessToken', token);
+                if(!this.token) {
+                    throw createError({
+                        statusCode: 401,
+                        statusMessage: 'Токен не валиден',
+                    });
+                }
+                
                 const data = await $fetch('/api/auth/check-auth', {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${this.token}`
                     }
                 });
 
@@ -23,13 +29,13 @@ export const useAuthStore = defineStore('auth', {
                 this.role = data.payload.role;
             } catch(err) {
                 try {
-                    console.log('refresh');
-
-                    const { refreshToken } = useRefreshToken();
-                    const { payload } = await refreshToken();
+                    const { newToken, payload } = await refreshToken();
 
                     this.role = payload.role;
                     this.isAuthenticated = true;
+                    this.token = newToken;
+
+                    console.log('this.token', this.token);
                 } catch(refreshError) {
                     this.logout();
 
@@ -42,6 +48,10 @@ export const useAuthStore = defineStore('auth', {
         logout() {
             this.user = null;
             this.isAuthenticated = false;
+            this.token = '';
+        },
+        setAccessToken(token) {
+            this.token = token;
         }
     },
 })

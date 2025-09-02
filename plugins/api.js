@@ -5,9 +5,9 @@ export default defineNuxtPlugin((event) => {
 
   const $api = $fetch.create({
     onRequest: ({ request, options, error }) => {
-        const token = useCookie('accessToken').value;
-
-        console.log('кастомный api');
+        const authStore = useAuthStore();
+        const token = authStore.token;
+        console.log('запрос', token);
 
         if(token) {
             options.headers.set('Authorization', `Bearer ${token}`);
@@ -49,4 +49,10 @@ export default defineNuxtPlugin((event) => {
         }
     }
   })
-})
+
+  return {
+    provide: {
+        api: $api
+    }
+  };
+});

@@ -1,7 +1,8 @@
 import { JwtService } from "~/server/services/jwtService";
 
 export default defineEventHandler((event) => {
-    const token = getCookie(event, 'accessToken');
+    const header = getHeader(event, 'Authorization');
+    const token = header?.replace('Bearer ', '');
     let payload = {};
 
     if(!token) {

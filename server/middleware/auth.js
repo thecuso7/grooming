@@ -1,18 +1,25 @@
 import { JwtService } from "~/server/services/jwtService";
 
 export default defineEventHandler((event) => {
-    console.log('middleware api');
+    // console.log('middleware api');
     // сделать исключение для  обновления refresh
     if (!event.node.req.url?.startsWith('/api/')) {
         return
     }
 
-    if(event.node.req.url == '/api/auth/refresh' || event.node.req.url == '/api/auth/login') {
+    if(
+        event.node.req.url == '/api/auth/refresh' ||
+        event.node.req.url == '/api/auth/login' ||
+        event.node.req.url == '/api/auth/register' ||
+        event.node.req.url == '/api/auth/check-auth'
+    ) {
         return;
     }
 
     const authHeader = getHeader(event, 'Authorization');
     const token = authHeader?.replace('Bearer ', '');
+
+    console.log('server auth', token);
 
     if(!token) {
         throw createError({
@@ -30,4 +37,6 @@ export default defineEventHandler((event) => {
             statusMessage: 'Токен не валиден',
         });
     }
+
+    return;
 })

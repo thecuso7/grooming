@@ -39,7 +39,6 @@ export default {
         })
 
         const authStore = useAuthStore();
-
         const submit = async() => {
 
             $fetch('/api/auth/login', {
@@ -49,19 +48,12 @@ export default {
                     password: formData.value.password
                 }
             }).then(res => {
-                console.log('res', res.redirect);
-                // authStore.setAccessToken(res.access); // стоит ли хранить его в сторе?
-
+                authStore.setAccessToken(res.token);
                 navigateTo(res.redirect);
             }).catch(err => {
                 console.log('error', err);
             })
         };
-
-        /**
-         * Как сдесь лучше всего обрабатывать ошибки, как должен быть обработчик?
-         * 
-         */
 
         const validate = (formData) => {
             // Перебираем

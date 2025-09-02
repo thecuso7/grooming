@@ -1,31 +1,27 @@
 import jwt from 'jsonwebtoken'
 
-// зделать проверку при авторизации и сделать разлогин.
-// Добавить админку
-// начать делать вывод статей через ssr
-
 export const JwtService = {
 	create(user) {
-		const runtimeConfig = useRuntimeConfig();
+		// const runtimeConfig = useRuntimeConfig();
 
 		const token = jwt.sign(
 			{ uid: user.id, role: user.role },
-			runtimeConfig.jwtAccessSecret,
-			{ expiresIn: runtimeConfig.jwtAccessLife }
+			process.env.NUXT_JWT_ACCESS_SECRET,
+			{ expiresIn: '0.5h' }
 		)
 	
 		const refresh = jwt.sign(
 			{ uid: user.id, role: user.role },
-			runtimeConfig.jwtRefreshSecret,
-			{ expiresIn: runtimeConfig.jwtRefreshLife }
+			process.env.NUXT_JWT_REFRESH_SECRET,
+			{ expiresIn: process.env.NUXT_JWT_REFRESH_LIFE }
 		)
 		return { token, refresh };
 	},
 	refresh(token) {
-		let newToken, newRefresh;
+		let newToken, newRefresh, payload;
 
 		try {
-			const payload = this.verifyRefresh(token);
+			payload = this.verifyRefresh(token);
 			({ token: newToken, refresh: newRefresh } = this.create({id: payload.uid, role: payload.role }));
 
 		} catch(err) {
@@ -35,14 +31,13 @@ export const JwtService = {
 		return { newToken, newRefresh, payload };
 	},
 	verifyAccess(token) {
-		const runtimeConfig = useRuntimeConfig();
-		const decoded = jwt.verify(token, runtimeConfig.jwtAccessSecret);
+		const decoded = jwt.verify(token, process.env.NUXT_JWT_ACCESS_SECRET);
 
 		return decoded;
 	},
 	verifyRefresh(token) {
-		const runtimeConfig = useRuntimeConfig();
-		const decoded = jwt.verify(token, runtimeConfig.jwtRefreshSecret);
+		// const runtimeConfig = useRuntimeConfig();
+		const decoded = jwt.verify(token, process.env.NUXT_JWT_REFRESH_SECRET);
 
 		return decoded;
 	},
