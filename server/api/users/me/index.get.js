@@ -1,13 +1,11 @@
-import { getUserList } from "~/server/utils/user";
+import { getUserById } from "~/server/utils/user";
 
 export default defineEventHandler(async (event) => {
-	const id = getRouterParam(event, 'id');
-	console.log('event.content.auth', event.context.auth);
-	console.log('id get', id);
-
-
+	const id = event.context.auth.uid;
 	//Обернуть как-то
 
-	const userList = await getUserList(event);
+	const user = await getUserById(event, id);
+	console.log(user);
+	return user;
 	// Получаем данные пользователя и проверяем запрос с куками или ещё чем-то
 });

@@ -104,6 +104,7 @@
     import { onMounted } from 'vue';
 
     const { $api } = useNuxtApp();
+    const authStore = useAuthStore();
 
     const showFields = reactive({
         email: false,
@@ -128,8 +129,10 @@
     }
 
     onMounted(async() => {
+        // Здесь нужно сделать запрос /api/users/me
+        // а в админке уже делать запрос на всех или конкретного пользователя
         // Получаем данные пользователя
-       const resp = await $api('/api/users/1');
+       const resp = await $api('/api/users/me');
        console.log('resp', resp);
     })
 </script>

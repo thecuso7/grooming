@@ -24,10 +24,32 @@ export async function getUser(event, email) {
     }
 }
 
+export async function getUserById(event, id) {
+    try {
+        const data = await User.findOne({_id: id});
+
+        if (!data?._id.toString()) {
+            return null;
+        }
+
+        const user = {
+            id: data._id.toString(),
+            role: data.roleId.code,
+            password: data.password
+        };
+
+        return user;
+    } catch (error) {
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Ошибка при запросе к базе данных',
+        });
+    }
+}
+
 export async function getUserList(event) {
     try {
         const data = await User.find();
-        console.log('data', data);
 
         return data;
     } catch (error) {

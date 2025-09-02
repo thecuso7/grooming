@@ -29,9 +29,10 @@ export default defineEventHandler((event) => {
     }
 
     try {
-        payload = JwtService.verifyAccess(token);
-        event.content.auth = payload;
+        const payload = JwtService.verifyAccess(token);
+        event.context.auth = payload;
     } catch(err) {
+        console.log(err);
         throw createError({
             statusCode: 401,
             statusMessage: 'Токен не валиден',
