@@ -31,10 +31,7 @@ export const JwtService = {
 		return { newToken, newRefresh, payload };
 	},
 	verifyAccess(token) {
-		console.log('123');
 		const decoded = jwt.verify(token, process.env.NUXT_JWT_ACCESS_SECRET);
-
-		console.log('decoded', decoded);
 
 		return decoded;
 	},

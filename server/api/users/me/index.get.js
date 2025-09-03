@@ -5,7 +5,6 @@ export default defineEventHandler(async (event) => {
 	//Обернуть как-то
 
 	const user = await getUserById(event, id);
-	console.log(user);
 	return user;
 	// Получаем данные пользователя и проверяем запрос с куками или ещё чем-то
 });

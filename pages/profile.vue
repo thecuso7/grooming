@@ -23,7 +23,7 @@
                             <span id="lastNameValue"
                              class="text-gray-900 font-medium py-2 pr-8"
                              :class="{ 'hidden' : showFields.lastName }"
-                             >Иванов</span>
+                             >{{ valueFields.lastName }}</span>
                             <input 
                                 id="lastNameInput" 
                                 type="text" 
@@ -47,13 +47,13 @@
                         <label class="block text-sm font-medium text-gray-700 mb-1">Имя</label>
                         <div class="flex items-center justify-between">
                             <span id="firstNameValue" class="text-gray-900 font-medium py-2 pr-8"
-                            :class="{ 'hidden' : showFields.firstName }"
-                            >Иван</span>
+                            :class="{ 'hidden' : showFields.name }"
+                            >{{ valueFields.name }}</span>
                             <input 
                                 id="firstNameInput" 
                                 type="text" 
-                                v-model="valueFields.firstName"
-                                :class="{ 'hidden' : !showFields.firstName }"
+                                v-model="valueFields.name"
+                                :class="{ 'hidden' : !showFields.name }"
                                 class=" w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                             >
                             <button 
@@ -116,6 +116,7 @@
         email: '',
         firstName: '',
         lastName: '',
+        id: ''
     })
 
     const showBtn = computed(() => Object.values(showFields).some(value => value));
@@ -124,15 +125,28 @@
         showFields[field] = true;
     } 
 
-    const saveData = () => {
+    const saveData = async () => {
+        //Делаем зарос на обновление данных
+        const resp = await $api('/api/users/' + valueFields.id, {
+            method: 'POST',
+            body: {
+                email: valueFields.email,
+                name: valueFields.name,
+                lastName: valueFields.lastName,
+            }
+        });
 
+        Object.keys(showFields).forEach(value => {
+            showFields[value] = false;
+        });
     }
 
     onMounted(async() => {
-        // Здесь нужно сделать запрос /api/users/me
-        // а в админке уже делать запрос на всех или конкретного пользователя
-        // Получаем данные пользователя
        const resp = await $api('/api/users/me');
-       console.log('resp', resp);
+
+       valueFields.email = resp.email;
+       valueFields.name = resp.name;
+       valueFields.lastName = resp.lastName;
+       valueFields.id = resp.id;
     })
 </script>

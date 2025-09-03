@@ -7,7 +7,6 @@ export default defineNuxtPlugin((event) => {
     onRequest: ({ request, options, error }) => {
         const authStore = useAuthStore();
         const token = authStore.token;
-        console.log('запрос', token);
 
         if(token) {
             options.headers.set('Authorization', `Bearer ${token}`);

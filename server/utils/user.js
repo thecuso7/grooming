@@ -1,7 +1,7 @@
 import { User } from "~/server/models";
 import bcrypt from 'bcryptjs';
 
-export async function getUser(event, email) {
+export async function getUser(event, email) { //по email
     try {
         const data = await User.findOne({email}).populate('roleId');
 
@@ -26,19 +26,60 @@ export async function getUser(event, email) {
 
 export async function getUserById(event, id) {
     try {
-        const data = await User.findOne({_id: id});
+        const userData = await User.findOne({_id: id}).populate('roleId');
 
-        if (!data?._id.toString()) {
+        if (!userData?._id.toString()) {
             return null;
         }
 
         const user = {
-            id: data._id.toString(),
-            role: data.roleId.code,
-            password: data.password
+            id: userData._id.toString(),
+            role: userData.roleId.code,
+            name: userData.name,
+            lastName: userData.lastName,
+            email: userData.email
         };
 
         return user;
+    } catch (error) {
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Ошибка при запросе к базе данных',
+        });
+    }
+}
+
+// Проверяем роль пользователя на сайте, чтобы пропустить его или нет
+
+export async function updateUser(event, id, role, data) {
+    try {
+        let user;
+
+        if(role == 'admin') {
+            user = await User.findOneAndUpdate({_id: id}, {
+                name: data.name,
+                lastName: data.lastName,
+                email: data.email,
+            });
+        }
+
+        if(role == 'user') {
+            // Роль передаем записываем и пароль перехешируем, потому что пришел обычный
+            user = await User.findOneAndUpdate({_id: id}, {
+                name: data.name,
+                lastName: data.lastName,
+                email: data.email,
+                password: '',
+                role: ''
+            });
+        }
+        
+
+        if (!user?._id.toString()) {
+            return null;
+        }
+
+        return true;
     } catch (error) {
         throw createError({
             statusCode: 500,
