@@ -55,7 +55,7 @@ export async function updateUser(event, id, role, data) {
     try {
         let user;
 
-        if(role == 'admin') {
+        if(role == 'user') {
             user = await User.findOneAndUpdate({_id: id}, {
                 name: data.name,
                 lastName: data.lastName,
@@ -63,14 +63,15 @@ export async function updateUser(event, id, role, data) {
             });
         }
 
-        if(role == 'user') {
+        if(role == 'admin') {
+            // Здесь в дате роль будет передаваться автоматически
             // Роль передаем записываем и пароль перехешируем, потому что пришел обычный
             user = await User.findOneAndUpdate({_id: id}, {
                 name: data.name,
                 lastName: data.lastName,
                 email: data.email,
-                password: '',
-                role: ''
+                password: '123',
+                role: data.role
             });
         }
         

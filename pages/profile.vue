@@ -101,44 +101,63 @@
 </template>
 
 <script setup>
-    import { onMounted } from 'vue';
+    import { onMounted, watch, nextTick } from 'vue';
 
     const { $api } = useNuxtApp();
     const authStore = useAuthStore();
+    const dataUpdated = ref(false);
+    const initialized = ref(false);
 
     const showFields = reactive({
         email: false,
-        firstName: false,
+        name: false,
         lastName: false,
     });
 
     const valueFields = reactive({
         email: '',
-        firstName: '',
+        name: '',
         lastName: '',
         id: ''
     })
 
+    /**
+     * 
+     * ref создает объект с свойством .value, которое уже является отслеживаемым и watch(count, (newCount) => {}) - работает
+     * watch(obj.count, (count) => {}) - не работает, поскольку это не реактивная ссылка, поэтому оно заменяется на getter функцию () => obj.count, которая возвращает значение и 
+     * вызывается сразу, как бы ссылаясь на значение объекта, а не напрямую
+     * 
+     */
+
     const showBtn = computed(() => Object.values(showFields).some(value => value));
+    watch (valueFields, () => {
+        if (!initialized.value) return;
+
+        dataUpdated.value = true;
+    }, { deep: true });
 
     const editData = (field) => {
         showFields[field] = true;
     } 
 
     const saveData = async () => {
-        //Делаем зарос на обновление данных
-        const resp = await $api('/api/users/' + valueFields.id, {
-            method: 'POST',
-            body: {
-                email: valueFields.email,
-                name: valueFields.name,
-                lastName: valueFields.lastName,
-            }
-        });
+        if (dataUpdated.value) {
+            //Делаем зарос на обновление данных
+            const resp = await $api('/api/users/' + valueFields.id, {
+                method: 'POST',
+                body: {
+                    email: valueFields.email,
+                    name: valueFields.name,
+                    lastName: valueFields.lastName,
+                }
+            });
 
-        Object.keys(showFields).forEach(value => {
-            showFields[value] = false;
-        });
+            Object.keys(showFields).forEach(value => {
+                showFields[value] = false;
+            });
+
+            dataUpdated.value = false;
+        }
     }
 
     onMounted(async() => {
@@ -148,5 +167,9 @@
        valueFields.name = resp.name;
        valueFields.lastName = resp.lastName;
        valueFields.id = resp.id;
+
+       await nextTick();
+
+       initialized.value = true;
     })
 </script>

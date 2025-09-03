@@ -5,6 +5,10 @@
             <p class="text-xl pb-3 flex items-center">
                 <i class="fas fa-list mr-3"></i> Latest Reports
             </p>
+
+            <!-- 
+            Подсвечивать активный пункт меню, обращаясь к роутеру
+            -->
             <div class="bg-white overflow-auto">
                 <table class="min-w-full bg-white">
                     <thead class="bg-gray-800 text-white">
