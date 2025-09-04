@@ -1,18 +1,21 @@
 import { getUserList } from "~/server/utils/user";
 
 export default defineEventHandler(async (event) => {
-	const usersData = await getUserList(event);
+	const query = getQuery(event);
+	const { list, totalCount, totalPages } = await getUserList(query);
 
 	let userList = [];
 	
-	usersData.forEach(user => {
+	list.forEach(user => {
 		userList.push({
 			id: user._id,
 			name: user.name,
 			lastName: user.lastName,
 			email: user.email,
+			role: user.roleId.code,
+			// пароли не показываем
 		})
 	});
 
-	return userList;
+	return { userList, totalCount, totalPages };
 });

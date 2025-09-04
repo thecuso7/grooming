@@ -1,6 +1,7 @@
 import { getUserList } from "~/server/utils/user";
 
 export default defineEventHandler(async (event) => {
+	console.log('[id]');
 	const id = getRouterParam(event, 'id');
 	console.log('event.content.auth', event.context.auth);
 	console.log('id get', id);

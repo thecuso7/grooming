@@ -171,5 +171,5 @@
        await nextTick();
 
        initialized.value = true;
-    })
+    });
 </script>

@@ -89,11 +89,22 @@ export async function updateUser(event, id, role, data) {
     }
 }
 
-export async function getUserList(event) {
+export async function getUserList(query) {
     try {
-        const data = await User.find();
+        const page = parseInt(query.page);
+        const limit = 10;
+        const skip = (page - 1) * limit;
+        
+        const list = await User.find()
+                               .skip(skip)
+                               .limit(limit)
+                               .populate('roleId');
 
-        return data;
+        console.log('list', list);
+
+        const totalCount = await User.countDocuments({});
+
+        return { list: list, totalCount: totalCount, totalPages: Math.ceil(totalCount / limit) };
     } catch (error) {
         throw createError({
             statusCode: 500,
