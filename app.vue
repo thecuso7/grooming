@@ -1,6 +1,8 @@
 <template>
   <div>
-    <NuxtLayout :name="layout"></NuxtLayout>
+    <NuxtLayout :name="layout">
+      <v-app></v-app>
+    </NuxtLayout>
   </div>
 </template>
 

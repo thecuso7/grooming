@@ -57,7 +57,44 @@
                     </ul>
                 </div>
             </div>
-            <div class="bg-white overflow-auto rounded-lg mt-6">
+
+            <v-table theme="white" class="rounded-lg">
+                <thead>
+                    <tr class="bg-gray-800 text-white uppercase">
+                        <th v-if="showCols.id" class="">ID</th>
+                        <th v-if="showCols.name" class="">Имя</th>
+                        <th v-if="showCols.lastName" class="">Фамилия</th>
+                        <th v-if="showCols.email" class="">Email</th>
+                        <th v-if="showCols.role" class="">Роль</th>
+                    </tr>
+                
+                </thead>
+                <tbody class="text-gray-700">
+                    <tr v-for="(user,key) in users" class="bg-gray-100" :class="{'bg-gray-300' : (key + 1) % 2 == 0}">
+                        <td v-if="showCols.id" class="w-1/3 text-left py-3 px-4">
+                            <NuxtLink :to="{ name: 'admin-users-id', params: {id: user.id} }" 
+                                class="hover:text-blue-500"
+                            >
+                                {{ user.id }}
+                            </NuxtLink>
+                        </td>
+                        <td v-if="showCols.name" class="w-1/3 text-left py-3 px-4">{{ user.name }}</td>
+                        <td v-if="showCols.lastName" class="w-1/3 text-left py-3 px-4">{{ user.lastName }}</td>
+                        <td v-if="showCols.email" class="text-left py-3 px-4">
+                            <NuxtLink
+                                :to="{ name: 'admin-users-id', params: {id: user.id} }"
+                                class="hover:text-blue-500">
+                                    {{ user.email }}
+                            </NuxtLink>
+                        </td>
+                        <td v-if="showCols.email" class="text-left py-3 px-4">{{ user.role }}</td>
+                    </tr>
+                </tbody>
+            </v-table>
+
+
+
+            <!-- <div class="bg-white overflow-auto rounded-lg mt-6">
                 <table class="min-w-full bg-white">
                     <thead class="bg-gray-800 text-white">
                         <tr>
@@ -71,82 +108,43 @@
                     <tbody class="text-gray-700">
                         <tr v-for="(user,key) in users" :class="{'bg-gray-200' : (key + 1) % 2 == 0}">
                             <td v-if="showCols.id" class="w-1/3 text-left py-3 px-4">
-                                <a class="hover:text-blue-500" :href="'/admin/users/' + user.id">
+                                <NuxtLink :to="{ name: 'admin-users-id', params: {id: user.id} }" 
+                                    class="hover:text-blue-500"
+                                >
                                     {{ user.id }}
-                                </a>
+                                </NuxtLink>
                             </td>
                             <td v-if="showCols.name" class="w-1/3 text-left py-3 px-4">{{ user.name }}</td>
                             <td v-if="showCols.lastName" class="w-1/3 text-left py-3 px-4">{{ user.lastName }}</td>
                             <td v-if="showCols.email" class="text-left py-3 px-4">
-                                <a class="hover:text-blue-500" :href="'/admin/users/' + user.id">{{ user.email }}</a>
+                                <NuxtLink
+                                    :to="{ name: 'admin-users-id', params: {id: user.id} }"
+                                    class="hover:text-blue-500">
+                                        {{ user.email }}
+                                </NuxtLink>
                             </td>
                             <td v-if="showCols.email" class="text-left py-3 px-4">{{ user.role }}</td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-
-            <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-5">
-                <div class="flex flex-1 justify-between sm:hidden">
-                    <a href="#" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
-                    <a href="#" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
-                </div>
-                <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                    <div>
-                    <p class="text-sm text-gray-700">
-                        Показано
-                        <span class="font-medium">1</span>
-                        -
-                        <span class="font-medium">{{ users.length }}</span>
-                        из
-                        <span class="font-medium">{{ totalCount }}</span>
-                        записей
-                    </p>
-                    </div>
-                    <div>
-                        <nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-xs">
-                            <a href="#" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                            <!-- <span class="sr-only">Previous</span> -->
-                            <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
-                                <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
-                            </svg>
-                            </a>
-                            <!-- Current: "z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" -->
-                            <a href="#" aria-current="page" class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">1</a>
-                            <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">2</a>
-                            <a href="#" class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">3</a>
-                            <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 inset-ring inset-ring-gray-300 focus:outline-offset-0">...</span>
-                            <a href="#" class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">8</a>
-                            <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">9</a>
-                            <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">10</a>
-                            <a href="#" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                            <!-- <span class="sr-only">Next</span> -->
-                            <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
-                                <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
-                            </svg>
-                            </a>
-                        </nav>
-                    </div>
-                </div>
-                </div>
+            </div> -->
+            <pagination
+            v-if="users.length"
+                :items="users" 
+                :totalPages="totalPages" 
+                :totalCount="totalCount"
+                @page-update="loadUsers"></pagination>
         </div>
     </div>
 </template>
 
 <script setup>
-/**
- * Блок с пагинацией потом вынести куда-нибудь отдельно
- * Как обработать показ пагинации
- * Куда можно выложить этот проект?
- * Как пагинировать эту страницу, через router?
- */
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, watch } from 'vue';
     const { $api } = useNuxtApp();
 
     const users = ref([]);
     const totalCount = ref(0);
     const totalPages = ref(0);
-    const rageWithDots = ref([]);
 
     const showCols = ref({
         id: true,
@@ -167,35 +165,24 @@
         isOpenDropdown.value = false;
     }
 
-    const rangePagination = computed(() => {
-        let range = [];
+    const loadUsers = async (params) => {
+        const response = await $api(`/api/users?page=${params.page}`);
 
-        for (let i = 1; i <= totalPages; i++) {
-            range.push(i);
-        }
-
-        if(totalPages)
-
-        return rage;
-    });
-
+        users.value = response.userList;
+        totalCount.value = response.totalCount;
+        totalPages.value = response.totalPages;
+    }
 
     watch(showCols, async() => {
         localStorage.setItem('showCols', JSON.stringify(showCols.value));
     }, {deep: true});
 
     onMounted(async() => {
-        const response = await $api('/api/users?page=1');
-
-        users.value = response.userList;
-        totalCount.value = response.totalCount;
-        totalPages.value = response.totalPages;
-
+        await loadUsers({page: 1});
         const savedShowData = JSON.parse(localStorage.getItem('showCols'));
 
         if(savedShowData) {
             showCols.value = savedShowData;
         }
     });
- 
 </script>

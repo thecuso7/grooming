@@ -100,8 +100,6 @@ export async function getUserList(query) {
                                .limit(limit)
                                .populate('roleId');
 
-        console.log('list', list);
-
         const totalCount = await User.countDocuments({});
 
         return { list: list, totalCount: totalCount, totalPages: Math.ceil(totalCount / limit) };

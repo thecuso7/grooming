@@ -21,7 +21,12 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@mdi/font": "^7.4.47",
+    "i": "^0.3.7",
+    "npm": "^11.6.0",
     "sass": "^1.83.4",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "vite-plugin-vuetify": "^2.1.2",
+    "vuetify": "^3.9.7"
   }
 }

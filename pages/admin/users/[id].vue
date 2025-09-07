@@ -1,6 +1,25 @@
 <template>
     <div>
         <h1 class="text-3xl text-black pb-6">Пользователь</h1>
+        <v-sheet class="mx-auto" width="300">
+            <v-form fast-fail @submit.prevent>
+                <v-text-field
+                    v-model="firstName"
+                    :rules="firstNameRules"
+                    label="Имя"
+                    variant="outlined"
+                ></v-text-field>
+
+                <v-text-field
+                    v-model="lastName"
+                    :rules="lastNameRules"
+                    label="Фамилия"
+                    variant="outlined"
+                ></v-text-field>
+
+                <v-btn class="mt-2" type="submit" block>Сохранить</v-btn>
+            </v-form>
+        </v-sheet>
     </div>
 </template>
 
@@ -11,13 +30,11 @@
 
     // Как-то надо отделить логику работы с данными от работы модуля ui
     /**
-     * Делаем запрос на получение данных по пользователям
-     * по полученным данным заполняем данные компонента с ui. И управляем через него показом столбцов в таблице
-     * 
+     * Как можно сделать 
      * 
      */
     onMounted(async() => {
-        users.value = await $api('/api/users');
+        // users.value = await $api('/api/users');
 
         
     });
