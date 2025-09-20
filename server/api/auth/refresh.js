@@ -1,24 +1,16 @@
-import { JwtService } from "~/server/services/jwtService";
+import { JwtManager } from "~/server/managers/jwtManager";
 
 export default defineEventHandler((event) => {
     const token = getCookie(event, 'refreshToken');
+    const { newToken, newRefresh, payload } = JwtManager.refresh(token);
 
-    try {
-        const { newToken, newRefresh, payload } = JwtService.refresh(token);
+    setCookie(event, 'refreshToken', newRefresh, {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'strict',
+        path: '/api/auth/refresh',
+        maxAge: 60*60*24*30
+    })
 
-        setCookie(event, 'refreshToken', newRefresh, {
-            httpOnly: true,
-            secure: false,
-            sameSite: 'strict',
-            path: '/api/auth/refresh',
-            maxAge: 60*60*24*30
-        })
-
-        return { newToken, payload };
-    } catch(err) {
-        throw createError({
-            statusCode: 500,
-            statusMessage: 'Ошибка создания токена',
-        });
-    }
-})
+    return { newToken, payload };
+});

@@ -1,53 +1,72 @@
 <template>
-    <div class="app max-w-screen-xl mx-auto px-5 w-full">
-        <header class="flex flex-col lg:flex-row justify-between items-center my-5"> 
-            <div class="flex w-full lg:w-auto items-center justify-between">
-                <a href="/" class="text-lg">
-                    <span class="font-bold text-slate-800">Groo</span>
-                    <span class="text-slate-500">ming</span>
+    <div class="app tw-max-w-screen-xl tw-mx-auto tw-px-5 tw-w-full tw-bg-custom-main">
+        <header class="tw-flex tw-flex-col lg:tw-flex-row tw-justify-between tw-items-center tw-my-5"> 
+            <div class="tw-flex tw-w-full lg:tw-w-auto tw-items-center tw-justify-between">
+                <a href="/" class="tw-text-lg">
+                    <span class="tw-text-2xl tw-font-bold tw-text-[#634f63]">Groo</span>
+                    <span class="tw-text-slate-500">ming</span>
                 </a>
-                <div class="block lg:hidden"> 
+                <div class="tw-block lg:tw-hidden"> 
                     <button id="astronav-menu" aria-label="Toggle Menu"> 
-                        <svg fill="currentColor" class="w-4 h-4 text-gray-800" width="24" height="24" viewBox="0 0 24 24"> 
+                        <svg fill="currentColor" class="tw-w-4 tw-h-4 tw-text-gray-800" width="24" height="24" viewBox="0 0 24 24"> 
                             <title>Toggle Menu</title>
-                            <path class="astronav-close-icon astronav-toggle hidden" fill-rule="evenodd" clip-rule="evenodd" d="M18.278 16.864a1 1 0 01-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 01-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 011.414-1.414l4.829 4.828 4.828-4.828a1 1 0 111.414 1.414l-4.828 4.829 4.828 4.828z"></path> <path class="astronav-open-icon astronav-toggle" fill-rule="evenodd" d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z">
+                            <path class="astronav-close-icon astronav-toggle tw-hidden" fill-rule="evenodd" clip-rule="evenodd" d="M18.278 16.864a1 1 0 01-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 01-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 011.414-1.414l4.829 4.828 4.828-4.828a1 1 0 111.414 1.414l-4.828 4.829 4.828 4.828z"></path> <path class="astronav-open-icon astronav-toggle" fill-rule="evenodd" d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z">
                             </path> 
                         </svg> 
                     </button>
                 </div> 
                     </div>
-                    <nav class="astronav-items astronav-toggle hidden w-full lg:w-auto mt-2 lg:flex lg:mt-0"> 
-                        <ul class="flex flex-col lg:flex-row lg:gap-3">
-                            <RouterLink class="b-menu__item flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900" to="/">Главная</RouterLink>
-                            <RouterLink class="b-menu__item flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900" to="/services">Услуги</RouterLink>
+                    <nav class="astronav-items astronav-toggle tw-hidden tw-w-full lg:tw-w-auto tw-mt-2 lg:tw-flex lg:tw-mt-0"> 
+                        <ul class="tw-flex tw-flex-col lg:tw-flex-row lg:tw-gap-3">
+                            <RouterLink class="tw-relative b-menu__item tw-flex lg:tw-px-3 tw-py-2 tw-items-center hover:tw-text-gray-900" to="/">
+                                <span>Главная</span>
+                                <svg class="tw-absolute tw-w-[20px] tw-h-[20px] tw-bottom-[25px] tw-left-[50%] tw-translate-x-[-50%]" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 48.839 48.839" style="" xml:space="preserve">
+                                    <g>
+                                        <path style="fill:#d9cfd9;" d="M39.041,36.843c2.054,3.234,3.022,4.951,3.022,6.742c0,3.537-2.627,5.252-6.166,5.252 c-1.56,0-2.567-0.002-5.112-1.326c0,0-1.649-1.509-5.508-1.354c-3.895-0.154-5.545,1.373-5.545,1.373 c-2.545,1.323-3.516,1.309-5.074,1.309c-3.539,0-6.168-1.713-6.168-5.252c0-1.791,0.971-3.506,3.024-6.742 c0,0,3.881-6.445,7.244-9.477c2.43-2.188,5.973-2.18,5.973-2.18h1.093v-0.001c0,0,3.698-0.009,5.976,2.181 C35.059,30.51,39.041,36.844,39.041,36.843z M16.631,20.878c3.7,0,6.699-4.674,6.699-10.439S20.331,0,16.631,0 S9.932,4.674,9.932,10.439S12.931,20.878,16.631,20.878z M10.211,30.988c2.727-1.259,3.349-5.723,1.388-9.971 s-5.761-6.672-8.488-5.414s-3.348,5.723-1.388,9.971C3.684,29.822,7.484,32.245,10.211,30.988z M32.206,20.878 c3.7,0,6.7-4.674,6.7-10.439S35.906,0,32.206,0s-6.699,4.674-6.699,10.439C25.507,16.204,28.506,20.878,32.206,20.878z M45.727,15.602c-2.728-1.259-6.527,1.165-8.488,5.414s-1.339,8.713,1.389,9.972c2.728,1.258,6.527-1.166,8.488-5.414 S48.455,16.861,45.727,15.602z"/>
+                                    </g>
+                                </svg>
+                            </RouterLink>
+                            <RouterLink class="tw-relative b-menu__item tw-flex lg:tw-px-3 tw-py-2 tw-items-center hover:tw-text-gray-900" to="/services">
+                                <span>Услуги</span>
+                                <svg class="tw-absolute tw-w-[20px] tw-h-[20px] tw-bottom-[25px] tw-left-[50%] tw-translate-x-[-50%]" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 48.839 48.839" style="" xml:space="preserve">
+                                    <g>
+                                        <path style="fill:#d9cfd9;" d="M39.041,36.843c2.054,3.234,3.022,4.951,3.022,6.742c0,3.537-2.627,5.252-6.166,5.252 c-1.56,0-2.567-0.002-5.112-1.326c0,0-1.649-1.509-5.508-1.354c-3.895-0.154-5.545,1.373-5.545,1.373 c-2.545,1.323-3.516,1.309-5.074,1.309c-3.539,0-6.168-1.713-6.168-5.252c0-1.791,0.971-3.506,3.024-6.742 c0,0,3.881-6.445,7.244-9.477c2.43-2.188,5.973-2.18,5.973-2.18h1.093v-0.001c0,0,3.698-0.009,5.976,2.181 C35.059,30.51,39.041,36.844,39.041,36.843z M16.631,20.878c3.7,0,6.699-4.674,6.699-10.439S20.331,0,16.631,0 S9.932,4.674,9.932,10.439S12.931,20.878,16.631,20.878z M10.211,30.988c2.727-1.259,3.349-5.723,1.388-9.971 s-5.761-6.672-8.488-5.414s-3.348,5.723-1.388,9.971C3.684,29.822,7.484,32.245,10.211,30.988z M32.206,20.878 c3.7,0,6.7-4.674,6.7-10.439S35.906,0,32.206,0s-6.699,4.674-6.699,10.439C25.507,16.204,28.506,20.878,32.206,20.878z M45.727,15.602c-2.728-1.259-6.527,1.165-8.488,5.414s-1.339,8.713,1.389,9.972c2.728,1.258,6.527-1.166,8.488-5.414 S48.455,16.861,45.727,15.602z"/>
+                                    </g>
+                                </svg>
+                            </RouterLink>
+                            <RouterLink class="tw-relative b-menu__item tw-flex lg:tw-px-3 tw-py-2 tw-items-center hover:tw-text-gray-900" to="/appointment">
+                                <span>Запись</span>
+                                <svg class="tw-absolute tw-w-[20px] tw-h-[20px] tw-bottom-[25px] tw-left-[50%] tw-translate-x-[-50%]" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 48.839 48.839" style="" xml:space="preserve">
+                                    <g>
+                                        <path style="fill:#d9cfd9;" d="M39.041,36.843c2.054,3.234,3.022,4.951,3.022,6.742c0,3.537-2.627,5.252-6.166,5.252 c-1.56,0-2.567-0.002-5.112-1.326c0,0-1.649-1.509-5.508-1.354c-3.895-0.154-5.545,1.373-5.545,1.373 c-2.545,1.323-3.516,1.309-5.074,1.309c-3.539,0-6.168-1.713-6.168-5.252c0-1.791,0.971-3.506,3.024-6.742 c0,0,3.881-6.445,7.244-9.477c2.43-2.188,5.973-2.18,5.973-2.18h1.093v-0.001c0,0,3.698-0.009,5.976,2.181 C35.059,30.51,39.041,36.844,39.041,36.843z M16.631,20.878c3.7,0,6.699-4.674,6.699-10.439S20.331,0,16.631,0 S9.932,4.674,9.932,10.439S12.931,20.878,16.631,20.878z M10.211,30.988c2.727-1.259,3.349-5.723,1.388-9.971 s-5.761-6.672-8.488-5.414s-3.348,5.723-1.388,9.971C3.684,29.822,7.484,32.245,10.211,30.988z M32.206,20.878 c3.7,0,6.7-4.674,6.7-10.439S35.906,0,32.206,0s-6.699,4.674-6.699,10.439C25.507,16.204,28.506,20.878,32.206,20.878z M45.727,15.602c-2.728-1.259-6.527,1.165-8.488,5.414s-1.339,8.713,1.389,9.972c2.728,1.258,6.527-1.166,8.488-5.414 S48.455,16.861,45.727,15.602z"/>
+                                    </g>
+                                </svg>
+                            </RouterLink>
                         </ul>
-                        <div class="lg:hidden flex items-center mt-3 gap-4">
-                            <a href="#" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 w-full px-4 py-2 bg-gray-100 hover:bg-gray-200   border-2 border-transparent">Войти</a>
-                            <a href="#" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 w-full px-4 py-2 bg-black text-white hover:bg-gray-800  border-2 border-transparent">Зарегистрироваться</a>
+                        <div class="lg:tw-hidden tw-flex tw-items-center tw-mt-3 tw-gap-4">
+                            <a href="#" class="tw-rounded tw-text-center tw-transition focus-visible:tw-ring-2 tw-ring-offset-2 tw-ring-gray-200 tw-w-full tw-px-4 tw-py-2 tw-bg-gray-100 hover:tw-bg-gray-200   tw-border-2 tw-border-transparent">Войти</a>
+                            <a href="#" class="tw-rounded tw-text-center tw-transition focus-visible:tw-ring-2 tw-ring-offset-2 tw-ring-gray-200 tw-w-full tw-px-4 tw-py-2 tw-bg-black tw-text-white hover:tw-bg-gray-800  tw-border-2 tw-border-transparent">Зарегистрироваться</a>
                         </div> 
                     </nav>
                 <div>
-                <div class="lg:flex items-center gap-4">
+                <div class="tw-hidden lg:tw-flex tw-items-center tw-gap-4">
                     <template v-if="isAuth">
-                        <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
-                            <button class="profile realtive z-10 min-w-[48px] w-[48px] h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
+                        <div class="profile tw-relative tw-flex tw-items-center">
+                            <div class="tw-mr-4">Дмитрий</div>
+                            <button @click="isOpen = !isOpen" class="tw-realtive tw-z-10 tw-w-12 tw-h-12 tw-rounded-full tw-overflow-hidden tw-border-solid tw-border-2 tw-border-gray-400 hover:tw-border-gray-300 focus:tw-border-gray-300 focus:tw-outline-none">
                                 <!-- <img src="https://source.unsplash.com/uJ8LNVCBjFQ/400x400"> -->
                             </button>
-                            <div class="profile-dropdown absolute hidden w-32 bg-white rounded-lg shadow py-2 mt-16">
-                                <template v-if="role == user">
-                                    <RouterLink to="/profile" class="block px-4 py-2 account-link hover:text-white hover:bg-gray-600">Кабинет</RouterLink>
-                                </template>
-                                <template v-else>
-                                    <RouterLink to="/admin" class="block px-4 py-2 account-link hover:text-white hover:bg-gray-600">Панель</RouterLink>
-                                </template>
-                                
-                                <a href="#" class="block px-4 py-2 account-link hover:text-white hover:bg-gray-600">Выйти</a>
+                            <div class="profile-dropdown tw-hidden tw-absolute tw-w-32 tw-bg-white tw-right-0 tw-rounded-lg tw-shadow-lg tw-top-full tw-overflow-hidden">
+                                <!--Если роль - админ-->
+                                <RouterLink class="tw-block tw-px-4 tw-py-2 tw-account-link hover:tw-bg-custom-purple" to="/admin">Админка</RouterLink>
+                                <RouterLink class="tw-block tw-px-4 tw-py-2 tw-account-link hover:tw-bg-custom-purple" to="/profile">Профиль</RouterLink>
+                                <RouterLink class="tw-block tw-px-4 tw-py-2 tw-account-link hover:tw-bg-custom-purple" to="/logout">Выйти</RouterLink>
                             </div>
                         </div>
                     </template>
                     <template v-else>
                         <RouterLink to="/login">Войти</RouterLink>
-                    <RouterLink to="/register" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-4 py-2 bg-black text-white hover:bg-gray-800  border-2 border-transparent">Регистрация</RouterLink>
+                    <RouterLink to="/register" class="tw-rounded tw-text-center tw-transition focus-visible:tw-ring-2 tw-ring-offset-2 tw-ring-gray-200 tw-px-4 tw-py-2 tw-bg-black tw-text-white hover:tw-bg-gray-800  tw-border-2 tw-border-transparent">Регистрация</RouterLink>
                     </template>
                 </div>
             </div>
@@ -61,6 +80,8 @@
 
     const { $pinia } = useNuxtApp();
     const authStore = useAuthStore($pinia);
+
+    console.log('authStore.isAuthenticated', authStore.isAuthenticated);
 
     const isAuth = computed(() => {
         return authStore.isAuthenticated;
@@ -83,7 +104,7 @@
         cursor: pointer;
     }
 
-    .profile:hover + .profile-dropdown,
+    .profile:hover > .profile-dropdown,
     .profile-dropdown:hover {
         display: block;
         z-index: 11;

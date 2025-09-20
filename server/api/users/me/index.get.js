@@ -1,10 +1,10 @@
-import { getUserById } from "~/server/utils/user";
+import { UserManager } from "~/server/managers/userManager";
 
 export default defineEventHandler(async (event) => {
 	const id = event.context.auth.uid;
-	//Обернуть как-то
+	const select = 'id name lastName email pets';
 
-	const user = await getUserById(event, id);
+	const user = await UserManager.getById(event, id, select);
 	return user;
 	// Получаем данные пользователя и проверяем запрос с куками или ещё чем-то
 });

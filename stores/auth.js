@@ -18,7 +18,6 @@ export const useAuthStore = defineStore('auth', {
                         statusMessage: 'Токен не валиден',
                     });
                 }
-                
                 const data = await $fetch('/api/auth/check-auth', {
                     headers: {
                         Authorization: `Bearer ${this.token}`
@@ -34,6 +33,8 @@ export const useAuthStore = defineStore('auth', {
                     this.role = payload.role;
                     this.isAuthenticated = true;
                     this.token = newToken;
+
+                    // здесь кладем данные пользователя (имя и его фото)
 
                     console.log('this.token', this.token);
                 } catch(refreshError) {

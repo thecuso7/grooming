@@ -1,14 +1,9 @@
-import mongoose from 'mongoose';
+import { Counters } from "~/server/models";
 
-const dbConnect = async () => {
-    if (mongoose.connection.readyState >= 1) {
-        return;
-    }
+export async function getNextSequence(name) {
+    const res = await Counters.findOneAndUpdate({ _id: name }, { $inc: { seq: 1 } }, {new: true});
 
-    return mongoose.connect(process.env.MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
-};
+    console.log('res', res);
 
-export default dbConnect;
+    return res.seq;
+}

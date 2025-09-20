@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-col min-h-screen">
+    <div class="tw-flex tw-flex-col tw-min-h-screen tw-bg-custom-main tw-font-body tw-text-custom-dark">
         <LayoutHeader/>
-        <div class="app flex-1 max-w-screen-xl w-full mx-auto px-5">
+        <div class="app tw-flex-1 tw-max-w-screen-xl tw-w-full tw-mx-auto tw-px-5">
             <NuxtPage />
         </div>
         <LayoutFooter/>

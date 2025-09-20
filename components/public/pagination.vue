@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-5">
-            <div class="flex flex-1 justify-between sm:hidden">
-                <a href="#" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
-                <a href="#" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
+        <div class="tw-flex tw-items-center tw-justify-between tw-border-t tw-border-gray-200 tw-bg-white tw-px-4 tw-py-3 sm:tw-px-6 tw-mt-5">
+            <div class="tw-flex tw-flex-1 tw-justify-between sm:tw-hidden">
+                <a href="#" class="tw-relative tw-inline-flex tw-items-center tw-rounded-md tw-border tw-border-gray-300 tw-bg-white tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-text-gray-700 hover:tw-bg-gray-50">Previous</a>
+                <a href="#" class="tw-relative tw-ml-3 tw-inline-flex tw-items-center tw-rounded-md tw-border tw-border-gray-300 tw-bg-white tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-text-gray-700 hover:tw-bg-gray-50">Next</a>
             </div>
-            <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+            <div class="tw-hidden sm:tw-flex sm:tw-flex-1 sm:tw-items-center sm:tw-justify-between">
                 <div>
                 <p class="text-sm text-gray-700">
                     Показано
@@ -18,42 +18,41 @@
                 </p>
                 </div>
                 <div>
-                    <nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-xs">
+                    <nav aria-label="Pagination" class="tw-isolate tw-inline-flex -space-x-px tw-rounded-md tw-shadow-xs">
                         <NuxtLink v-if="currentPage - 1 > 0"
                             :to="{
                                 name: 'admin-users', query: { page: currentPage - 1 }
                             }"
-                            class="relative hidden items-center px-2 py-2 text-sm font-semibold text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">
-                            <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
+                            class="tw-relative tw-hidden tw-items-center tw-px-2 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-900 tw-inset-ring tw-inset-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0 md:tw-inline-flex">
+                            <svg width="20px" height="20px" viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
                                 <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
                             </svg>
                         </NuxtLink>
-                        <span v-else class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                            <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
+                        <span v-else class="tw-relative tw-inline-flex tw-items-center tw-rounded-l-md tw-px-2 tw-py-2 tw-text-gray-400 tw-inset-ring tw-inset-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0">
+                            <svg width="20px" height="20px" viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
                                 <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
                             </svg>
                         </span>
                             <template v-for="page in rangePagination">
-                            
-                            <span v-if="page == '...'" class="relative inline-flex items-center px-2 py-2 text-sm font-semibold text-gray-700 inset-ring inset-ring-gray-300 focus:outline-offset-0">...</span>
-                            <NuxtLink v-else
-                                :to="{
-                                    name: 'admin-users', query: { page: page }
-                                }"
-                                :class="{'bg-indigo-600 text-white' : page == currentPage}" class="rounded-md relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            >{{ page }}</NuxtLink>
+                                <span v-if="page == '...'" class="tw-relative tw-inline-flex tw-items-center tw-px-2 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-700 tw-inset-ring tw-inset-ring-gray-300 focus:tw-outline-offset-0">...</span>
+                                <NuxtLink v-else
+                                    :to="{
+                                        name: 'admin-users', query: { page: page }
+                                    }"
+                                    :class="{'tw-bg-indigo-600 tw-text-white' : page == currentPage}" class="tw-rounded-md tw-relative tw-z-10 tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm tw-font-semibold focus:tw-z-20 focus-visible:tw-outline-2 focus-visible:tw-outline-offset-2 focus-visible:tw-outline-indigo-600"
+                                >{{ page }}</NuxtLink>
                             </template>
                         <NuxtLink v-if="+currentPage + 1 <= totalPages"
                             :to="{
                                 name: 'admin-users', query: { page: +currentPage + 1 }
                             }"
-                            class="relative hidden items-center px-2 py-2 text-sm font-semibold text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">
-                            <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
+                            class="tw-relative tw-hidden tw-items-center tw-px-2 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-900 tw-inset-ring tw-inset-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0 md:tw-inline-flex">
+                            <svg width="20px" height="20px" viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
                                 <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
                             </svg>
                         </NuxtLink>
-                        <span v-else class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                            <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
+                        <span v-else class="tw-relative tw-inline-flex tw-items-center tw-rounded-l-md tw-px-2 tw-py-2 tw-text-gray-400 tw-inset-ring tw-inset-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0">
+                            <svg width="20px" height="20px" viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
                                 <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
                             </svg>
                         </span>
@@ -73,7 +72,6 @@
 
     const currentPage = ref(route.query?.page || 1);
     const maxLengthPagen = ref(6);
-
 
     const rangePagination = computed(() => {
         let range = [];
@@ -113,6 +111,8 @@
         } else {
             showRange = range;
         }
+
+        console.log('showRange', showRange);
         return showRange;
     });
 

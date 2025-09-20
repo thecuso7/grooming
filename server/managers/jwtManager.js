@@ -1,9 +1,8 @@
 import jwt from 'jsonwebtoken'
 
-export const JwtService = {
+export const JwtManager = {
 	create(user) {
 		// const runtimeConfig = useRuntimeConfig();
-
 		const token = jwt.sign(
 			{ uid: user.id, role: user.role },
 			process.env.NUXT_JWT_ACCESS_SECRET,
@@ -36,7 +35,6 @@ export const JwtService = {
 		return decoded;
 	},
 	verifyRefresh(token) {
-		// const runtimeConfig = useRuntimeConfig();
 		const decoded = jwt.verify(token, process.env.NUXT_JWT_REFRESH_SECRET);
 
 		return decoded;

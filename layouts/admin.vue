@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col min-h-screen">
+    <div class="tw-flex tw-flex-col tw-min-h-screen tw-font-body">
         <LayoutAdminPage/>
         <!-- <div class="app flex-1 max-w-screen-xl w-full mx-auto px-5">
             <NuxtPage />

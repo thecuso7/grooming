@@ -1,14 +1,10 @@
-import { getUserList } from "~/server/utils/user";
+import { UserManager } from "~/server/managers/userManager";
 
 export default defineEventHandler(async (event) => {
-	console.log('[id]');
 	const id = getRouterParam(event, 'id');
-	console.log('event.content.auth', event.context.auth);
-	console.log('id get', id);
+	const fields = 'id name lastName email createdAt updatedAt roleId pets';
 
-
-	//Обернуть как-то
-
-	const userList = await getUserList(event);
-	// Получаем данные пользователя и проверяем запрос с куками или ещё чем-то
+	const user = await UserManager.getById(event, id, fields);
+	// какие данные мы возвращаем и нужны ли они все?
+	return user;
 });

@@ -1,0 +1,199 @@
+<template>
+    <div>
+        <h1 class="tw-text-3xl tw-text-black tw-pb-6 tw-font-heading">Новая услуга</h1>
+        <v-sheet class="tw-flex" max-width="600">
+            <v-form fast-fail @submit.prevent="submit">
+                <v-text-field
+                    v-model="data.title"
+                    @change="v$.title.$touch"
+                    :error-messages="v$.title.$errors.map(e => e.$message)"
+                    label="Название"
+                    variant="outlined"
+                    density="comfortable"
+                ></v-text-field>
+                <v-text-field
+                    v-model="data.description"
+                    @change="v$.description.$touch"
+                    :error-messages="v$.description.$errors.map(e => e.$message)"
+                    label="Описание"
+                    variant="outlined"
+                    density="comfortable"
+                ></v-text-field>
+
+                <div class="tw-flex tw-gap-4">
+                    <v-number-input
+                        v-model="safeHours"
+                        label="Часы"
+                        variant="outlined"
+                        density="comfortable"
+                        :error-messages="timeError.hours"
+                        :max="24"
+                        :min="0"
+                        control-variant="hidden"
+                    ></v-number-input>
+
+                    <v-number-input
+                        v-model="safeMinutes"
+                        label="Минуты"
+                        variant="outlined"
+                        density="comfortable"
+                        :error-messages="timeError.minutes"
+                        :max="60"
+                        :min="0"
+                        control-variant="hidden"
+                    ></v-number-input>
+                </div>
+
+                <v-text-field
+                    v-model="data.price"
+                    @change="v$.price.$touch"
+                    :error-messages="v$.price.$errors.map(e => e.$message)"
+                    label="Цена"
+                    variant="outlined"
+                    density="comfortable"
+                ></v-text-field>
+
+                <v-select
+                    v-model="data.type"
+                    @change="v$.type.$touch"
+                    :error-messages="v$.type.$errors.map(e => e.$message)"
+                    label="Тип"
+                    :items="typeList"
+                    variant="outlined"
+                    density="comfortable"
+                ></v-select>
+                <v-select
+                    v-if="selectedTypeCode == 'complex'"
+                    v-model="data.bundle"
+                    @change="v$.bundle.$touch"
+                    :error-messages="v$.bundle.$errors.map(e => e.$message)"
+                    label="Состав"
+                    :items="serviceList"
+                    variant="outlined"
+                    density="comfortable"
+                    multiple
+                ></v-select>
+                <v-btn class="mt-2 bg-blue-lighten-1" type="submit" block dark>
+                    Сохранить
+                </v-btn>
+            </v-form>
+        </v-sheet>
+    </div>
+</template>
+
+<script setup>
+    import { ref, onMounted } from 'vue';
+
+    const { $api } = useNuxtApp();
+    const { validate } = useValidation();
+    const data = reactive({
+        title: '',
+        description: '',
+        duration: 0,
+        price: '',
+        type: null,
+        hours: 0,
+        minutes: 0,
+        bundle: []
+    });
+
+    const rulesFields = {
+        title: ['required'],
+        duration: ['required'],
+        price: ['required'],
+    };
+
+    const typeList = ref([]);
+    const serviceList = ref([]);
+    const timeError = reactive({
+        hours: '',
+        minutes: '',
+    });
+
+    const timeValidator = (value, siblings) => {
+        if(siblings.hours == 0 && siblings.minutes == 0 && value == '0') {
+            if(siblings.hours == 0) {
+                timeError.hours = 'Укажите время';
+            }
+
+            if(siblings.minutes == 0) {
+                timeError.minutes = 'Укажите время';
+            }
+            
+            return false;
+        }
+        
+        return true;
+    };
+
+    const { v$, updateValidateFromApi } = validate(data, rulesFields, { duration: { validator: { $validator: timeValidator }}});
+
+    const submit = async () => {
+        if (v$.value.$invalid) {
+            v$.value.$touch();
+            return;
+        }
+
+        try {
+            const resp = await $api('/api/services', {
+                method: 'POST',
+                body: data,
+            });
+
+            navigateTo('/admin/services/' + resp.id);
+        } catch (error) {
+            updateValidateFromApi(error);
+        }  
+    }
+
+    const selectedTypeCode = computed(() => {
+        const selectedType = typeList.value.filter((type) => type.value == data.type);
+
+        return selectedType?.[0]?.code ?? null;
+    });
+
+    watch(() => data.hours, (newValue) => {
+        data.duration = Number(newValue * 60 + data.minutes);
+        v$.value.duration.$touch();
+    });
+
+    watch(() => data.minutes, (newValue) => {
+        data.duration = Number(newValue + data.hours * 60);
+        v$.value.duration.$touch();
+    });
+
+    const safeHours = computed({
+        get: () => data.hours,
+        set: (newValue) => {
+            if (newValue === '' || newValue === null || newValue === undefined) {
+                data.hours = 0;
+            } else {
+                data.hours = Number(newValue);
+            }
+        }
+    });
+
+    const safeMinutes = computed({
+        get: () => data.minutes,
+        set: (newValue) => {
+            if (newValue === '' || newValue === null || newValue === undefined) {
+                data.minutes = 0;
+            } else {
+                data.minutes = Number(newValue);
+            }
+        }
+    });
+
+    onMounted(async() => {
+        const resTypes = await $api('/api/common/types');
+        const { list } = await $api('/api/services');
+
+        resTypes.forEach(type => {
+            typeList.value.push({title: type.title, value: type._id.toString(), code: type.code });
+        });
+
+        list.forEach(service => {
+            serviceList.value.push({title: service.title, value: service._id.toString() });
+        });
+    });
+</script>

@@ -1,4 +1,4 @@
-import { JwtService } from "~/server/services/jwtService";
+import { JwtManager } from "~/server/managers/jwtManager";
 
 export default defineEventHandler((event) => {
     const header = getHeader(event, 'Authorization');
@@ -12,8 +12,9 @@ export default defineEventHandler((event) => {
         });
     }
 
+    // подумать, что с jwt
     try {
-        payload = JwtService.verifyAccess(token);
+        payload = JwtManager.verifyAccess(token);
     } catch(err) {
         throw createError({
             statusCode: 401,

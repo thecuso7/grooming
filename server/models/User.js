@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 import { defaultRoles } from './Role';
 
 const userSchema = new mongoose.Schema({
+  id: {
+    type: Number,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -24,6 +28,9 @@ const userSchema = new mongoose.Schema({
     ref: 'Role',
     required: true,
     default: defaultRoles[1]._id
+  },
+  pets: {
+    type: Array,
   },
   createdAt: {
     type: Date,

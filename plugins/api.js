@@ -31,7 +31,6 @@ export default defineNuxtPlugin((event) => {
                 refreshPromise = refreshToken();
                 isRefreshing = true;
                 
-                
                 try {
                     const { newToken } = await refreshPromise;
                     return $fetch(request.toString(), {
@@ -46,6 +45,20 @@ export default defineNuxtPlugin((event) => {
                 }
             }
         }
+        
+        const errorStore = useErrorStore();
+
+        if(response._data.data.code == 'INTERNAL_ERROR') {
+            errorStore.setGlobalErrors(response._data.data.message);
+
+            console.log('errorStore.globalErrors', errorStore.globalErrors);
+        }
+
+        const error = new Error(response._data.data?.message || 'Неизвестная ошибка');
+        error.statusCode = response.status;
+        error.data = response._data.data;
+        
+        throw error;
     }
   })
 

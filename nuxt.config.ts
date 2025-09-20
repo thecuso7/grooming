@@ -3,6 +3,10 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 
 export default defineNuxtConfig({
   ssr: false,
+  nitro: {
+    static: true,
+    serveStatic: true
+  },
   compatibilityDate: '2024-11-01',
   devServer: {
     host: '0.0.0.0',  // Доступ с хоста
@@ -30,6 +34,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/api/**': { cors: true },
+    '/uploads/**': { static: true }
   },
   css: [
     '@/assets/css/tailwind.css'

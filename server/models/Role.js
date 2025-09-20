@@ -3,13 +3,15 @@ import mongoose from 'mongoose';
 export const defaultRoles = [
   { 
     _id: '661c0a1b8f1a2b3c4d5e6f7a',
-    code: 'admin', 
+    code: 'admin',
+    name: 'Администратор',
     level: 1,
     permissions: ['all']
   },
   { 
     _id: '661c0a1b8f1a2b3c4d5e6f7b',
     code: 'user', 
+    name: 'Пользователь',
     level: 2,
     permissions: ['read', 'write']
   }
@@ -17,6 +19,10 @@ export const defaultRoles = [
 
 const roleSchema = new mongoose.Schema({
   code: {
+    type: String,
+    required: true,
+  },
+  name: {
     type: String,
     required: true,
   },

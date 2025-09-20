@@ -1,12 +1,8 @@
-import { RegService } from "~/server/services/regService";
+import { RegManager } from "~/server/managers/regManager";
 
 export default defineEventHandler(async (event) => {
-	try {
-		const credentials = await readBody(event)
-		const result = await RegService.register(event, credentials);
+	const credentials = await readBody(event)
+	const result = await RegManager.register(event, credentials);
 
-		return result;
-	} catch(error) {
-		throw error;
-	}
+	return result;
 })

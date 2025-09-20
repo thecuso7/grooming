@@ -1,25 +1,33 @@
-import { JwtService } from "~/server/services/jwtService";
+import { JwtManager } from "~/server/managers/jwtManager";
+
+const publicRoutes = {
+    '/api/services':['GET']
+};
 
 export default defineEventHandler((event) => {
-    // console.log('middleware api');
-    // сделать исключение для  обновления refresh
-    if (!event.node.req.url?.startsWith('/api/')) {
+    const { url, method } = event.node.req;
+    if (!url?.startsWith('/api/')) {
         return
     }
 
-    if(
-        event.node.req.url == '/api/auth/refresh' ||
-        event.node.req.url == '/api/auth/login' ||
-        event.node.req.url == '/api/auth/register' ||
-        event.node.req.url == '/api/auth/check-auth'
+    const isPublicRoute = Object.entries(publicRoutes).some(([path, methods]) => {
+        const regex = new RegExp('^' + path.replace(/:\w+/g, '[^/]+') + '$');
+        return regex.test(url) && methods.includes(method);
+    });
+
+    if(isPublicRoute) return;
+
+    if( // сделать что-нибудь с этим
+        url == '/api/auth/refresh' ||
+        url == '/api/auth/login' ||
+        url == '/api/auth/register' ||
+        url == '/api/auth/check-auth'
     ) {
         return;
     }
 
     const authHeader = getHeader(event, 'Authorization');
     const token = authHeader?.replace('Bearer ', '');
-
-    console.log('server auth', token);
 
     if(!token) {
         throw createError({
@@ -29,13 +37,15 @@ export default defineEventHandler((event) => {
     }
 
     try {
-        const payload = JwtService.verifyAccess(token);
+        const payload = JwtManager.verifyAccess(token);
+        // А восстановление должно быть?
         event.context.auth = payload;
     } catch(err) {
-        console.log(err);
         throw createError({
             statusCode: 401,
-            statusMessage: 'Токен не валиден',
+            data: {
+                message: 'Токен не валиден',
+            }
         });
     }
 

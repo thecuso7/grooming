@@ -1,42 +1,50 @@
 <template>
-    <div class="flex justify-center mt-10">
-        <div class="w-full max-w-xs">
-            <div class="mb-6 font-bold text-xl text-center">Регистрация</div>
-            <form class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4">
-                <div class="mb-3">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
-                    Имя
-                    </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 mb-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="formData.name" id="name" type="text" placeholder="Имя">
-                    <!-- <p class="text-red-500 text-xs italic">Введите логин</p> -->
-                </div>
-                <div class="mb-3">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="lastName">
-                    Фамилия
-                    </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 mb-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="formData.lastName" id="lastName" type="text" placeholder="Фамилия">
-                    <!-- <p class="text-red-500 text-xs italic">Введите логин</p> -->
-                </div>
-                <div class="mb-3">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="login">
-                    Логин
-                    </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 mb-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="formData.email" id="email" type="text" placeholder="Email">
-                    <!-- <p class="text-red-500 text-xs italic">Введите логин</p> -->
-                </div>
-                <div class="mb-3">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-                    Пароль
-                    </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-2 leading-tight focus:outline-none focus:shadow-outline" v-model="formData.password" id="password" type="text" placeholder="******************">
-                    <!-- <p class="text-red-500 text-xs italic">Введите пароль</p> -->
-                </div>
-                <div class="flex items-center justify-between">
-                    <button @click="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-                        Регистрация
-                    </button>
-                </div>
-            </form>
+    <div class="tw-flex tw-justify-center tw-mt-10">
+        <div class="tw-w-full tw-max-w-xs">
+            <div class="tw-mb-6 tw-font-bold tw-text-xl tw-text-center">Регистрация</div>
+            <v-sheet class="mx-auto" max-width="300">
+                <v-form fast-fail @submit.prevent="submit">
+                    <v-text-field
+                        class="mb-2"
+                        v-model="data.name"
+                        :error-messages="v$.name.$errors.map(e => e.$message)"
+                        @change="v$.name.$touch"
+                        label="Имя *"
+                        variant="outlined"
+                        density="comfortable"
+                    ></v-text-field>
+
+                    <v-text-field
+                        class="mb-2"
+                        v-model="data.lastName"
+                        :error-messages="v$.lastName.$errors.map(e => e.$message)"
+                        @change="v$.lastName.$touch"
+                        label="Фамилия *"
+                        variant="outlined"
+                        density="comfortable"
+                    ></v-text-field>
+
+                    <v-text-field
+                        class="mb-2"
+                        v-model="data.email"
+                        :error-messages="v$.email.$errors.map(e => e.$message)"
+                        @change="v$.email.$touch"
+                        label="Email *"
+                        variant="outlined"
+                        density="comfortable"
+                    ></v-text-field>
+
+                    <v-text-field
+                        v-model="data.password"
+                        :error-messages="v$.password.$errors.map(e => e.$message)"
+                        @change="v$.password.$touch"
+                        label="Пароль *"
+                        variant="outlined"
+                        density="comfortable"
+                    ></v-text-field>
+                    <v-btn class="mt-2 bg-blue-lighten-1" type="submit" block dark>Регистрация</v-btn>
+                </v-form>
+            </v-sheet>
         </div>
         <div v-if="error">
             {{ error }}
@@ -44,43 +52,47 @@
     </div>
  </template>
 
-<script>
-import { ref } from 'vue';
+<script setup>
+    import { ref } from 'vue';
+    const { validate } = useValidation();
 
-export default {
-    setup() {    
-        const formData = ref({
-            name: '',
-            lastName: '',
-            email: '',
-            password: ''
-        })
+    let error = ref('');
+    const data = reactive({
+        name: '',
+        lastName: '',
+        email: '',
+        password: ''
+    });
 
-        let error = ref('')
+    const rulesFields = {
+        name: ['required'],
+        lastName: ['required'],
+        email: ['required'],
+        password: ['required'],
+    };
 
-        // Если делать проверку на стороне клиента, нужно ли делать проверку ещё на бэке
+    const { v$, updateValidateFromApi } = validate(data, rulesFields);
 
-        const submit = async() => {
+    const submit = async() => {
+        if (v$.value.$invalid) {
+            v$.value.$touch();
+            return;
+        }
 
-            console.log('submit');
-
-            $fetch('/api/auth/register', {
+        try {
+            const res = await $fetch('/api/auth/register', {
                 method: 'POST',
                 body: {
-                    name: formData.value.name,
-                    lastName: formData.value.lastName,
-                    email: formData.value.email,
-                    password: formData.value.password,
+                    name: data.name,
+                    lastName: data.lastName,
+                    email: data.email,
+                    password: data.password,
                 }
-            }).then(res => {
-                navigateTo('/profile');
-            }).catch(err => {
-                console.log(err.response);
-                error = err.response._data.message;
-            })
-        };
+            });
 
-        return { formData, error, submit };
-    },
-};
+            navigateTo('/profile');
+        } catch(error) {
+            updateValidateFromApi();
+        }
+    };
 </script>
