@@ -11,7 +11,7 @@ const isConnected = () => {
 
 export default defineNitroPlugin(async () => {
     try {
-        await mongoose.connect('mongodb://mongo:27017/grooming');
+        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://mongo:27017/grooming');
         
         if(isConnected()) {
             return;

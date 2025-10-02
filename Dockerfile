@@ -15,4 +15,4 @@ COPY . .
 RUN yarn add esbuild@0.21.5 --exact --dev
 
 EXPOSE 3000
-CMD ["yarn", "dev"]
+CMD ["yarn", "build"]
