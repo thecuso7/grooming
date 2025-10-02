@@ -1,7 +1,9 @@
 import { JwtManager } from "~/server/managers/jwtManager";
 
 const publicRoutes = {
-    '/api/services':['GET']
+    '/api/services':['GET'],
+    '/api/common/types':['GET'],
+    '/api/shedule':['GET', 'POST'],
 };
 
 export default defineEventHandler((event) => {

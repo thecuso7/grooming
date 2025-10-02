@@ -136,8 +136,6 @@
         const resRoles = await $api('/api/roles/');
         const resPets = await $api('/api/pets?id=' + user.value.pets);
 
-        console.log('resPets', resPets);
-
         resRoles.forEach(role => {
             roleList.value.push({title: role.name, value: role._id.toString() });
         });
@@ -146,8 +144,6 @@
         resPets.list.forEach(pet => {
             petsList.value.push({title: pet.name, value: pet.id });
         });
-
-        console.log('petsList', petsList.value);
 
         for(const key in user.value) {
             data[key] = user.value[key];

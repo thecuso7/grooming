@@ -52,7 +52,10 @@
                     variant="outlined"
                     density="comfortable"
                 ></v-text-field>
-
+                <v-checkbox 
+                    label="Обязательная услуга"
+                    v-model="data.required"
+                ></v-checkbox>
                 <v-select
                     v-model="data.type"
                     @change="v$.type.$touch"
@@ -94,6 +97,7 @@
         type: null,
         hours: 0,
         minutes: 0,
+        required: false,
         bundle: []
     });
 

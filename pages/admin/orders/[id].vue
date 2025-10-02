@@ -92,13 +92,9 @@
             roleList.value.push({title: role.name, value: role._id.toString() });
         });
 
-        // Получаем список ролей по api
-
         for(const key in user.value) {
             formData[key] = user.value[key];
         }
-
-        console.log('formData', formData);
     });
  
 </script>

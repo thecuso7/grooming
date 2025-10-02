@@ -2,6 +2,14 @@ import { JwtManager } from "~/server/managers/jwtManager";
 
 export default defineEventHandler((event) => {
     const token = getCookie(event, 'refreshToken');
+    if(!token) {
+        throw createError({
+            statusCode: 401,
+            data: {
+                message: 'Токен не валиден',
+            }
+        });
+    }
     const { newToken, newRefresh, payload } = JwtManager.refresh(token);
 
     setCookie(event, 'refreshToken', newRefresh, {

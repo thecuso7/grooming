@@ -21,7 +21,7 @@
                     <nav aria-label="Pagination" class="tw-isolate tw-inline-flex -space-x-px tw-rounded-md tw-shadow-xs">
                         <NuxtLink v-if="currentPage - 1 > 0"
                             :to="{
-                                name: 'admin-users', query: { page: currentPage - 1 }
+                                name: url, query: { page: currentPage - 1 }
                             }"
                             class="tw-relative tw-hidden tw-items-center tw-px-2 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-900 tw-inset-ring tw-inset-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0 md:tw-inline-flex">
                             <svg width="20px" height="20px" viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
@@ -37,14 +37,14 @@
                                 <span v-if="page == '...'" class="tw-relative tw-inline-flex tw-items-center tw-px-2 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-700 tw-inset-ring tw-inset-ring-gray-300 focus:tw-outline-offset-0">...</span>
                                 <NuxtLink v-else
                                     :to="{
-                                        name: 'admin-users', query: { page: page }
+                                        name: url, query: { page: page }
                                     }"
                                     :class="{'tw-bg-indigo-600 tw-text-white' : page == currentPage}" class="tw-rounded-md tw-relative tw-z-10 tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm tw-font-semibold focus:tw-z-20 focus-visible:tw-outline-2 focus-visible:tw-outline-offset-2 focus-visible:tw-outline-indigo-600"
                                 >{{ page }}</NuxtLink>
                             </template>
                         <NuxtLink v-if="+currentPage + 1 <= totalPages"
                             :to="{
-                                name: 'admin-users', query: { page: +currentPage + 1 }
+                                name: url, query: { page: +currentPage + 1 }
                             }"
                             class="tw-relative tw-hidden tw-items-center tw-px-2 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-900 tw-inset-ring tw-inset-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0 md:tw-inline-flex">
                             <svg width="20px" height="20px" viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
@@ -68,7 +68,7 @@
     const route = useRoute();
     const emit = defineEmits(['page-update']);
 
-    const { items, totalCount, totalPages } = defineProps(['items', 'totalCount', 'totalPages']);
+    const { items, totalCount, totalPages, url } = defineProps(['items', 'totalCount', 'totalPages', 'url']);
 
     const currentPage = ref(route.query?.page || 1);
     const maxLengthPagen = ref(6);
@@ -111,8 +111,7 @@
         } else {
             showRange = range;
         }
-
-        console.log('showRange', showRange);
+        
         return showRange;
     });
 

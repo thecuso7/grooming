@@ -121,7 +121,7 @@
 
                 navigateTo('/admin/pets/' + resp.id);
             } catch(error) {
-                updateValidateFromApi();
+                updateValidateFromApi(error.data);
             }
         }
     }

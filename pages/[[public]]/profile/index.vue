@@ -8,22 +8,13 @@
                         <pets v-if="valueFields.id" :ids="valueFields.pets"></pets>
                     </div>
                 </div>
-                <div>
-                    <h2 class="tw-text-2xl tw-font-bold tw-text-gray-800 tw-mb-8 tw-font-heading">Активные записи</h2>
+                <div class="tw-mb-10">
+                    <div class="tw-max-w-6xl tw-mx-auto">
+                        <shedule></shedule>
+                    </div>
                 </div>
-                
-                
-
-                 <!--
-                
-                Сюда выводим активные записи
-
-                Справа подтягиваем данные пользователя (где хранить) и как будут выглядеть активные записи
-
-                Написать логику для редактирования своих данных и записи (удаление, смена даты)
-                 -->
             </div>
-            <div class="tw-top-[15px] tw-bg-custom-purple tw-rounded-lg tw-shadow-[0px_0px_15px_3px_rgba(0,_0,_0,_0.2)] tw-w-full md:tw-w-4/12 tw-border-1 tw-border-gray-400 tw-py-4 tw-px-4 tw-sticky tw-h-fit">
+            <div class="tw-top-[15px] tw-bg-custom-purple tw-rounded-lg tw-shadow-[0px_0px_15px_3px_rgba(0,_0,_0,_0.2)] tw-w-full md:tw-w-4/12 tw-border-1 tw-border-gray-400 tw-py-4 tw-px-4 lg:tw-sticky tw-h-fit">
                 <div class="tw-space-y-4 info-block">
                     <!-- Поле Фамилия -->
                     <div class="tw-relative tw-group field-wrap">
@@ -33,13 +24,16 @@
                              class="tw-text-gray-900 tw-font-medium tw-py-2 tw-pr-8"
                              :class="{ 'tw-hidden' : showFields.lastName }"
                              >{{ valueFields.lastName }}</span>
-                            <input 
-                                id="lastNameInput" 
-                                type="text" 
+
+                            <v-text-field
                                 v-model="valueFields.lastName"
-                                :class="{ 'tw-hidden' : !showFields.lastName }"
-                                class="tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-primary focus:tw-border-transparent"
-                            >
+                                @change="v$.lastName.$touch"
+                                :error-messages="v$.lastName.$errors.map(e => e.$message)"
+                                :class="{ '!tw-hidden' : !showFields.lastName }"
+                                variant="outlined"
+                                density="comfortable"
+                                hide-details
+                            ></v-text-field>
                             <button 
                                 @click="editData('lastName')"
                                 class="tw-opacity-0 group-hover:tw-opacity-100 tw-transition-opacity tw-duration-200 tw-ml-2 tw-p-2 hover:tw-bg-gray-100 tw-rounded-lg"
@@ -58,13 +52,15 @@
                             <span id="firstNameValue" class="tw-text-gray-900 tw-font-medium tw-py-2 tw-pr-8"
                             :class="{ 'tw-hidden' : showFields.name }"
                             >{{ valueFields.name }}</span>
-                            <input 
-                                id="firstNameInput" 
-                                type="text" 
+                            <v-text-field
                                 v-model="valueFields.name"
-                                :class="{ 'tw-hidden' : !showFields.name }"
-                                class="tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-primary focus:tw-border-transparent"
-                            >
+                                @change="v$.name.$touch"
+                                :error-messages="v$.name.$errors.map(e => e.$message)"
+                                :class="{ '!tw-hidden' : !showFields.name }"
+                                variant="outlined"
+                                density="comfortable"
+                                hide-details
+                            ></v-text-field>
                             <button 
                                 @click="editData('name')"
                                 class="tw-opacity-0 group-hover:tw-opacity-100 tw-transition-opacity tw-duration-200 tw-ml-2 tw-p-2 hover:tw-bg-gray-100 tw-rounded-lg"
@@ -83,13 +79,15 @@
                             <span id="emailValue" class="tw-text-gray-900 tw-font-medium tw-py-2 tw-pr-8"
                             :class="{ 'tw-hidden' : showFields.email }"
                             >{{ valueFields.email }}</span>
-                            <input 
-                                id="emailInput" 
-                                type="email" 
+                            <v-text-field
                                 v-model="valueFields.email"
-                                :class="{ 'tw-hidden' : !showFields.email }" 
-                                class=" tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-primary focus:tw-border-transparent"
-                            >
+                                @change="v$.email.$touch"
+                                :error-messages="v$.email.$errors.map(e => e.$message)"
+                                :class="{ '!tw-hidden' : !showFields.email }"
+                                variant="outlined"
+                                density="comfortable"
+                                hide-details
+                            ></v-text-field>
                             <button 
                                 @click="editData('email')"
                                 class="tw-opacity-0 group-hover:tw-opacity-100 tw-transition-opacity tw-duration-200 tw-ml-2 tw-p-2 hover:tw-bg-gray-100 tw-rounded-lg"
@@ -105,14 +103,17 @@
                         <div class="tw-flex tw-items-center tw-justify-between">
                             <span id="emailValue" class="tw-text-gray-900 tw-font-medium tw-py-2 tw-pr-8"
                             :class="{ 'tw-hidden' : showFields.password }"
-                            >{{ valueFields.password }}</span>
-                            <input 
-                                id="emailInput" 
-                                type="password" 
-                                v-model="valueFields.password"
-                                :class="{ 'tw-hidden' : !showFields.password }" 
-                                class=" tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-ring-2 focus:tw-ring-primary focus:tw-border-transparent"
-                            >
+                            >{{ password }}</span>
+
+                            <v-text-field
+                                v-model="password"
+                                @change="v$.password.$touch"
+                                :error-messages="v$.password.$errors.map(e => e.$message)"
+                                :class="{ '!tw-hidden' : !showFields.password }"
+                                variant="outlined"
+                                density="comfortable"
+                                hide-details
+                            ></v-text-field>
                             <button 
                                 @click="editData('password')"
                                 class="tw-opacity-0 group-hover:tw-opacity-100 tw-transition-opacity tw-duration-200 tw-ml-2 tw-p-2 hover:tw-bg-gray-100 tw-rounded-lg"
@@ -123,6 +124,7 @@
                             </button>
                         </div>
                     </div>
+                    <div v-if="isDataSaved">Данные успешно обновлены!</div>
                     <button v-if="showBtn" @click="saveData" type="button" class="tw-py-2.5 tw-px-5 tw-me-2 tw-mb-2 tw-text-sm tw-font-medium focus:tw-outline-none tw-bg-custom-btn tw-rounded-lg tw-border tw-border-gray-200 focus:tw-z-10 focus:tw-ring-4 focus:tw-ring-gray-100">
                         Сохранить
                     </button>
@@ -133,17 +135,16 @@
 </template>
 
 <script setup>
-/**
- * Добавить валидацию через vuelidate
- * Добавить блок добавления питомцев
- */
     import { onMounted, watch, nextTick } from 'vue';
-    import Pets from '~/components/public/pets.vue';
+    import Pets from '~/components/public/profile/pets.vue';
+    import Shedule from '~/components/public/profile/shedule.vue';
 
     const { $api } = useNuxtApp();
-    const authStore = useAuthStore();
+    const { validate } = useValidation();
+
     const dataUpdated = ref(false);
     const initialized = ref(false);
+    const isDataSaved = ref(false);
 
     const showFields = reactive({
         email: false,
@@ -157,18 +158,32 @@
         name: '',
         lastName: '',
         id: '',
-        password: '21312323',
+        password: '',
     });
 
-    /**
-     * 
-     * ref создает объект с свойством .value, которое уже является отслеживаемым и watch(count, (newCount) => {}) - работает
-     * watch(obj.count, (count) => {}) - не работает, поскольку это не реактивная ссылка, поэтому оно заменяется на getter функцию () => obj.count, которая возвращает значение и 
-     * вызывается сразу, как бы ссылаясь на значение объекта, а не напрямую
-     * 
-     */
+    const rulesFields = {
+        email: ['required', 'email'],
+        name: ['required'],
+		lastName: ['required'],
+    };
+
+    const { v$ } = validate(valueFields, rulesFields);
 
     const showBtn = computed(() => Object.values(showFields).some(value => value));
+
+    const password = computed({
+        get: () => {
+            if(showFields.password) {
+                return ''; 
+            } else { 
+                return '******'
+            };
+        },
+        set: (newValue) => {
+            valueFields.password = newValue;
+        }
+    });
+
     watch (valueFields, () => {
         if (!initialized.value) return;
 
@@ -180,39 +195,51 @@
     } 
 
     const saveData = async () => {
-        // Обновить данные
         if (dataUpdated.value) {
-            //Делаем зарос на обновление данных
-            const resp = await $api('/api/users/me', {
-                method: 'PUT',
-                body: {
-                    email: valueFields.email,
-                    name: valueFields.name,
-                    lastName: valueFields.lastName,
-                }
-            });
+            v$.value.$touch();
+			if(v$.value.$invalid) {
+				return;
+			}
+            const dataUpdate = {
+                email: valueFields.email,
+                name: valueFields.name,
+                lastName: valueFields.lastName,
+            };
 
-            Object.keys(showFields).forEach(value => {
-                showFields[value] = false;
+            if(valueFields.password !== '') {
+                dataUpdate.password = valueFields.password;
+            }
+
+            await $api('/api/users/me', {
+                method: 'PUT',
+                body: dataUpdate
             });
 
             dataUpdated.value = false;
+            isDataSaved.value = true;
+
+            setTimeout(() => {
+                isDataSaved.value = false;
+            }, 3000);
         }
+
+        Object.keys(showFields).forEach(value => {
+            showFields[value] = false;
+        });
     }
 
     onMounted(async() => {
-       const resp = await $api('/api/users/me');
-       // сопоставляем данные с объектом valueFields
+        const resp = await $api('/api/users/me');
 
-       valueFields.email = resp.email;
-       valueFields.name = resp.name;
-       valueFields.lastName = resp.lastName;
-       valueFields.id = resp.id;
-       valueFields.pets = resp.pets;
+        valueFields.email = resp.email;
+        valueFields.name = resp.name;
+        valueFields.lastName = resp.lastName;
+        valueFields.id = resp.id;
+        valueFields.pets = resp.pets;
 
-       await nextTick();
+        await nextTick(); // зачем это было нужно?
 
-       initialized.value = true;
+        initialized.value = true;
     });
 </script>
 

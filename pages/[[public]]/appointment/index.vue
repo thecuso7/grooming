@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="tw-container tw-mx-auto tw-px-4 tw-py-8 tw-max-w-4xl">
+        <div class="tw-container tw-mx-auto tw-py-8 tw-max-w-4xl">
             <!-- Заголовок -->
             <div class="tw-text-center tw-mb-8">
                 <h1 class="tw-text-3xl tw-font-bold tw-text-gray-800 tw-font-heading">Запись на груминг</h1>
@@ -13,7 +13,7 @@
 
 <script setup>
     import { onMounted } from 'vue';
-import Appointment from '~/components/public/appointment/appointment.vue';
+    import Appointment from '~/components/public/appointment/appointment.vue';
     
     onMounted(async() => {
        

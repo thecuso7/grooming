@@ -140,7 +140,7 @@
 										density="comfortable"
 									></v-text-field>
 
-									<v-btn class="mt-2 bg-blue-lighten-1" type="submit" block dark>
+									<v-btn class="mt-2 !tw-bg-custom-olive !tw-text-white" type="submit" block dark>
 										<span>Сохранить</span>
 									</v-btn>
 								</v-form>
@@ -269,11 +269,9 @@
 	}
 
 	const openForm = (event, id = null) => {
-		
 		showFormAdd.value = true;
 		if(id) {
 			const currentPet = petList.value.filter(item => item.id == id);
-			console.log('currentPet', currentPet);
 			Object.assign(data, currentPet[0]);
 		} else {
 			Object.assign(data, initialState);

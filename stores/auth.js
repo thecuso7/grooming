@@ -5,7 +5,7 @@ export const useAuthStore = defineStore('auth', {
         user: null,
         isAuthenticated: false,
         role: null,
-        token: '',
+        token: '', // client token
     }),
     actions: {
         async checkAuth() {
@@ -26,17 +26,22 @@ export const useAuthStore = defineStore('auth', {
 
                 this.isAuthenticated = true;
                 this.role = data.payload.role;
+                this.user = {
+                    name: data.payload.name,
+                    id: data.payload.uid,
+                    role: data.payload.role
+                };
             } catch(err) {
                 try {
                     const { newToken, payload } = await refreshToken();
-
                     this.role = payload.role;
                     this.isAuthenticated = true;
                     this.token = newToken;
-
-                    // здесь кладем данные пользователя (имя и его фото)
-
-                    console.log('this.token', this.token);
+                    this.user = {
+                        name: payload.name,
+                        id: payload.uid,
+                        role: payload.role
+                    };
                 } catch(refreshError) {
                     this.logout();
 

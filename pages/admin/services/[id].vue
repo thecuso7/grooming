@@ -52,7 +52,10 @@
                     variant="outlined"
                     density="comfortable"
                 ></v-text-field>
-
+                <v-checkbox 
+                    label="Обязательная услуга"
+                    v-model="data.required"
+                ></v-checkbox>
                 <v-select
                     v-model="data.type"
                     @update:modelValue="v$.type.$touch"
@@ -103,6 +106,7 @@
         type: null,
         hours: 0,
         minutes: 0,
+        required: false,
         bundle: []
     });
 
@@ -213,6 +217,13 @@
         }
     });
 
+    const getPartsTime = (time) => {
+        const hours = Math.trunc(time / 60);
+        const minutes = time - hours * 60;
+
+        return [hours, minutes];
+    }
+
     onMounted(async() => {
         const service = await $api('/api/services/' + id);
         const resTypes = await $api('/api/common/types');
@@ -227,6 +238,9 @@
         for(const key in service) {
             data[key] = service[key];
         }
+
+        // Прокидываем сюда время
+        [data.hours, data.minutes] = getPartsTime(data.duration);
 
         resTypes.forEach(type => {
             typeList.value.push({title: type.title, value: type._id.toString(), code: type.code });

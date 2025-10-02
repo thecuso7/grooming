@@ -24,7 +24,6 @@ export const PetManager = {
 	},
 	async getAll(params, select = '') {
 		try {
-			console.log('get all guery', params);
 			let pagenParams = {};
 
 			// передаем сюда правильне id в массиве

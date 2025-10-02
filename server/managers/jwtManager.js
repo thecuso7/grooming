@@ -2,15 +2,14 @@ import jwt from 'jsonwebtoken'
 
 export const JwtManager = {
 	create(user) {
-		// const runtimeConfig = useRuntimeConfig();
 		const token = jwt.sign(
-			{ uid: user.id, role: user.role },
+			{ uid: user.id, role: user.role, name: user.name },
 			process.env.NUXT_JWT_ACCESS_SECRET,
 			{ expiresIn: '0.5h' }
 		)
 	
 		const refresh = jwt.sign(
-			{ uid: user.id, role: user.role },
+			{ uid: user.id, role: user.role, name: user.name },
 			process.env.NUXT_JWT_REFRESH_SECRET,
 			{ expiresIn: process.env.NUXT_JWT_REFRESH_LIFE }
 		)
@@ -21,7 +20,7 @@ export const JwtManager = {
 
 		try {
 			payload = this.verifyRefresh(token);
-			({ token: newToken, refresh: newRefresh } = this.create({id: payload.uid, role: payload.role }));
+			({ token: newToken, refresh: newRefresh } = this.create({id: payload.uid, role: payload.role, name: payload.name }));
 
 		} catch(err) {
 			throw err;

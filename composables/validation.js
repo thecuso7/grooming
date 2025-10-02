@@ -16,49 +16,11 @@ export const useValidation = () => {
 
         const isValidPassword = (value) => /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/.test(value);
 
-        // const commonRules = {
-        //     name: {
-        //         required: helpers.withMessage(customMessages.required, required),
-        //     },
-        //     lastName: { 
-        //         required: helpers.withMessage(customMessages.required, required),
-        //     },
-        //     email: {
-        //         required: helpers.withMessage(customMessages.required, required),
-        //         email: helpers.withMessage(customMessages.email, email)
-        //     },
-        //     password: {
-        //         required: helpers.withMessage(customMessages.required, required),
-        //         // isValidPassword: helpers.withMessage(customMessages.isValidPassword, isValidPassword)
-        //     },
-        //     roleId: {
-        //         // isValidPassword: helpers.withMessage(customMessages.isValidPassword, isValidPassword)
-        //     },
-        //     title: {
-        //         required: helpers.withMessage(customMessages.required, required),
-        //     },
-        //     description: {},
-        //     duration: {},
-        //     price: {},
-        //     type: {},
-        //     bundle: {},
-        //     pets: [],
-        //     age: '',
-        //     breed: '',
-        //     size: '',
-        //     features: '',
-        //     weight: '',
-        //     image: '',
-        //     hours: 0,
-        //     minutes: 0,
-        // };
-
         const rules = {};
         for(const key in data) {
             rules[key] = {};
             if(Object.keys(fieldValidators).length && fieldValidators?.[key]) {
                 fieldValidators[key].forEach(validator => {
-                    console.log(validator);
                     rules[key][validator] = validatorFactory[validator];
                 })
             }
@@ -70,19 +32,20 @@ export const useValidation = () => {
             });
         }
 
-        const v$ = useVuelidate(rules, data, { $lazy: true } );
+        const $externalResults = ref({});
+        const v$ = useVuelidate(rules, data, { $externalResults, $lazy: true } );
 
         const updateValidateFromApi = (error) => {
             if(error.data?.fields) {
+                const externalResults = {}
+
                 error.data?.fields.forEach((field, index) => {
                     if(v$.value.hasOwnProperty(field)) {
-                        v$.value[field].$errors.push({
-                            $message: index == 0 ? error.data.message : '',
-                            $validator: 'server',
-                            $params: {}
-                        });
+                        externalResults[field] = index === 0 ? error.data.message : '';
                     }
                 });
+                
+                $externalResults.value = externalResults;
             }
 
             v$.value.$touch();

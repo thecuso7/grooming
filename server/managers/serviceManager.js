@@ -61,7 +61,7 @@ export const ServiceManager = {
 	},
 	async getTypes() {
 		try {
-			const list = await TypeService.find();
+			const list = await TypeService.find().sort('sort');
 	
 			return list;
 		} catch (error) {

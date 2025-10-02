@@ -33,6 +33,7 @@ export default {
       },
        borderColor: {
         'custom-accent': '#BCADC3',    // Ваш акцентный цвет для границ
+        'custom-olive': '#7D9E89',
       },
     },
   },

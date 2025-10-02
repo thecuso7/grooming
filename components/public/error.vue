@@ -23,7 +23,6 @@
 </template>
 
 <script setup>
-// Проработать этот момент, потому что пока работает не очень красиво
 	const errorStore = useErrorStore();
 
 	const close = () => {

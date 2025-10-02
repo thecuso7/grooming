@@ -6,18 +6,20 @@ export const defaultTypeServices = [
     title: 'Основные',
     code: 'main',
     description: '',
+    sort: 2,
   },
   { 
     _id: '661c0a1b8f1a2b3c4d5e6f6b',
     title: 'Дополнительные',
     code: 'additional',
     description: '',
+    sort: 3,
   },
   { 
     _id: '661c0a1b8f1a2b3c4d5e6f6c',
     title: 'Комплекс',
     code: 'complex',
-    description: '',
+    sort: 1,
   }
 ];
 
@@ -31,6 +33,9 @@ const typeServiceSchema = new mongoose.Schema({
     required: true,
   },
   description: {
+    type: String,
+  },
+  sort: {
     type: String,
   },
 });

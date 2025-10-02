@@ -12,8 +12,9 @@ export const UserManager = {
 			}
 	
 			const user = {
-				id: data.id,
+				id: data._id,
 				role: data.roleId.code,
+				name: data.name,
 				password: data.password
 			};
 	
@@ -30,7 +31,7 @@ export const UserManager = {
 	},
 	async getById(event, id, select) {
 		try {
-			let query = User.findOne({id: id})
+			let query = User.findOne({_id: id})
 								.select(select);
 			
 			if(select.includes('roleId')) {
@@ -60,10 +61,14 @@ export const UserManager = {
 	async update(event, data, source) {
 		try {
 			let user;
-	
+
 			if(source == 'profile') {
-				// Обновление пароля
-				user = await User.findOneAndUpdate({id: event.context.auth.uid}, data);
+				if(data?.password) {
+					const hashedPassword = await bcrypt.hash(data.password, 10);
+					data.password = hashedPassword;
+				}
+				
+				user = await User.findOneAndUpdate({_id: event.context.auth.uid}, data);
 			}
 	
 			if(source == 'admin') {
@@ -143,8 +148,7 @@ export const UserManager = {
 			if(source == 'admin') {
 				result = await User.create({ id, name, lastName, email, password: hashedPassword, role: data.roleId._id });
 			}
-	
-			// что возвращать сюда - отсюда решаем что
+
 			return result;
 		} catch(error) {
 			throw createError({

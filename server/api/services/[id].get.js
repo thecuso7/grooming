@@ -4,7 +4,5 @@ export default defineEventHandler(async (event) => {
 	const id = getRouterParam(event, 'id');
 	const service = await ServiceManager.getById(event, id);
 	// здесь выдать какую-то ошибку
-
-	console.log('get service', service);
 	return service;
 });

@@ -106,6 +106,7 @@
             </v-table>
             <pagination
             v-if="services.length"
+                :url="'admin-services'"
                 :items="services" 
                 :totalPages="totalPages" 
                 :totalCount="totalCount"
@@ -129,6 +130,7 @@
 
     const showCols = ref({
         id: true,
+        title: true,
         description: true,
         duration: true,
         price: true,
@@ -139,17 +141,13 @@
     const isOpenDropdown = ref(false);
     
     const toggleDropdown = () => {
-        console.log('toogle');
         isOpenDropdown.value = !isOpenDropdown.value;
     }
 
     const handleClickOutside = () => {
-        console.log('outside');
         if(isOpenDropdown.value)  {
             isOpenDropdown.value = false;
         }
-
-        console.log('isOpenDropdown.value', isOpenDropdown.value);
     }
 
     const loadServices = async (params) => {
@@ -158,8 +156,6 @@
         const { list, pagenParams } = await $api(`/api/services?page=${params.page}`);
 
         fullListServices.value = fullList;
-
-        console.log(fullListServices.value);
         services.value = list;
         totalCount.value = pagenParams.totalCount;
         totalPages.value = pagenParams.totalPages;

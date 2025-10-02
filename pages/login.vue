@@ -66,7 +66,7 @@
             authStore.setAccessToken(res.token);
             navigateTo(res.redirect);
         } catch(error) {
-            updateValidateFromApi();
+            updateValidateFromApi(error.data);
         }
     };
 </script>

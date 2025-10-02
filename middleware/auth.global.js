@@ -16,14 +16,14 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
         if(protectedRoutes.includes(to.path) || isAdminRoute) {
             if(success) {
-                if(authStore.role == 'user') {
+                if(authStore.user.role == 'user') {
                     if(to.path == '/login' || isAdminRoute) {
                         return navigateTo('/profile');
                     }
                     return;
                 }
 
-                if(authStore.role == 'admin') {
+                if(authStore.user.role == 'admin') {
                     if(to.path == '/login') {
                         return navigateTo('/admin');
                     }

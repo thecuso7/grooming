@@ -162,7 +162,6 @@
     }
 
     const hadleClickOutside = () => {
-        console.log('outside');
         if(isOpenDropdown.value) 
         isOpenDropdown.value = false;
     }
@@ -181,7 +180,6 @@
 
     onMounted(async() => {
         await loadUsers({page: 1});
-        console.log('users', users.value)
         const savedShowData = JSON.parse(localStorage.getItem('showCols'));
 
         if(savedShowData) {

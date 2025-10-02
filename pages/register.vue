@@ -92,7 +92,7 @@
 
             navigateTo('/profile');
         } catch(error) {
-            updateValidateFromApi();
+            updateValidateFromApi(error.data);
         }
     };
 </script>

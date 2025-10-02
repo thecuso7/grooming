@@ -7,3 +7,4 @@ export { Counters } from './Counters';
 export { Service } from './Service';
 export { TypeService } from './TypeService';
 export { Pet } from './Pet';
+export { Shedule } from './Shedule';

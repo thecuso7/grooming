@@ -8,6 +8,4 @@
 </template>
 
 <script setup>
-    const appConfig = useAppConfig()
-    console.log(appConfig);
 </script>

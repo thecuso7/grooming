@@ -50,8 +50,6 @@ export default defineNuxtPlugin((event) => {
 
         if(response._data.data.code == 'INTERNAL_ERROR') {
             errorStore.setGlobalErrors(response._data.data.message);
-
-            console.log('errorStore.globalErrors', errorStore.globalErrors);
         }
 
         const error = new Error(response._data.data?.message || 'Неизвестная ошибка');

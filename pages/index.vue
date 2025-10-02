@@ -1,29 +1,26 @@
 <template>
     <div>
-        <!-- Герой блок -->
-        <section class="tw-relative tw-py-20">
-            <div class="tw-container tw-mx-auto tw-px-4 tw-text-center">
-                <h1 class="tw-font-heading tw-text-4xl md:tw-text-6xl tw-font-bold tw-mb-6">
+        <section class="tw-relative tw-py-10 lg:tw-py-20">
+            <div class="tw-container tw-mx-auto tw-text-center">
+                <h1 class="tw-font-heading tw-text-3xl md:tw-text-4xl lg:tw-text-6xl tw-font-bold tw-mb-6">
                     Профессиональный <span class="tw-text-custom-green">груминг</span><br>для вашего питомца
                 </h1>
                 <p class="tw-text-xl tw-text-custom-gray tw-max-w-2xl tw-mx-auto tw-mb-8">
                     Забота о красоте и здоровье вашей собаки с любовью и профессионализмом
                 </p>
                 <div class="tw-flex tw-gap-4 tw-justify-center">
-                    <a href="#services" class="tw-bg-custom-accent tw-text-white tw-px-8 tw-py-3 tw-rounded-lg hover:tw-bg-opacity-90">
+                    <!-- <a href="#services" class="tw-bg-custom-accent tw-text-white tw-px-8 tw-py-3 tw-rounded-lg hover:tw-bg-opacity-90">
                         Наши услуги
-                    </a>
-                    <a href="#record" class="tw-border tw-border-custom-accent tw-text-custom-accent tw-px-8 tw-py-3 tw-rounded-lg hover:tw-bg-custom-accent hover:tw-text-white">
-                        Запись онлайн
-                    </a>
+                    </a> -->
+                    <RouterLink class="tw-border tw-border-custom-accent tw-text-custom-accent tw-px-8 tw-py-3 tw-rounded-lg hover:tw-bg-custom-accent hover:tw-text-white" to="/appointment">Запись онлайн</RouterLink>
                 </div>
             </div>
         </section>
 
         <!-- Услуги -->
         <section id="services" class="tw-py-16 tw-bg-custom-card">
-            <div class="tw-container tw-mx-auto tw-px-4">
-                <h2 class="tw-font-heading tw-text-3xl tw-text-center tw-font-bold tw-mb-12">Наши услуги</h2>
+            <div class="tw-container tw-mx-auto">
+                <h2 class="tw-font-heading tw-text-2xl tw-text-center tw-font-bold tw-mb-8">Наши услуги</h2>
                 <div class="tw-grid md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
                     <!-- Карточка услуги 1 -->
                     <div class="tw-bg-white tw-rounded-xl tw-p-6 tw-shadow-lg">
@@ -60,10 +57,10 @@
 
         <!-- О нас -->
         <section class="tw-py-16">
-            <div class="tw-container tw-mx-auto tw-px-4">
+            <div class="tw-container tw-mx-auto">
                 <div class="tw-grid lg:tw-grid-cols-2 tw-gap-12 tw-items-center">
                     <div>
-                        <h2 class="tw-font-heading tw-text-3xl tw-font-bold tw-mb-6">Почему выбирают нас?</h2>
+                        <h2 class="tw-font-heading tw-text-2xl tw-font-bold tw-mb-6">Почему выбирают нас?</h2>
                         <div class="tw-space-y-4">
                             <div class="tw-flex tw-items-start tw-gap-4">
                                 <div class="tw-w-8 tw-h-8 tw-bg-custom-accent tw-rounded-full tw-flex tw-items-center tw-justify-center tw-flex-shrink-0">
@@ -95,7 +92,7 @@
                         </div>
                     </div>
                     <div class="tw-bg-custom-purple tw-rounded-2xl tw-p-8">
-                        <img src="https://placehold.co/600x400/e8e2e8/bcadc3" alt="Груминг салон" class="tw-rounded-xl tw-shadow-lg">
+                        <img src="/public/uploads/main.jpg" alt="Груминг салон" class="tw-rounded-xl tw-shadow-lg">
                     </div>
                 </div>
             </div>
@@ -103,11 +100,9 @@
 
         <!-- Блок с отзывами -->
         <section class="tw-py-16 tw-bg-custom-card">
-            <div class="tw-container tw-mx-auto tw-px-4">
-                <h2 class="tw-font-heading tw-text-3xl tw-text-center tw-font-bold tw-mb-12">Что говорят хозяева</h2>
-                
+            <div class="tw-container tw-mx-auto">
+                <h2 class="tw-font-heading tw-text-2xl tw-text-center tw-font-bold tw-mb-8">Что говорят хозяева</h2>
                 <div class="tw-grid md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
-                    <!-- Отзыв 1 -->
                     <div class="tw-bg-white tw-rounded-xl tw-p-6 tw-shadow-lg">
                         <div class="tw-flex tw-items-center tw-gap-3 tw-mb-4">
                             <div class="tw-w-12 tw-h-12 tw-bg-custom-accent tw-rounded-full"></div>
@@ -121,8 +116,6 @@
                             ★★★★★
                         </div>
                     </div>
-
-                    <!-- Отзыв 2 -->
                     <div class="tw-bg-white tw-rounded-xl tw-p-6 tw-shadow-lg">
                         <div class="tw-flex tw-items-center tw-gap-3 tw-mb-4">
                             <div class="tw-w-12 tw-h-12 tw-bg-custom-green tw-rounded-full"></div>
@@ -136,8 +129,6 @@
                             ★★★★★
                         </div>
                     </div>
-
-                    <!-- Отзыв 3 -->
                     <div class="tw-bg-white tw-rounded-xl tw-p-6 tw-shadow-lg">
                         <div class="tw-flex tw-items-center tw-gap-3 tw-mb-4">
                             <div class="tw-w-12 tw-h-12 tw-bg-custom-accent tw-rounded-full"></div>
@@ -158,6 +149,4 @@
 </template>
 
 <script setup>
-    const appConfig = useAppConfig()
-    console.log(appConfig);
 </script>

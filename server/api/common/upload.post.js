@@ -3,8 +3,6 @@ import { ServiceManager } from "~/server/managers/serviceManager";
 export default defineEventHandler(async (event) => {
 	try {
 		const parts = await readMultipartFormData(event);
-
-		console.log('parts', parts);
 		
 		if (!parts) {
 			throw createError({ statusCode: 400, message: 'No file provided' });
