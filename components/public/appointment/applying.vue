@@ -92,7 +92,7 @@
 
     const createShedule = async () => {
         try {
-            const resp = await $api('/api/shedule', {
+            await $api('/api/shedule', {
                 method: 'POST',
                 body: {
                     workDate: formatDate(client.date.day),

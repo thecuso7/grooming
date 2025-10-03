@@ -1,82 +1,111 @@
-# Nuxt Minimal Starter
+# Старт
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Предварительные требования
 
-## Setup
+Установленный Docker
 
-Make sure to install dependencies:
+Установленный Docker Compose
 
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+## Установка
 
 ```bash
-# npm
-npm run dev
+# Клонировать репозиторий
+git clone https://gitlab.com/thecuso-group/grooming.git
+cd grooming
 
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+# Запустить проект
+docker compose up --build
 ```
 
-## Production
+Приложение будет доступно по адресу: `http://localhost:3000`
 
-Build the application for production:
+## Структура контейнеров
 
-```bash
-# npm
-npm run build
+nuxt - Приложение Nuxt (порт 3000)
 
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-# Авторизацию по jwt токену
-# Маршрутизацию роутера
-# Работа с pinia/vuex
-
-# Простая админка с заказами и CRUD
-# Оформление заказа (без онлайн записи)
+mongo - База данных  MongoDB (порт 27017)
 
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## Продакшн
+
+Проект размещен на Render.com и доступен по адресу: https://grooming-0cw8.onrender.com
+
+База хранится в Mongo Atlas.
+
+
+
+Примечание: При первом запуске автоматически заполняется база данных тестовыми данными.
+
+&nbsp;
+&nbsp;
+
+# Функциональность
+
+## MVP
+Прототип сайта груминг услуг с возможностью администрирования, регистрации пользователей и записи на услугу.
+
+## Стек
+### Frontend
+- **Nuxt 3** - Vue.js фреймворк
+- **Vue 3** - Composition API
+- **Vuelidate 2** - Валидация форм
+- **Tailwind CSS** - Стилизация
+- **Vuetify CSS** - Готовые компоненты
+
+### Backend  
+- **Nuxt** - Серверная платформа Nitro
+- **MongoDB** - База данных
+- **Mongoose** - ODM для MongoDB
+- **JWT** - Аутентификация
+
+## Возможности
+✅ Разделение ролей на сайте админ/пользователь
+
+✅ Административная часть для управления данными
+
+✅ Управление личными данными в профиле пользователя
+
+✅ Интерактивная форма онлайн записи на услугу с сохранением состояния
+
+## Техническая реализация
+✅ JWT авторизация
+
+✅ CRUD операции над основными сущностями
+
+✅ Хранение состояния в Pinia
+
+✅ Vuetify для построения форм
+
+✅ Валидация с использованием Vuelidate
+
+
+## Ограничения демо-версии
+
+**Загрузка файлов на Render.com** не работает
+
+**Для полной работы** требуется настройка Cloud Storage (S3, Cloudinary)
+
+&nbsp;
+&nbsp;
+
+# Roadmap по проекту
+
+### Авторизация админа: admin@admin.ru:123456
+
+![alt text](https://skrinshoter.ru/s/031025/BzYzR4c7.jpg?download=1&name=Скриншот-03-10-2025%2012:33:03.jpg)
+
+### Страница списка элементов одной из сущностей в системе (услуги)
+
+![alt text](https://skrinshoter.ru/s/031025/83loCmvJ.jpg?download=1&name=Скриншот-03-10-2025%2012:30:21.jpg)
+
+### Страница редактирования записи
+
+![alt text](https://skrinshoter.ru/s/031025/s0aRvEoU.jpg?download=1&name=Скриншот-03-10-2025%2012:35:50.jpg)
+
+### Личный кабинет пользователя
+
+![alt text](https://skrinshoter.ru/s/031025/5k2GeVMJ.jpg?download=1&name=Скриншот-03-10-2025%2013:11:56.jpg)
+
+### Страница с формой онлайн записи
+![alt text](https://skrinshoter.ru/s/031025/v0wOtiuW.jpg?download=1&name=Скриншот-03-10-2025%2013:13:21.jpg)

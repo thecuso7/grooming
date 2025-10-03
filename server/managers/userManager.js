@@ -97,6 +97,7 @@ export const UserManager = {
 					data.password = hashedPassword;
 				}
 				
+				console.log('data', data);
 				user = await User.findOneAndUpdate({_id: event.context.auth.uid}, data);
 			}
 	

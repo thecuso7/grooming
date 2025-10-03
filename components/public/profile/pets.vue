@@ -248,12 +248,12 @@
 
 	const addPet = async (formData) => {
 		try {
-			const resPet = await $api('/api/pets', {
+			const id = await $api('/api/pets', {
 				method: 'POST',
 				body: formData,
 			});
 
-			petIds.value.push(resPet.id);
+			petIds.value.push(id);
 
 			await $api(`/api/users/me`, {
 				method: 'PUT',
@@ -284,8 +284,10 @@
 	}
 
 	const fetchPetsList = async () => {
-		const { list } = await $api(`/api/pets?id=${petIds.value}`);
-		petList.value = list;
+		if(petIds.value.length > 0) {
+			const { list } = await $api(`/api/pets?id=${petIds.value}`);
+			petList.value = list;
+		}
 	}
 
 	onMounted(async() => {

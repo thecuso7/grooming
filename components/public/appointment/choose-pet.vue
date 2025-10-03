@@ -5,18 +5,18 @@
 			
 			<div v-if="petList.length" class="tw-grid md:tw-grid-cols-2 tw-gap-6 tw-mb-6 tw-p-4">
 				<!-- Существующие питомцы -->
-				<div v-for="pet in petList" @click="choose(pet.id)" :class="{'!tw-border-solid !tw-border-[#7D9E89]': pet.id === state.pet.id}" class="tw-border-2 tw-border-dashed tw-border-gray-300 tw-rounded-lg tw-p-4 tw-text-center tw-cursor-pointer hover:tw-border-solid hover:tw-border-[#7D9E89] tw-transition-colors">
+				<div v-for="petItem in petList" @click="choose(petItem.id)" :class="{'!tw-border-solid !tw-border-[#7D9E89]': petItem.id === pet.id}" class="tw-border-2 tw-border-dashed tw-border-gray-300 tw-rounded-lg tw-p-4 tw-text-center tw-cursor-pointer hover:tw-border-solid hover:tw-border-[#7D9E89] tw-transition-colors">
 					<v-img
-						v-if="pet.image"
-						:src="pet.image"
+						v-if="petItem.image"
+						:src="petItem.image"
 						max-width="300"
 						max-height="300"
 						cover
 						class="mt-4 tw-rounded-full tw-w-[60px] tw-h-[60px] tw-mb-4 tw-m-auto"
 					></v-img>
 					<div v-else class="tw-w-16 tw-h-16 tw-bg-custom-purple tw-rounded-full tw-flex tw-items-center tw-justify-center tw-m-auto tw-mb-4"><!--v-if--></div>
-					<h3 class="tw-font-medium tw-text-gray-800">{{ pet.name }}</h3>
-					<p class="tw-text-sm tw-text-gray-600">{{ pet.breed }}, {{ pet.age }}</p>
+					<h3 class="tw-font-medium tw-text-gray-800">{{ petItem.name }}</h3>
+					<p class="tw-text-sm tw-text-gray-600">{{ petItem.breed }}, {{ petItem.age }}</p>
 				</div>
 			</div>
 
@@ -131,8 +131,8 @@
 
 	const choose = (id) => {
 		isNew.value = false;
-		state.pet.id = id;
-		state.pet = petList.value.filter(pet => pet.id === id)[0];
+		pet.id = id;
+		Object.assign(pet, petList.value.filter(pet => pet.id === id)[0]);
 	};
 
 	const add = () => {
@@ -146,7 +146,7 @@
 			if(v$.value.$invalid) {
 				return;
 			}
-		} else if(!state.pet.id) {
+		} else if(!pet.id) {
 			return;
 		}
 
