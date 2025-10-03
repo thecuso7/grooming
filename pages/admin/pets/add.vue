@@ -119,7 +119,7 @@
                     body: data,
                 });
 
-                navigateTo('/admin/pets/' + id);
+                navigateTo(`/admin/pets/${id}`);
             } catch(error) {
                 updateValidateFromApi(error);
             }

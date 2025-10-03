@@ -23,7 +23,8 @@
 
                 <v-text-field
                     v-model="data.email"
-                    @change="v$.email.$touch"
+                    @input="onChangeEmail"
+                    @change="onChangeEmail"
                     :error-messages="v$.email.$errors.map(e => e.$message)"
                     label="Email *"
                     variant="outlined"
@@ -87,11 +88,16 @@
                     body: data,
                 });
 
-                // navigateTo(`/admin/users/${id}`);
+                navigateTo(`/admin/users/${id}`);
             } catch(error) {
                 updateValidateFromApi(error);
             }
         }
+    }
+
+    const onChangeEmail = () => {
+        v$.value.$clearExternalResults();
+        v$.value.email.$touch();
     }
 
     onMounted(async() => {

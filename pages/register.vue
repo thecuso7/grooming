@@ -28,7 +28,8 @@
                         class="mb-2"
                         v-model="data.email"
                         :error-messages="v$.email.$errors.map(e => e.$message)"
-                        @change="v$.email.$touch"
+                        @change="onChangeEmail"
+                        @input="onChangeEmail"
                         label="Email *"
                         variant="outlined"
                         density="comfortable"
@@ -73,6 +74,11 @@
 
     const { v$, updateValidateFromApi } = validate(data, rulesFields);
 
+    const onChangeEmail = () => {
+        v$.value.$clearExternalResults();
+        v$.value.email.$touch();
+    }
+
     const submit = async() => {
         if (v$.value.$invalid) {
             v$.value.$touch();
@@ -80,7 +86,7 @@
         }
 
         try {
-            const res = await $fetch('/api/auth/register', {
+            await $fetch('/api/auth/register', {
                 method: 'POST',
                 body: {
                     name: data.name,
@@ -90,9 +96,8 @@
                 }
             });
 
-            navigateTo('/profile');
+            navigateTo('/login');
         } catch(error) {
-            console.log('erro regr', error.data);
             updateValidateFromApi(error.data);
         }
     };

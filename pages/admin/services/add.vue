@@ -144,7 +144,7 @@
                 body: data,
             });
 
-            navigateTo('/admin/services/' + id);
+            navigateTo(`/admin/services/${id}`);
         } catch (error) {
             updateValidateFromApi(error);
         }  
