@@ -241,7 +241,7 @@
                 showFormAdd.value = false;
 				await fetchPetsList();
             } catch(error) {
-                updateValidateFromApi();
+                updateValidateFromApi(error);
             }
         }
 	}
@@ -264,7 +264,7 @@
 			
 			await fetchPetsList();
 		} catch(error) {
-			updateValidateFromApi();
+			updateValidateFromApi(error);
 		}
 	}
 

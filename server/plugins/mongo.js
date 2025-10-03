@@ -3,25 +3,24 @@ import seedRoles from "~/server/scripts/seed/roles";
 import seedCounters from "~/server/scripts/seed/counters";
 import seedService from "~/server/scripts/seed/services";
 import seedShedule from "~/server/scripts/seed/shedule";
-import seedNews from "~/server/scripts/seed/news";
+import seedUsers from "~/server/scripts/seed/users";
 
-const isConnected = () => {
-    return mongoose.connection.readyState === 1;
-}
+let isLoadedSeed = false;
 
 export default defineNitroPlugin(async () => {
     try {
         await mongoose.connect(process.env.MONGODB_URI || 'mongodb://mongo:27017/grooming');
-        
-        if(isConnected()) {
-            return;
-        }
 
-        await seedRoles();
-        await seedCounters();
-        await seedService();
-        await seedShedule();
-        await seedNews();
+        if(!isLoadedSeed) {
+            await seedRoles();
+            await seedCounters();
+            await seedUsers();
+            await seedService();
+            await seedShedule();
+
+            isLoadedSeed = true;
+        }
+        
     } catch (error) {
         console.error('Failed to connect to MongoDB:', error);
         throw error;

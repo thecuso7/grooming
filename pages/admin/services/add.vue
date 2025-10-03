@@ -139,12 +139,12 @@
         }
 
         try {
-            const resp = await $api('/api/services', {
+            const id = await $api('/api/services', {
                 method: 'POST',
                 body: data,
             });
 
-            navigateTo('/admin/services/' + resp.id);
+            navigateTo('/admin/services/' + id);
         } catch (error) {
             updateValidateFromApi(error);
         }  

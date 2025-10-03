@@ -157,25 +157,20 @@
                 savedStatus.value = true;
                 setTimeout(() => savedStatus.value = false, 2000);
             } catch(error) {
-                updateValidateFromApi();
+                updateValidateFromApi(error);
             }
         }
     }
 
     const deleteService = async () => {
-        // Удаляем пользователя, его питомцев и все связанные записи и заказы
-        /**
-         * Посмотреть, какие в данном случае могут быть ошибки, и могут ли они быть по полям. Если допустим ошибки с сущностями
-         * 
-         */
         try {
             await $api('/api/services/' + id, {
                 method: 'DELETE',
             });
 
-            navigateTo('/api/services');
+            navigateTo('/admin/services');
         } catch(error) {
-            updateValidateFromApi();
+            updateValidateFromApi(error);
         }
     }
 

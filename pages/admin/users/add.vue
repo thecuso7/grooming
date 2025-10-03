@@ -49,7 +49,7 @@
                     density="comfortable"
                 ></v-select>
 
-                <v-btn class="mt-2 bg-blue-lighten-1" type="submit" block dark><span v-if="savedStatus">Сохранено</span><span v-else>Сохранить</span></v-btn>
+                <v-btn class="mt-2 !tw-bg-custom-olive !tw-text-white" type="submit" block dark>Сохранить</v-btn>
             </v-form>
         </v-sheet>
     </div>
@@ -60,9 +60,7 @@
     const { $api } = useNuxtApp();
     const user = ref([]);
     const { validate } = useValidation();
-    const savedStatus = ref(false);
     
-    // Поле пароля обязательное и здесь это надо поставить
     const data = reactive({
         name: '',
         lastName: '',
@@ -84,15 +82,14 @@
     const submit = async () => {
         if(v$.value.$anyDirty) {
             try {
-                const resp = await $api('/api/users', {
+                const id = await $api('/api/users', {
                     method: 'POST',
                     body: data,
                 });
 
-                savedStatus.value = true;
-                setTimeout(() => savedStatus.value = false, 2000);
+                // navigateTo(`/admin/users/${id}`);
             } catch(error) {
-                updateValidateFromApi();
+                updateValidateFromApi(error);
             }
         }
     }

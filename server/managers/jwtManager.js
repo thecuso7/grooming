@@ -38,13 +38,9 @@ export const JwtManager = {
 
 		return decoded;
 	},
-	async clear() {
-		deleteCookie(event, 'accessToken', {
-			path: '/',
-		});
-
+	async clear(event) {
 		deleteCookie(event, 'refreshToken', {
-			path: '/',
+			path: '/api/auth/refresh',
 		});
 	},
 };

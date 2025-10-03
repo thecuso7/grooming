@@ -1,6 +1,6 @@
 <template>
     <!-- <div class="app tw-max-w-screen-xl tw-mx-auto tw-px-5 tw-w-full tw-bg-custom-main"> -->
-        <header class="tw-relative tw-flex tw-flex-col lg:tw-flex-row tw-justify-between tw-items-center tw-my-5 tw-px-5"> 
+        <header class="tw-relative tw-max-w-screen-xl tw-w-full tw-mx-auto tw-flex tw-flex-col lg:tw-flex-row tw-justify-between tw-items-center tw-my-5 tw-px-5"> 
             <div class="tw-flex tw-w-full lg:tw-w-auto tw-items-center tw-justify-between">
                 <a href="/" class="tw-text-lg">
                     <span class="tw-text-2xl tw-font-bold tw-text-[#634f63]">Groo</span>
@@ -80,7 +80,7 @@
                     </template>
                     <template v-else>
                         <RouterLink to="/login">Войти</RouterLink>
-                    <RouterLink to="/register" class="tw-rounded tw-text-center tw-transition focus-visible:tw-ring-2 tw-ring-offset-2 tw-ring-gray-200 tw-px-4 tw-py-2 tw-bg-black tw-text-white hover:tw-bg-gray-800  tw-border-2 tw-border-transparent">Регистрация</RouterLink>
+                    <RouterLink to="/register" class="tw-rounded tw-text-center tw-transition focus-visible:tw-ring-2 tw-ring-offset-2 tw-ring-gray-200 tw-px-4 tw-py-2 tw-bg-custom-olive tw-text-white tw-border-2 tw-border-transparent">Регистрация</RouterLink>
                     </template>
                 </div>
             </div>
@@ -121,7 +121,7 @@
                     <div class="lg:tw-hidden tw-flex tw-flex-col tw-items-center tw-mt-8 tw-gap-4">
                         <template v-if="isAuth">
                             <div class="tw-w-full tw-text-center tw-py-2 tw-border-b tw-border-gray-200">
-                                <span class="tw-text-gray-700">Дмитрий</span>
+                                <span class="tw-text-gray-700">{{ user.name }}</span>
                             </div>
                             <RouterLink
                                 v-if="user.role == 'admin'"
@@ -156,7 +156,7 @@
                             </RouterLink>
                             <RouterLink 
                                 to="/register" 
-                                class="tw-w-full tw-text-center tw-py-3 tw-px-4 tw-rounded tw-transition tw-bg-black tw-text-white hover:tw-bg-gray-800"
+                                class="tw-w-full tw-text-center tw-py-3 tw-px-4 tw-rounded tw-transition tw-bg-custom-olive tw-text-white"
                                 @click="closeMenu"
                             >
                                 Регистрация
@@ -170,6 +170,10 @@
 </template>
 
 <script setup>
+    /**
+     * Сделать logout, удаление записей, поправить пагинацию, добавить пользователей
+     * 
+     */
     import { useAuthStore } from "~/stores/auth";
     import { computed } from 'vue';
 

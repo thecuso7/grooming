@@ -187,7 +187,7 @@
 	}, {deep: true});
 
 	onMounted(async () => {
-		typeList.value = await $api('/api/common/types'); // сгруппировать по сортировке
+		typeList.value = await $api('/api/common/types');
         const { list: list } = await $api(`/api/services`);
 		serviceList.value = list;
 		typeList.value.forEach(type => {

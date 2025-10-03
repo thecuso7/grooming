@@ -118,4 +118,18 @@ export const PetManager = {
 			});
 		}
 	},
+	async delete(event, id) {
+		try {
+			await Service.deleteOne({id: id});
+			await minusSequence('pet_id');
+		} catch(error) {
+			throw createError({
+				statusCode: 500,
+				data: {
+					code: 'INTERNAL_ERROR',
+					message: 'Внутренняя ошибка сервера!'
+				}
+			});
+		}
+	}
 };

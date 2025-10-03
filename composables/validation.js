@@ -36,6 +36,7 @@ export const useValidation = () => {
         const v$ = useVuelidate(rules, data, { $externalResults, $lazy: true } );
 
         const updateValidateFromApi = (error) => {
+            console.log('error.data', error.data);
             if(error.data?.fields) {
                 const externalResults = {}
 
@@ -44,9 +45,11 @@ export const useValidation = () => {
                         externalResults[field] = index === 0 ? error.data.message : '';
                     }
                 });
-                
                 $externalResults.value = externalResults;
+
+                console.log(externalResults);
             }
+            
 
             v$.value.$touch();
         }

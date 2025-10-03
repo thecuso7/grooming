@@ -129,7 +129,7 @@
                 savedStatus.value = true;
                 setTimeout(() => savedStatus.value = false, 2000);
             } catch(error) {
-                updateValidateFromApi();
+                updateValidateFromApi(error);
             }
         }
     }
@@ -140,9 +140,9 @@
                 method: 'DELETE',
             });
 
-            navigateTo('/api/pets');
+            navigateTo('/admin/pets');
         } catch(error) {
-            updateValidateFromApi();
+            updateValidateFromApi(error);
         }
     }
 

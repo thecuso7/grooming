@@ -114,7 +114,7 @@
                 savedStatus.value = true;
                 setTimeout(() => savedStatus.value = false, 2000);
             } catch(error) {
-                updateValidateFromApi();
+                updateValidateFromApi(error);
             }
         }
     }
@@ -125,9 +125,9 @@
                 method: 'DELETE',
             });
 
-            navigateTo('/api/users');
+            navigateTo('/admin/users');
         } catch(error) {
-            updateValidateFromApi();
+            updateValidateFromApi(error);
         }
     }
 

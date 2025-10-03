@@ -9,7 +9,7 @@
                 <RouterLink class="tw-flex tw-items-center tw-text-custom-dark tw-opacity-75 hover:tw-opacity-100 tw-py-4 tw-pl-6 tw-nav-item" to="/admin/users">Пользователи</RouterLink>
                 <RouterLink class="tw-flex tw-items-center tw-text-custom-dark tw-opacity-75 hover:tw-opacity-100 tw-py-4 tw-pl-6 tw-nav-item" to="/admin/pets">Питомцы</RouterLink>
                 <RouterLink class="tw-flex tw-items-center tw-text-custom-dark tw-opacity-75 hover:tw-opacity-100 tw-py-4 tw-pl-6 tw-nav-item" to="/admin/services">Услуги</RouterLink>
-                <RouterLink class="tw-flex tw-items-center tw-text-custom-dark tw-opacity-75 hover:tw-opacity-100 tw-py-4 tw-pl-6 tw-nav-item" to="/admin/orders">Заказы</RouterLink>
+                <!-- <RouterLink class="tw-flex tw-items-center tw-text-custom-dark tw-opacity-75 hover:tw-opacity-100 tw-py-4 tw-pl-6 tw-nav-item" to="/admin/orders">Заказы</RouterLink> -->
             </nav>
         </aside>
         <div class="tw-w-full tw-flex tw-flex-col tw-h-screen tw-overflow-y-hidden">
@@ -17,13 +17,13 @@
                 <div class="tw-w-1/2"></div>
                 <div class=" tw-w-1/2 tw-flex tw-justify-end">
                     <div class="profile tw-relative tw-flex tw-items-center">
-                        <div class="tw-mr-4">Дмитрий</div>
+                        <div class="tw-mr-4">{{ user.name }}</div>
                         <button @click="isOpen = !isOpen" class="tw-realtive tw-z-10 tw-w-12 tw-h-12 tw-rounded-full tw-overflow-hidden tw-border-solid tw-border-2 tw-border-gray-400 hover:tw-border-gray-300 focus:tw-border-gray-300 focus:tw-outline-none">
                             <!-- <img src="https://source.unsplash.com/uJ8LNVCBjFQ/400x400"> -->
                         </button>
-                        <div class="profile-dropdown tw-hidden tw-absolute tw-w-32 tw-bg-white tw-right-0 tw-rounded-lg tw-shadow-lg tw-py-2 tw-mt-40">
-                            <a href="#" class="tw-block tw-px-4 tw-py-2 tw-account-link hover:tw-text-white hover:tw-bg-gray-600">Профиль</a>
-                            <a href="#" class="tw-block tw-px-4 tw-py-2 tw-account-link hover:tw-text-white hover:tw-bg-gray-600">Выйти</a>
+                        <div class="profile-dropdown tw-hidden tw-absolute tw-w-32 tw-bg-white tw-right-0 tw-rounded-lg tw-shadow-lg tw-top-full tw-overflow-hidden">
+                            <RouterLink class="tw-block tw-px-4 tw-py-2 tw-account-link hover:tw-bg-custom-purple" to="/profile">Профиль</RouterLink>
+                            <RouterLink class="tw-block tw-px-4 tw-py-2 tw-account-link hover:tw-bg-custom-purple" to="/logout">Выйти</RouterLink>
                         </div>
                     </div>
                 </div>
@@ -44,9 +44,9 @@
     const { $pinia } = useNuxtApp();
     const authStore = useAuthStore($pinia);
 
-    const isAuth = computed(() => {
-        return authStore.isAuthenticated;
-    })
+    const user = computed(() => {
+        return authStore.user;
+    });
 </script>
 
 <style>

@@ -17,7 +17,7 @@
                     записей
                 </p>
                 </div>
-                <div>
+                <div v-if="rangePagination.length">
                     <nav aria-label="Pagination" class="tw-isolate tw-inline-flex -space-x-px tw-rounded-md tw-shadow-xs">
                         <NuxtLink v-if="currentPage - 1 > 0"
                             :to="{
@@ -39,7 +39,7 @@
                                     :to="{
                                         name: url, query: { page: page }
                                     }"
-                                    :class="{'tw-bg-indigo-600 tw-text-white' : page == currentPage}" class="tw-rounded-md tw-relative tw-z-10 tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm tw-font-semibold focus:tw-z-20 focus-visible:tw-outline-2 focus-visible:tw-outline-offset-2 focus-visible:tw-outline-indigo-600"
+                                    :class="{'tw-bg-custom-olive tw-text-white' : page == currentPage}" class="tw-rounded-md tw-relative tw-z-10 tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm tw-font-semibold focus:tw-z-20 focus-visible:tw-outline-2 focus-visible:tw-outline-offset-2 focus-visible:tw-outline-indigo-600"
                                 >{{ page }}</NuxtLink>
                             </template>
                         <NuxtLink v-if="+currentPage + 1 <= totalPages"

@@ -114,14 +114,14 @@
     const submit = async () => {
         if(v$.value.$anyDirty) {
             try {
-                const resp = await $api('/api/pets', {
+                const id = await $api('/api/pets', {
                     method: 'POST',
                     body: data,
                 });
 
-                navigateTo('/admin/pets/' + resp.id);
+                navigateTo('/admin/pets/' + id);
             } catch(error) {
-                updateValidateFromApi(error.data);
+                updateValidateFromApi(error);
             }
         }
     }

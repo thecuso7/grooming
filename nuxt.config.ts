@@ -3,8 +3,11 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 
 export default defineNuxtConfig({
   ssr: false,
-  nitro: {
-    preset: 'node-server',
+  nitro: process.env.NITRO_PRESET === 'node-server' ? {
+    preset: 'node-server'
+  } : {
+    static: true,
+    serveStatic: true
   },
   compatibilityDate: '2024-11-01',
   devServer: {

@@ -4,6 +4,7 @@ const publicRoutes = {
     '/api/services':['GET'],
     '/api/common/types':['GET'],
     '/api/shedule':['GET', 'POST'],
+    '/api/auth/logout':['GET'],
 };
 
 export default defineEventHandler((event) => {

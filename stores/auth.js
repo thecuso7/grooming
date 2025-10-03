@@ -51,7 +51,9 @@ export const useAuthStore = defineStore('auth', {
 
             return true;
         },
-        logout() {
+        async logout() {
+            await $fetch('/api/auth/logout');
+
             this.user = null;
             this.isAuthenticated = false;
             this.token = '';

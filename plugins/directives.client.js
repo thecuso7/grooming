@@ -1,5 +1,5 @@
 export default defineNuxtPlugin((nuxtApp) => {
-	nuxtApp.vueApp.directive('click-outside', {
+	nuxtApp.vueApp.directive('clickoutside', {
 		mounted(el, binding) {
 			el.clickOutsideEvent = (event) => {
 				const excludeElement = binding.arg ? document.querySelector(binding.arg) : null;
@@ -11,8 +11,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 			}
 			document.addEventListener('click', el.clickOutsideEvent);
 		},
-		onUnmounted(el) {
+		unmounted(el) {
 			document.removeEventListener('click', el.clickOutsideEvent);
 		}
 	})
-})
+});

@@ -1,5 +1,5 @@
 import { User } from "~/server/models";
-import { getNextSequence } from "~/server/utils/dbConnect";
+import { getNextSequence, minusSequence } from "~/server/utils/dbConnect";
 import bcrypt from 'bcryptjs';
 
 export const UserManager = {
@@ -32,6 +32,35 @@ export const UserManager = {
 	async getById(event, id, select) {
 		try {
 			let query = User.findOne({_id: id})
+								.select(select);
+			
+			if(select.includes('roleId')) {
+				query = query.populate({
+					path: 'roleId',
+					select: '_id'
+				});
+			}
+	
+			const user = await query;
+	
+			if (!user?._id.toString()) {
+				return null;
+			}
+
+			return user;
+		} catch (error) {
+			throw createError({
+				statusCode: 500,
+				data: {
+					code: 'INTERNAL_ERROR',
+					message: 'Внутренняя ошибка сервера!'
+				}
+			});
+		}
+	},
+	async getByNumId(event, id, select) {
+		try {
+			let query = User.findOne({id: id})
 								.select(select);
 			
 			if(select.includes('roleId')) {
@@ -134,6 +163,18 @@ export const UserManager = {
 		}
 	},
 	async create(event, data, source) {
+		const user = await this.get(event, data.email);
+
+		if (user) {
+			throw createError({
+				statusCode: 409,
+				data: {
+					code: 'DUPLICATE_ENTRY',
+					message: 'Данный email уже используется',
+					fields: ['email']
+				}
+			});
+		}
 		try {
 			const id = await getNextSequence('user_id');
 			const { name, lastName, email } = data;
@@ -150,6 +191,20 @@ export const UserManager = {
 			}
 
 			return result;
+		} catch(error) {
+			throw createError({
+				statusCode: 500,
+				data: {
+					code: 'INTERNAL_ERROR',
+					message: 'Внутренняя ошибка сервера!'
+				}
+			});
+		}
+	}, 
+	async delete(event, id) {
+		try {
+			await User.deleteOne({id: id});
+			await minusSequence('user_id');
 		} catch(error) {
 			throw createError({
 				statusCode: 500,

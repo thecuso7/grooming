@@ -1,8 +1,5 @@
 import { useAuthStore } from "~/stores/auth";
 
-//Доработать!!!
-
-// Всегда проверять на валидность и наличие токена, потому что в шапке
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const isAdminRoute = to.path.startsWith('/admin/') || to.path === '/admin';
     const protectedRoutes = ['/dashboard', '/profile', '/settings', '/login'];
@@ -10,6 +7,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const { $pinia } = useNuxtApp();
     const authStore = useAuthStore($pinia);
     
+    if (to.path === '/logout') {
+        authStore.logout();
+        return navigateTo('/');
+    }
+
     if (authStore.isAuthenticated) return;
     try {
         const success = await authStore.checkAuth();

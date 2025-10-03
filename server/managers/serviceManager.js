@@ -31,7 +31,8 @@ export const ServiceManager = {
 							   .populate('type');
 
 			if(Object.keys(params).length && params?.page) {
-				const page = parseInt(query.page);
+				
+				const page = parseInt(params.page);
 				const limit = 10;
 				const skip = (page - 1) * limit;
 
@@ -109,4 +110,18 @@ export const ServiceManager = {
 			});
 		}
 	},
+	async delete(event, id) {
+		try {
+			await Service.deleteOne({id: id});
+			await minusSequence('service_id');
+		} catch(error) {
+			throw createError({
+				statusCode: 500,
+				data: {
+					code: 'INTERNAL_ERROR',
+					message: 'Внутренняя ошибка сервера!'
+				}
+			});
+		}
+	}
 };

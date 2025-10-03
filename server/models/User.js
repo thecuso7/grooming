@@ -1,6 +1,19 @@
 import mongoose from 'mongoose';
 import { defaultRoles } from './Role';
 
+export const defaultUsers = [
+  {
+    "_id": "68dd3b4bf6fe557d9ba79c4b",
+    "id": 1,
+    "name": "Иван",
+    "lastName": "Иванов",
+    "email": "admin@admin.ru",
+    "password": "$2a$10$e6OKHzQBVSRyLOKfrUy04er62N.RDEWLtlQNBg4UvdM4MZkLWXDGe",
+    "roleId": "661c0a1b8f1a2b3c4d5e6f7a",
+    "pets": [],
+  }
+];
+
 const userSchema = new mongoose.Schema({
   id: {
     type: Number,

@@ -2,7 +2,7 @@
     <div class="tw-flex tw-justify-center tw-mt-10">
         <div class="tw-w-full tw-max-w-xs">
             <div class="tw-mb-6 tw-font-bold tw-text-xl tw-text-center">Регистрация</div>
-            <v-sheet class="mx-auto" max-width="300">
+            <v-sheet class="mx-auto !tw-bg-inherit" max-width="300">
                 <v-form fast-fail @submit.prevent="submit">
                     <v-text-field
                         class="mb-2"
@@ -42,7 +42,7 @@
                         variant="outlined"
                         density="comfortable"
                     ></v-text-field>
-                    <v-btn class="mt-2 bg-blue-lighten-1" type="submit" block dark>Регистрация</v-btn>
+                    <v-btn class="mt-2 !tw-bg-custom-olive !tw-text-white" type="submit" block dark>Регистрация</v-btn>
                 </v-form>
             </v-sheet>
         </div>
@@ -92,6 +92,7 @@
 
             navigateTo('/profile');
         } catch(error) {
+            console.log('erro regr', error.data);
             updateValidateFromApi(error.data);
         }
     };

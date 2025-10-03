@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	const { fields, files } = parseFormData(parts);
-	const pet = await PetManager.create(event, fields, files);
+	const { id } = await PetManager.create(event, fields, files);
 	
-	return { id: pet.id };
+	return id;
 });

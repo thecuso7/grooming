@@ -5,3 +5,7 @@ export async function getNextSequence(name) {
 
     return res.seq;
 }
+
+export async function minusSequence(name) {
+    await Counters.findOneAndUpdate({ _id: name }, { $inc: { seq: -1 } }, {new: true});
+}

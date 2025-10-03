@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import { useAuthStore } from "~/stores/auth";
 import { JwtManager } from "~/server/managers/jwtManager";
 import { UserManager } from "~/server/managers/userManager";
 
@@ -31,9 +30,7 @@ export const AuthManager = {
 
 		return user;
 	},
-	async unlogin(event, userId) {
-		const authStore = useAuthStore($pinia);
-		authStore.logout();
+	async unlogin() {
 		JwtManager.clear();
 	}
 };
