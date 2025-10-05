@@ -91,10 +91,6 @@
     const { validate } = useValidation();
     const savedStatus = ref(false);
     
-    /**
-     * Как пробрасывать правила для полей из компонента?
-     * 
-     */
     const data = reactive({
         name: '',
         age: '',

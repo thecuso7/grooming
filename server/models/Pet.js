@@ -1,9 +1,5 @@
 import mongoose from 'mongoose';
 
-/**
- * Продумать взаимосвязи между питомцами и пользователем
- * 
- */
 const petSchema = new mongoose.Schema({
   id: {
     type: Number,

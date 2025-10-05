@@ -3,13 +3,7 @@ import { Shedule } from "~/server/models";
 export const SheduleManager = {
 	async getAll(params, select = '') {
 		try {
-			let query = Shedule.find();
-
-			if(Object.keys(params).length && params?.user) {
-				query = query.where('user').equals(params.user);
-			};
-
-			const list = await query.select(select);
+			const list = await Shedule.find().select(select).sort({ beginAtMinutes: 1 });
 
 			return { list };
 		} catch (error) {

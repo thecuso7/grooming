@@ -112,7 +112,7 @@
 	const appointStore = useAppointmentStore();
 	const { validate } = useValidation();
 	const shedule = ref([]);
-	const sheduleInterval = ref(30);
+	const sheduleInterval = ref(15);
 	const beginTimeWorkDay = ref(8*60+30);
 	const finishTimeWorkDay = ref(17*60+30);
 	const timeSlots = reactive({});
@@ -123,7 +123,7 @@
 			day: null,
 			min: new Date(),
 			max: '',
-			slot: { key: null, beginAt: '', finishAt: '' }
+			slot: { key: null, beginAt: '', finishAt: '', beginAtMinutes: 0, finishAtMinutes: 0}
 		}
 	});
 
@@ -156,61 +156,63 @@
 	const allowedDates = (val) => {
 		let allowRecord = false;
 		const formatedDate = formatDate(val);
-		const dayShedule = shedule.value.filter((rec) => {
-			return rec.workDate == formatedDate;
-		});
 
-		if(dayShedule.length) {
-			let lastFinishRecord = 0;
-			timeSlots[formatedDate] = [];
-			dayShedule.forEach((rec, index) => {
-				const beginTime = new Date(`${rec.workDate}T${rec.beginAt}:00+03:00`);
-				const finishTime = new Date(`${rec.workDate}T${rec.finishAt}:00+03:00`);
-
-				const beginTimeMinutes = beginTime.getHours() * 60 + beginTime.getMinutes();
-				const finishTimeMinutes = finishTime.getHours() * 60 + finishTime.getMinutes();
-
-				let diff, gap, count = 0;
-
-				if(index == 0) {
-					lastFinishRecord = beginTimeWorkDay.value;
-				}
-
-				if(
-					lastFinishRecord + appointStore.stepsData.service.summ.time <= beginTimeMinutes &&
-					lastFinishRecord + appointStore.stepsData.service.summ.time <= finishTimeWorkDay.value
-				) {
-					diff = beginTimeMinutes - lastFinishRecord;
-					gap = diff - appointStore.stepsData.service.summ.time;
-					count = Math.floor(gap/sheduleInterval.value);
-
-					for(let i = 1; i <= count; i++) {
-						let [hours, minutes] = getPartsTime(lastFinishRecord + i*sheduleInterval.value);
-						timeSlots[formatedDate].push({format: `${hours}:${minutes}`, minutes: lastFinishRecord + i*sheduleInterval.value });
-					}
-
-					allowRecord = true;
-				}
-				
-				lastFinishRecord = finishTimeMinutes;
-
-				if(
-					index == dayShedule.length - 1 &&
-					lastFinishRecord + appointStore.stepsData.service.summ.time <= finishTimeWorkDay.value
-				) {
-					diff = finishTimeWorkDay.value - lastFinishRecord;
-					gap = diff - appointStore.stepsData.service.summ.time;
-					count = Math.floor(gap/sheduleInterval.value);
-
-					for(let i = 1; i <= count; i++) {
-						let [hours, minutes] = getPartsTime(lastFinishRecord + i*sheduleInterval.value);
-						timeSlots[formatedDate].push({format: `${hours}:${minutes}`, minutes: lastFinishRecord + i*sheduleInterval.value });
-					}
-
-					allowRecord = true;
-				}
+			const dayShedule = shedule.value.filter((rec) => {
+				return rec.workDate == formatedDate;
 			});
-		}
+
+			if(dayShedule.length) {
+				let lastFinishRecord = 0;
+				timeSlots[formatedDate] = [];
+				dayShedule.forEach((rec, index) => {
+					const beginTime = new Date(`${rec.workDate}T${rec.beginAt}:00+03:00`);
+					const finishTime = new Date(`${rec.workDate}T${rec.finishAt}:00+03:00`);
+
+					const beginTimeMinutes = beginTime.getHours() * 60 + beginTime.getMinutes();
+					const finishTimeMinutes = finishTime.getHours() * 60 + finishTime.getMinutes();
+
+					let diff, gap, count = 0;
+
+					if(index == 0) {
+						lastFinishRecord = beginTimeWorkDay.value;
+					}
+
+					if(
+						lastFinishRecord + appointStore.stepsData.service.summ.time + sheduleInterval.value <= beginTimeMinutes &&
+						lastFinishRecord + appointStore.stepsData.service.summ.time + sheduleInterval.value <= finishTimeWorkDay.value
+					) {
+						diff = beginTimeMinutes - lastFinishRecord;
+						gap = diff - appointStore.stepsData.service.summ.time - sheduleInterval.value;
+						count = Math.floor(gap/sheduleInterval.value);
+
+						for(let i = 1; i <= count; i++) {
+							let [hours, minutes] = getPartsTime(lastFinishRecord + i*sheduleInterval.value);
+							timeSlots[formatedDate].push({format: `${hours}:${minutes}`, minutes: lastFinishRecord + i*sheduleInterval.value });
+						}
+
+						allowRecord = true;
+					}
+					
+					lastFinishRecord = finishTimeMinutes;
+
+					if(
+						index == dayShedule.length - 1 &&
+						lastFinishRecord + appointStore.stepsData.service.summ.time + sheduleInterval.value <= finishTimeWorkDay.value
+					) {
+						diff = finishTimeWorkDay.value - lastFinishRecord;
+						gap = diff - appointStore.stepsData.service.summ.time - sheduleInterval.value;
+						count = Math.floor(gap/sheduleInterval.value);
+
+						for(let i = 1; i <= count; i++) {
+							let [hours, minutes] = getPartsTime(lastFinishRecord + i*sheduleInterval.value);
+							timeSlots[formatedDate].push({format: `${hours}:${minutes}`, minutes: lastFinishRecord + i*sheduleInterval.value });
+						}
+
+						allowRecord = true;
+					}
+				});
+			}
+		
 
 		return allowRecord;
 	};
@@ -218,8 +220,9 @@
 	const chooseSlot = (key, slot) => {
 		state.date.slot.key = key;
 		const [hours, minutes] = getPartsTime(slot.minutes + appointStore.stepsData.service.summ.time);
-		state.date.slot.beginAt = `${slot.format}`;
+		state.date.slot.beginAt = slot.format;
 		state.date.slot.finishAt = `${hours}:${minutes}`;
+		state.date.slot.beginAtMinutes = slot.minutes;
 	};
 
 	const dateChoosenFormated = computed(() => state.date.day ? formatDate(state.date.day) : null);

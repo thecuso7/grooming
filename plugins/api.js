@@ -52,8 +52,6 @@ export default defineNuxtPlugin((event) => {
             errorStore.setGlobalErrors(response._data.data.message);
         }
 
-        console.log(response._data.data);
-
         const error = new Error(response._data.data?.message || 'Неизвестная ошибка');
         error.statusCode = response.status;
         error.data = response._data.data;

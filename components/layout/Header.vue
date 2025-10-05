@@ -170,10 +170,6 @@
 </template>
 
 <script setup>
-    /**
-     * Сделать logout, удаление записей, поправить пагинацию, добавить пользователей
-     * 
-     */
     import { useAuthStore } from "~/stores/auth";
     import { computed } from 'vue';
 

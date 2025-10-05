@@ -15,12 +15,6 @@
 
 
 <script setup>
-/**
- * Если в localStorage есть данные, то может быть показать окно с вопросом о продолжении заполнения
- * доработать цвета у кнопок, поля в профиле
- * пагинацию и выбор полей для показа в админке
- * 
- */
 import { onMounted } from 'vue';
 	const appointStore = useAppointmentStore();
 	const showAsk = ref(false);

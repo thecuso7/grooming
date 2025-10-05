@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div id="step-2" class="tw-bg-white tw-rounded-xl tw-shadow-[0px_0px_15px_3px_rgba(0,_0,_0,_0.2)] tw-p-6 md:tw-p-8">
-			<h2 class="tw-text-xl tw-font-semibold tw-text-gray-800 tw-mb-6 tw-font-heading">Выбор услуг для Мурка</h2>
+			<h2 class="tw-text-xl tw-font-semibold tw-text-gray-800 tw-mb-6 tw-font-heading">Выбор услуг для {{ pet.name }}</h2>
 			<!-- Комплексы -->
 			<div class="tw-space-y-6">
 				<div v-for="type in typeList">
@@ -40,8 +40,6 @@
 									:disabled="service._id == reqService && state.selectedIds.includes(service._id) && state.selectedIds.length > 1"
 									hide-details
 								></v-checkbox>
-
-								<!-- ну или перечеркнуть -->
 								<span
 									v-if="!state.complex.parts.includes(service._id)"
 									class="tw-text-green-600 tw-font-bold"
@@ -122,10 +120,14 @@
 		state.complex.summ = true;
 		state.complex.id = service._id;
 		state.selectedIds = [];
+		state.selected = [{id: service._id, title: service.title, complex: true}];
 
 		service.bundle.forEach(id => {
 			state.selectedIds.push(id);
 			state.complex.parts.push(id);
+			
+			let filteredService = serviceList.value.filter(item => item._id == id)[0];
+			state.selected.push({id: id, title: filteredService.title, complex: false});
 		});
 	};
 
@@ -160,6 +162,10 @@
 	const totalPartsTime = computed(() => {
 		const [hours, minutes] = getPartsTime(state.summ.time);
 		return hours ? `${hours} час(а) ${minutes} минут` : `${minutes} минут`;
+	});
+
+	const pet = computed(() => {
+		return appointStore.stepsData.choose.pet;
 	});
 
 	watch(

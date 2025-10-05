@@ -18,7 +18,7 @@ export const useAppointmentStore = defineStore('appointment', () => {
         timeout = setTimeout(() => {
             localStorage.setItem('appointment', JSON.stringify({stepsData: stepsData, step: currentStep.value}));
             isSaved.value = true;
-        }, 3000);
+        }, 1000);
     };
 
     const updateData = (type, data) => {

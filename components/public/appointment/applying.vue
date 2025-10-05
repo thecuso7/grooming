@@ -97,6 +97,7 @@
                 body: {
                     workDate: formatDate(client.date.day),
                     beginAt: client.date.slot.beginAt,
+                    beginAtMinutes: client.date.slot.beginAtMinutes,
                     finishAt: client.date.slot.finishAt,
                     data: appointStore.stepsData,
                     user: authStore.isAuthenticated ? authStore.user.id : null,
@@ -136,10 +137,17 @@
     });
 
     const serviceText = computed(() => {
+        let complex = true;
+
         const text = services.selected.reduce((sumText, item, index) => {
             if(index == services.selected.length - 1) {
-                return sumText + `${item.title}`;
+                return sumText + `${item.title}${complex ? ')' : ''}`;
             } else {
+                if(item.complex) {
+                    complex = true;
+                    return sumText + ` ${item.title} (`
+                }
+
                 return sumText + ` ${item.title} + `;
             }
         }, '');

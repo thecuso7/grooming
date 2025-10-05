@@ -237,8 +237,6 @@
         valueFields.id = resp.id;
         valueFields.pets = resp.pets;
 
-        console.log(resp.pets);
-
         await nextTick();
 
         initialized.value = true;
