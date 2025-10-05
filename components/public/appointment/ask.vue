@@ -12,7 +12,6 @@
                     <h2 class="tw-text-xl tw-font-semibold tw-text-gray-900">Продолжить запись?</h2>
                 </div>
             </div>
-
             <!-- Контент -->
             <div class="tw-p-6">
                 <p class="tw-text-gray-600 tw-leading-relaxed">
