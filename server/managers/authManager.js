@@ -31,6 +31,6 @@ export const AuthManager = {
 		return user;
 	},
 	async unlogin() {
-		JwtManager.clear();
+		JwtManager.clear(event);
 	}
 };

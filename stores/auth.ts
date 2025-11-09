@@ -1,31 +1,46 @@
 import { defineStore } from "pinia";
+import type { User } from "~/types/user";
+
+interface State {
+    user: User | null,
+    isAuthenticated: boolean,
+    token: string | null
+};
+
+type CheckAuthResponse = {
+    isAuthenticated: boolean,
+    payload: {
+        name: string,
+        uid: string,
+        role: string
+    }
+}
 
 export const useAuthStore = defineStore('auth', {
-    state: () => ({
-        user: null,
-        isAuthenticated: false,
-        role: null,
-        token: '', // client token
-    }),
+        state: (): State => ({
+            user: null,
+            isAuthenticated: false,
+            token: null, // client token
+        }),
     actions: {
-        async checkAuth() {
+        async checkAuth(): Promise<boolean> {
             const { refreshToken } = useRefreshToken();
             
             try {
-                if(!this.token) {
+                if(this.token === null) {
                     throw createError({
                         statusCode: 401,
                         statusMessage: 'Токен не валиден',
                     });
                 }
-                const data = await $fetch('/api/auth/check-auth', {
+
+                const data = await $fetch<CheckAuthResponse>('/api/auth/check-auth', {
                     headers: {
                         Authorization: `Bearer ${this.token}`
                     }
                 });
 
-                this.isAuthenticated = true;
-                this.role = data.payload.role;
+                this.isAuthenticated = data.isAuthenticated;
                 this.user = {
                     name: data.payload.name,
                     id: data.payload.uid,
@@ -34,7 +49,6 @@ export const useAuthStore = defineStore('auth', {
             } catch(err) {
                 try {
                     const { newToken, payload } = await refreshToken();
-                    this.role = payload.role;
                     this.isAuthenticated = true;
                     this.token = newToken;
                     this.user = {
@@ -56,9 +70,9 @@ export const useAuthStore = defineStore('auth', {
 
             this.user = null;
             this.isAuthenticated = false;
-            this.token = '';
+            this.token = null;
         },
-        setAccessToken(token) {
+        setAccessToken(token: string) {
             this.token = token;
         }
     },

@@ -38,7 +38,7 @@
                 <v-text-field
                     v-model="data.name"
                     @change="v$.name.$touch"
-                    :error-messages="v$.name.$errors.map(e => e.$message)"
+                    :error-messages="v$.name.$errors.map((e:any) => e.$message)"
                     label="Кличка"
                     variant="outlined"
                     density="comfortable"
@@ -47,7 +47,7 @@
                 <v-text-field
                     v-model="data.age"
                     @change="v$.age.$touch"
-                    :error-messages="v$.age.$errors.map(e => e.$message)"
+                    :error-messages="v$.age.$errors.map((e:any) => e.$message)"
                     label="Возраст"
                     variant="outlined"
                     density="comfortable"
@@ -56,7 +56,7 @@
                 <v-text-field
                     v-model="data.weight"
                     @change="v$.weight.$touch"
-                    :error-messages="v$.weight.$errors.map(e => e.$message)"
+                    :error-messages="v$.weight.$errors.map((e:any) => e.$message)"
                     label="Вес"
                     variant="outlined"
                     density="comfortable"
@@ -65,7 +65,7 @@
                 <v-text-field
                     v-model="data.breed"
                     @change="v$.breed.$touch"
-                    :error-messages="v$.breed.$errors.map(e => e.$message)"
+                    :error-messages="v$.breed.$errors.map((e:any) => e.$message)"
                     label="Порода"
                     variant="outlined"
                     density="comfortable"
@@ -74,7 +74,7 @@
                 <v-text-field
                     v-model="data.features"
                     @change="v$.features.$touch"
-                    :error-messages="v$.features.$errors.map(e => e.$message)"
+                    :error-messages="v$.features.$errors.map((e:any) => e.$message)"
                     label="Особенности"
                     variant="outlined"
                     density="comfortable"
@@ -85,11 +85,15 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import { ref, onMounted } from 'vue';
     const { $api } = useNuxtApp();
     const { validate } = useValidation();
     const savedStatus = ref(false);
+
+    const selectedFile = ref<File | null>();
+	const fileInput = ref<HTMLInputElement | null>();
+    const file = ref<File | null>();
     
     const data = reactive({
         name: '',
@@ -97,7 +101,7 @@
         breed: '',
         features: '',
         weight: '',
-        image: ''
+        image: '' as string | null,
     });
 
     const rulesFields = {
@@ -106,6 +110,27 @@
     };
 
     const { v$, updateValidateFromApi } = validate(data, rulesFields);
+
+    const triggerInput = () => {
+		fileInput.value?.click();
+	}
+
+	const onFileSelected = (event: Event) => {
+		file.value = (event.target as HTMLInputElement).files?.[0];
+		if (!file.value) return;
+		
+		const reader = new FileReader();
+		
+		reader.onload = (e) => {
+			data.image = e.target?.result as string | null;
+		}
+		
+		reader.onerror = () => {
+			data.image = null;
+		}
+		
+		reader.readAsDataURL(file.value);
+	}
 
     const submit = async () => {
         if(v$.value.$anyDirty) {

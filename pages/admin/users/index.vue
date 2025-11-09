@@ -85,8 +85,8 @@
             </v-table>
             <pagination
             v-if="users.length"
-                :items="users" 
-                :totalPages="totalPages" 
+                :items="users"
+                :totalPages="totalPages"
                 :totalCount="totalCount"
                 @page-update="loadUsers"></pagination>
         </div>

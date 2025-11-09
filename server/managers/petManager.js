@@ -32,21 +32,21 @@ export const PetManager = {
 				query = query.where('id').in(params.id.split(','));
 			};
 
-			if(Object.keys(params).length && params?.page) {
-				const page = parseInt(params.page);
-				const limit = 10;
-				const skip = (page - 1) * limit;
+			// if(Object.keys(params).length && params?.page) {
+			// 	const page = parseInt(params.page);
+			// 	const limit = 10;
+			// 	const skip = (page - 1) * limit;
 
-				query = query.skip(skip)
-							 .limit(limit);
+			// 	query = query.skip(skip)
+			// 				 .limit(limit);
 
-				const totalCount = await Pet.countDocuments({});
+			// 	const totalCount = await Pet.countDocuments({});
 
-				pagenParams = {
-					totalCount: totalCount,
-					totalPages: Math.ceil(totalCount / limit)
-				};
-			}
+			// 	pagenParams = {
+			// 		totalCount: totalCount,
+			// 		totalPages: Math.ceil(totalCount / limit)
+			// 	};
+			// }
 
 			const list = await query.select(select);
 

@@ -50,50 +50,42 @@
                 </div>
             </div>
 
-            <v-table v-if="pets.length > 0" theme="white" class="rounded-lg">
-                <thead>
-                    <tr class="tw-bg-custom-olive tw-text-white tw-uppercase">
-                        <th v-if="showCols.id" class="">ID</th>
-                        <th v-if="showCols.name" class="">Кличка</th>
-                        <th v-if="showCols.age" class="">Возраст</th>
-                        <th v-if="showCols.breed" class="">Порода</th>
-                        <th v-if="showCols.features" class="">Особенности</th>
-                    </tr>
-                
-                </thead>
-                <tbody class="tw-text-gray-700">
-                    <tr v-for="(pet,key) in pets" class="tw-bg-gray-100" :class="{'tw-bg-gray-300' : (key + 1) % 2 == 0}">
-                        <td v-if="showCols.id" class="tw-w-1/3 tw-text-left tw-py-3 tw-px-4">
-                            <NuxtLink :to="{ name: 'admin-pets-id', params: {id: pet.id} }" 
-                                class="hover:tw-text-blue-500"
-                            >
-                                {{ pet.id }}
-                            </NuxtLink>
-                        </td>
-                        <td v-if="showCols.name" class="tw-w-1/3 tw-text-left tw-py-3 tw-px-4">{{ pet.name }}</td>
-                        <td v-if="showCols.age" class="tw-w-1/3 tw-text-left tw-py-3 tw-px-4">{{ pet.age }}</td>
-                        <td v-if="showCols.breed" class="tw-text-left tw-py-3 tw-px-4">{{ pet.breed }} </td>
-                        <td v-if="showCols.features" class="tw-text-left tw-py-3 tw-px-4">{{ pet.features }}</td>
-                    </tr>
-                </tbody>
-            </v-table>
-            <div v-else>Нет записей</div>
-            <pagination
-            v-if="pets.length"
-                :items="pets" 
-                :totalPages="totalPages" 
-                :totalCount="totalCount"
-                @page-update="loadPets"></pagination>
+            <RecycleScroller class="scroller"
+                :items="pets"
+                :item-size="100"
+                key-field="id"
+                v-slot="{ item, index }">
+                <div class="tw-bg-gray-100 pet-line" :class="{'tw-bg-gray-300' : (index + 1) % 2 == 0}">
+                    {{ item?.id }}
+                </div>
+            </RecycleScroller>
         </div>
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import { ref, onMounted, watch } from 'vue';
     const { $api } = useNuxtApp();
-    const route = useRoute();
 
-    const pets = ref([]);
+    interface Pet {
+		id: string,
+        name: string,
+		image: string,
+        age: string,
+		weight: string,
+        breed: string,
+        features: string
+	}
+
+    interface PetsResponse {
+        list: Pet[],
+        pagenParams: {
+            totalCount?: number,
+            totalPages?: number,
+        }
+    }
+
+    const pets = ref<Pet[]>([]);
     const totalCount = ref(0);
     const totalPages = ref(0);
 
@@ -107,7 +99,7 @@
 
     const isOpenDropdown = ref(false);
     
-    const toggleDropdown = (event) => {
+    const toggleDropdown = (event: Event) => {
         event.stopPropagation();
         isOpenDropdown.value = !isOpenDropdown.value;
     }
@@ -117,12 +109,12 @@
         isOpenDropdown.value = false;
     }
 
-    const loadPets = async (params) => {
-        const response = await $api(`/api/pets?page=${params.page}`);
+    const loadPets = async () => {
+        const response = await $api<PetsResponse>(`/api/pets`);
 
         pets.value = response.list;
-        totalCount.value = response.totalCount;
-        totalPages.value = response.totalPages;
+        totalCount.value = response.pagenParams?.totalCount ?? 0;
+        totalPages.value = response.pagenParams?.totalPages ?? 1;
     }
 
     watch(showCols, async() => {
@@ -130,11 +122,24 @@
     }, {deep: true});
 
     onMounted(async() => {
-        await loadPets({page: route.query?.page ?? 1});
-        const savedShowData = JSON.parse(localStorage.getItem('showColsPets'));
+        await loadPets();
+        const savedShowData = JSON.parse(localStorage.getItem('showColsPets') ?? "");
 
         if(savedShowData) {
             showCols.value = savedShowData;
         }
     });
 </script>
+
+<style scoped>
+.scroller {
+  height: 600px;
+}
+
+.pet-line {
+  height: 100%;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+}
+</style>

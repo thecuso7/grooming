@@ -3,11 +3,8 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 
 export default defineNuxtConfig({
   ssr: false,
-  nitro: process.env.NITRO_PRESET === 'node-server' ? {
-    preset: 'node-server'
-  } : {
-    static: true,
-    serveStatic: true
+  nitro: {
+    preset: 'node-server',
   },
   compatibilityDate: '2024-11-01',
   devServer: {
@@ -57,7 +54,11 @@ export default defineNuxtConfig({
       })
     },
     '@pinia/nuxt',
+    '@nuxt/test-utils/module'
   ],
+  typescript: {
+    typeCheck: true,
+  },
   vite: {
     vue: {
       template: {

@@ -10,6 +10,7 @@
 <script setup>
   import '~/assets/js/main.js'
   
+  console.log('apppp');
   const route = useRoute();
   const errorStore = useErrorStore();
 

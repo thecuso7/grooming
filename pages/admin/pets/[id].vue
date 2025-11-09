@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 class="tw-text-3xl tw-text-black tw-pb-6 tw-font-heading">Данные питомца {{ pet.name }}</h1>
+        <h1 class="tw-text-3xl tw-text-black tw-pb-6 tw-font-heading">Данные питомца {{ pet?.name }}</h1>
         <v-sheet class="tw-flex" max-width="600">
             <v-form fast-fail @submit.prevent="submit">
                 <div class="tw-relative">
@@ -16,7 +16,7 @@
                     <v-img
                         @click="triggerInput"
                         v-if="data.image"
-                        :src="data.image"
+                        :src="data.image as string"
                         max-width="300"
                         max-height="300"
                         cover
@@ -38,7 +38,7 @@
                 <v-text-field
                     v-model="data.name"
                     @change="v$.name.$touch"
-                    :error-messages="v$.name.$errors.map(e => e.$message)"
+                    :error-messages="v$.name.$errors.map((e:any) => e.$message)"
                     label="Кличка"
                     variant="outlined"
                     density="comfortable"
@@ -47,7 +47,7 @@
                 <v-text-field
                     v-model="data.age"
                     @change="v$.age.$touch"
-                    :error-messages="v$.age.$errors.map(e => e.$message)"
+                    :error-messages="v$.age.$errors.map((e:any) => e.$message)"
                     label="Возраст"
                     variant="outlined"
                     density="comfortable"
@@ -56,7 +56,7 @@
                 <v-text-field
                     v-model="data.weight"
                     @change="v$.weight.$touch"
-                    :error-messages="v$.weight.$errors.map(e => e.$message)"
+                    :error-messages="v$.weight.$errors.map((e:any) => e.$message)"
                     label="Вес"
                     variant="outlined"
                     density="comfortable"
@@ -65,7 +65,7 @@
                 <v-text-field
                     v-model="data.breed"
                     @change="v$.breed.$touch"
-                    :error-messages="v$.breed.$errors.map(e => e.$message)"
+                    :error-messages="v$.breed.$errors.map((e:any) => e.$message)"
                     label="Порода"
                     variant="outlined"
                     density="comfortable"
@@ -74,7 +74,7 @@
                 <v-text-field
                     v-model="data.features"
                     @change="v$.features.$touch"
-                    :error-messages="v$.features.$errors.map(e => e.$message)"
+                    :error-messages="v$.features.$errors.map((e:any) => e.$message)"
                     label="Особенности"
                     variant="outlined"
                     density="comfortable"
@@ -92,15 +92,28 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import { ref, onMounted } from 'vue';
+
     const { $api } = useNuxtApp();
-    const pet = ref([]);
+    const pet = ref<Pet | null>(null);
     const { validate } = useValidation();
     const route = useRoute();
     const id = route.params.id;
     const savedStatus = ref(false);
+    const selectedFile = ref<File | null>();
+    const fileInput = ref<HTMLInputElement | null>();
     
+    interface Pet {
+        id: string,
+        name: string,
+        age: string,
+        breed: string,
+        features: string,
+        weight: string,
+        image: string
+    }
+
     const data = reactive({
         id: '',
         name: '',
@@ -108,7 +121,7 @@
         breed: '',
         features: '',
         weight: '',
-        image: ''
+        image: '' as string | ArrayBuffer | null
     });
 
     const rulesFields = {
@@ -134,6 +147,30 @@
         }
     }
 
+
+    const file = ref<File | null>();
+    
+    const triggerInput = () => {
+		fileInput.value?.click();
+	}
+
+    const onFileSelected = (event: Event) => {
+		file.value = (event.target as HTMLInputElement).files?.[0];
+		if (!file.value) return;
+		
+		const reader = new FileReader();
+		
+		reader.onload = (e) => {
+			data.image = e.target?.result as string | null;
+		}
+		
+		reader.onerror = () => {
+			data.image = null;
+		}
+		
+		reader.readAsDataURL(file.value);
+	}
+
     const deletePet = async () => {
         try {
             await $api('/api/pets/' + id, {
@@ -147,10 +184,10 @@
     }
 
     onMounted(async() => {
-        pet.value = await $api('/api/pets/' + id);
+        pet.value = await $api<Pet>('/api/pets/' + id);
 
         for(const key in pet.value) {
-            data[key] = pet.value[key];
+            Object.assign(data, pet.value);
         }
     });
  

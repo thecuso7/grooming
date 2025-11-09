@@ -1,18 +1,16 @@
 # frontend/Dockerfile
 FROM node:22-alpine
 
-RUN apk add --no-cache git python3 make g++ && \
-    npm install -g yarn esbuild@0.21.5 --force
+RUN apk add --no-cache git python3 make g++
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN yarn install --frozen-lockfile --ignore-engines && \
-    yarn add esbuild@0.21.5 --exact
+COPY yarn.lock ./
+
+RUN yarn install --frozen-lockfile --ignore-engines
 
 COPY . .
 
-RUN yarn add esbuild@0.21.5 --exact --dev
-
 EXPOSE 3000
-CMD ["yarn", "build"]
+CMD ["yarn", "dev"]

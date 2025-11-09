@@ -16,8 +16,8 @@
                             <path 
                                 class="astronav-close-icon tw-transition-opacity tw-duration-300"
                                 :class="isMenuOpen ? 'tw-opacity-100' : 'tw-opacity-0'"
-                                fill-rule="evenodd" 
-                                clip-rule="evenodd" 
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
                                 d="M18.278 16.864a1 1 0 01-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 01-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 011.414-1.414l4.829 4.828 4.828-4.828a1 1 0 111.414 1.414l-4.828 4.829 4.828 4.828z"
                             ></path> 
                             <path 
@@ -147,7 +147,7 @@
                             </RouterLink>
                         </template>
                         <template v-else>
-                            <RouterLink 
+                            <RouterLink
                                 to="/login" 
                                 class="tw-w-full tw-text-center tw-py-3 tw-px-4 tw-rounded tw-transition hover:tw-bg-gray-100 tw-border tw-border-gray-200"
                                 @click="closeMenu"
