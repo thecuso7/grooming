@@ -78,7 +78,7 @@
 						accept="image/png, image/jpeg, image/bmp"
 						label="Фото"
 						placeholder="Upload your photos"
-						prepend-icon="mdi-camera"
+						:prepend-inner-icon="mdiCamera"
 						hide-input
 						class="tw-absolute tw-left-1/2 tw-top-1/2 tw--translate-x-1/2 tw--translate-y-1/2"
 						style="top: 69%;"
@@ -138,7 +138,9 @@
 
 
 <script setup lang="ts">
+	import { mdiCamera } from '@mdi/js';
 	import { onMounted, ref, reactive } from 'vue';
+	import { type Pet } from '~/types/Pet';
 	const { $api } = useNuxtApp();
 	const { validate } = useValidation();
 
@@ -148,17 +150,6 @@
 	const selectedFile = ref<File | null>();
 	const fileInput = ref<HTMLInputElement | null>();
 	const formMode = ref('');
-
-	interface Pet {
-		id: string,
-        name: string,
-		image: string | null,
-        age: string,
-		weight: string,
-        breed: string,
-        features: string
-	}
-
 	const petList = ref<Pet[]>();
 	const showForm = ref(false);
 	const initialState = {
@@ -210,12 +201,12 @@
 		if(data.file) {
 			formData.append('image', data.file);
 		}
-		formData.append('id', data.formData.id);
-		formData.append('name', data.formData.name);
-		formData.append('age', data.formData.age);
-		formData.append('weight', data.formData.weight);
-		formData.append('breed', data.formData.breed);
-		formData.append('features', data.formData.features);
+		formData.append('id', data.formData.id ?? '');
+		formData.append('name', data.formData.name ?? '');
+		formData.append('age', data.formData.age ?? '');
+		formData.append('weight', data.formData.weight ?? '');
+		formData.append('breed', data.formData.breed ?? '');
+		formData.append('features', data.formData.features ?? '');
 
 		if(data.formData.id) {
 			updatePet(formData);
@@ -266,7 +257,7 @@
 		}
 	}
 
-	const openForm = (id:string | null) => {
+	const openForm = (id:string | undefined) => {
 		showForm.value = true;
 		formMode.value = 'edit';
 		if(id) {

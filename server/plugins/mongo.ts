@@ -4,6 +4,7 @@ import seedCounters from "~/server/scripts/seed/counters";
 import seedService from "~/server/scripts/seed/services";
 import seedShedule from "~/server/scripts/seed/shedule";
 import seedUsers from "~/server/scripts/seed/users";
+import seedPets from "~/server/scripts/seed/pets";
 
 let isLoadedSeed = false;
 
@@ -17,6 +18,7 @@ export default defineNitroPlugin(async () => {
             await seedUsers();
             await seedService();
             await seedShedule();
+            await seedPets();
 
             isLoadedSeed = true;
         }

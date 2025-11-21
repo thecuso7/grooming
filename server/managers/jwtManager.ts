@@ -10,17 +10,19 @@ interface Payload extends JwtPayload {
 	uid: string
 }
 
+const config = useRuntimeConfig();
+
 export const JwtManager = {
 	create(user: User): {token: string, refresh: string} {
 		const token = jwt.sign(
 			{ uid: user.id, role: user.role, name: user.name },
-			process.env.NUXT_JWT_ACCESS_SECRET as string,
+			config.jwtAccessSecret as string,
 			{ expiresIn: '0.5h' }
 		)
 	
 		const refresh = jwt.sign(
 			{ uid: user.id, role: user.role, name: user.name },
-			process.env.NUXT_JWT_REFRESH_SECRET as string,
+			config.jwtRefreshSecret as string,
 			{ expiresIn: '30d' }
 		)
 		return { token, refresh };
@@ -39,7 +41,7 @@ export const JwtManager = {
 		return { newToken, newRefresh, payload };
 	},
 	verifyAccess(token: string): Payload {
-		const decoded = jwt.verify(token, process.env.NUXT_JWT_ACCESS_SECRET as string);
+		const decoded = jwt.verify(token, config.jwtAccessSecret as string);
 
 		if (typeof decoded === 'string') {
 			throw new Error('Invalid token payload: expected object, got string');
@@ -48,7 +50,7 @@ export const JwtManager = {
 		return decoded as Payload;
 	},
 	verifyRefresh(token: string): Payload {
-		const decoded = jwt.verify(token, process.env.NUXT_JWT_REFRESH_SECRET as string);
+		const decoded = jwt.verify(token, config.jwtRefreshSecret as string);
 
 		if (typeof decoded === 'string') {
 			throw new Error('Invalid token payload: expected object, got string');

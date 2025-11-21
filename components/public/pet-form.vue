@@ -38,15 +38,7 @@
     </div>
 </template>
 <script setup lang="ts">
-    interface Pet {
-		id: string,
-        name: string,
-		image: string | null,
-        age: string,
-		weight: string,
-        breed: string,
-        features: string
-	}
+    import { type Pet } from '~/types/Pet';
 
     interface Props {
         initialData: Pet

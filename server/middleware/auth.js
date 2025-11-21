@@ -24,7 +24,9 @@ export default defineEventHandler((event) => {
         url == '/api/auth/refresh' ||
         url == '/api/auth/login' ||
         url == '/api/auth/register' ||
-        url == '/api/auth/check-auth'
+        url == '/api/auth/check-auth' ||
+        url == '/api/config/test' ||
+        url == '/api/pets'
     ) {
         return;
     }

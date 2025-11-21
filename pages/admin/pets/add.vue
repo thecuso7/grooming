@@ -29,7 +29,7 @@
                         accept="image/png, image/jpeg, image/bmp"
                         label="Фото"
                         placeholder="Upload your photos"
-                        prepend-icon="mdi-camera"
+                        :prepend-inner-icon="mdiCamera"
                         hide-input
                         class="tw-absolute tw-left-1/2 tw-top-1/2 tw--translate-x-1/2 tw--translate-y-1/2"
                         style="top: 69%;"
@@ -86,6 +86,7 @@
 </template>
 
 <script setup lang="ts">
+    import { mdiCamera } from '@mdi/js';
     import { ref, onMounted } from 'vue';
     const { $api } = useNuxtApp();
     const { validate } = useValidation();

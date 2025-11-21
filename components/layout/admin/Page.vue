@@ -17,8 +17,8 @@
                 <div class="tw-w-1/2"></div>
                 <div class=" tw-w-1/2 tw-flex tw-justify-end">
                     <div class="profile tw-relative tw-flex tw-items-center">
-                        <div class="tw-mr-4">{{ user.name }}</div>
-                        <button @click="isOpen = !isOpen" class="tw-realtive tw-z-10 tw-w-12 tw-h-12 tw-rounded-full tw-overflow-hidden tw-border-solid tw-border-2 tw-border-gray-400 hover:tw-border-gray-300 focus:tw-border-gray-300 focus:tw-outline-none">
+                        <div class="tw-mr-4">{{ user?.name }}</div>
+                        <button @click="isMenuOpen = !isMenuOpen" class="tw-realtive tw-z-10 tw-w-12 tw-h-12 tw-rounded-full tw-overflow-hidden tw-border-solid tw-border-2 tw-border-gray-400 hover:tw-border-gray-300 focus:tw-border-gray-300 focus:tw-outline-none">
                             <!-- <img src="https://source.unsplash.com/uJ8LNVCBjFQ/400x400"> -->
                         </button>
                         <div class="profile-dropdown tw-hidden tw-absolute tw-w-32 tw-bg-white tw-right-0 tw-rounded-lg tw-shadow-lg tw-top-full tw-overflow-hidden">
@@ -37,12 +37,13 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import { useAuthStore } from "~/stores/auth";
     import { computed } from 'vue';
 
     const { $pinia } = useNuxtApp();
     const authStore = useAuthStore($pinia);
+    const isMenuOpen = ref(false);
 
     const user = computed(() => {
         return authStore.user;

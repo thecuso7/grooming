@@ -7,7 +7,7 @@
                     <v-text-field
                         class="mb-2"
                         v-model="data.name"
-                        :error-messages="v$.name.$errors.map(e => e.$message)"
+                        :error-messages="v$.name.$errors.map((e:any) => e.$message)"
                         @change="v$.name.$touch"
                         label="Имя *"
                         variant="outlined"
@@ -17,7 +17,7 @@
                     <v-text-field
                         class="mb-2"
                         v-model="data.lastName"
-                        :error-messages="v$.lastName.$errors.map(e => e.$message)"
+                        :error-messages="v$.lastName.$errors.map((e:any) => e.$message)"
                         @change="v$.lastName.$touch"
                         label="Фамилия *"
                         variant="outlined"
@@ -27,7 +27,7 @@
                     <v-text-field
                         class="mb-2"
                         v-model="data.email"
-                        :error-messages="v$.email.$errors.map(e => e.$message)"
+                        :error-messages="v$.email.$errors.map((e:any) => e.$message)"
                         @change="onChangeEmail"
                         @input="onChangeEmail"
                         label="Email *"
@@ -37,7 +37,7 @@
 
                     <v-text-field
                         v-model="data.password"
-                        :error-messages="v$.password.$errors.map(e => e.$message)"
+                        :error-messages="v$.password.$errors.map((e:any) => e.$message)"
                         @change="v$.password.$touch"
                         label="Пароль *"
                         variant="outlined"
@@ -53,10 +53,11 @@
     </div>
  </template>
 
-<script setup>
+<script setup lang="ts">
     import { ref } from 'vue';
-    const { validate } = useValidation();
+    import { useAuth } from '~/composables/useAuth';
 
+    const { validate } = useValidation();
     let error = ref('');
     const data = reactive({
         name: '',
@@ -73,6 +74,7 @@
     };
 
     const { v$, updateValidateFromApi } = validate(data, rulesFields);
+    const { register } = useAuth({ updateValidateFromApi });
 
     const onChangeEmail = () => {
         v$.value.$clearExternalResults();
@@ -85,20 +87,6 @@
             return;
         }
 
-        try {
-            await $fetch('/api/auth/register', {
-                method: 'POST',
-                body: {
-                    name: data.name,
-                    lastName: data.lastName,
-                    email: data.email,
-                    password: data.password,
-                }
-            });
-
-            navigateTo('/login');
-        } catch(error) {
-            updateValidateFromApi(error.data);
-        }
+        await register(data.name, data.name, data.name, data.name);
     };
 </script>

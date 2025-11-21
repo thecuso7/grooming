@@ -4,7 +4,7 @@
 			<h2 class="tw-text-xl tw-font-semibold tw-text-gray-800 tw-mb-6 tw-font-heading">Выбор услуг для {{ pet.name }}</h2>
 			<!-- Комплексы -->
 			<div class="tw-space-y-6">
-				<div v-for="type in typeList">
+				<div v-for="type in typeServiceList">
 					<h3 class="tw-text-lg tw-font-semibold tw-text-gray-800 tw-mb-4">{{ type.title }}</h3>
 					<template v-if="type.code == 'complex'">
 						<div class="tw-grid md:tw-grid-cols-2 tw-gap-4">
@@ -20,7 +20,7 @@
 								<p class="tw-text-sm tw-text-gray-600 tw-mb-3">{{ service.description }}</p>
 								<div class="tw-flex tw-items-center tw-text-sm tw-text-gray-500">
 									<i class="fas fa-clock tw-mr-1"></i>
-									<span>{{ service.duration }}</span>
+									<span>{{ service.durationFormatted }}</span>
 								</div>
 							</div>
 						</div>
@@ -37,7 +37,7 @@
 									v-model="state.selectedIds"
 									:label="service.title"
 									:value="service._id"
-									:disabled="service._id == reqService && state.selectedIds.includes(service._id) && state.selectedIds.length > 1"
+									:disabled="service._id == reqService?._id && state.selectedIds.includes(service._id) && state.selectedIds.length > 1"
 									hide-details
 								></v-checkbox>
 								<span
@@ -81,20 +81,19 @@
 </template>
 
 
-<script setup>
+<script setup lang="ts">
 	import { onMounted, watch } from 'vue';
+	import { useAppointment } from '~/composables/useAppointment';
+	import { getPartsTime } from '~/utils/formatters';
+	import { type ServiceStep } from '~/types/ServiceStep';
+	import { type Service } from '~/types/Service';
 
-	const { $api } = useNuxtApp();
 	const appointStore = useAppointmentStore();
+	const { typeServiceList, groupedServiceList, services, reqService, loadServices } = useAppointment();
 
 	const emit = defineEmits(['next-step', 'prev-step']);
 
-	const typeList = ref([]);
-	const serviceList = ref([]);
-	const groupedServiceList = ref({});
-	const reqService = ref({});
-
-	const state = reactive({
+	const state = reactive<ServiceStep>({
 		selectedIds: [],
 		selected: [],
 		complex: {
@@ -104,41 +103,43 @@
 		},
 		summ: {
 			price: 0,
-			time: ''
+			time: 0
 		}
 	});
 
-	const selectService = (event, service) => {
-		if(event.target.checked) {
-			state.selected.push({id: service._id, title: service.title});
+	const selectService = (event: Event, service: Service) => {
+		const target = event.target as HTMLInputElement;
+		if(target.checked) {
+			// state.selected.push({id: service._id, title: service.title});
+			state.selected.push(service);
 		} else {
 			state.selected = state.selected.filter(item => item.id !== service._id);
 		}
 	}
 
-	const chooseComplex = (service) => {
-		state.complex.summ = true;
+	const chooseComplex = (service: Service) => {
+		state.complex.summ = service.price;
 		state.complex.id = service._id;
 		state.selectedIds = [];
-		state.selected = [{id: service._id, title: service.title, complex: true}];
+		state.selected = [service];
 
 		service.bundle.forEach(id => {
 			state.selectedIds.push(id);
 			state.complex.parts.push(id);
 			
-			let filteredService = serviceList.value.filter(item => item._id == id)[0];
-			state.selected.push({id: id, title: filteredService.title, complex: false});
+			let filteredService = services.value.filter(item => item._id == id)[0];
+			state.selected.push(filteredService);
 		});
 	};
 
-	const calcSumm = (newVal, price = 0, time = 0) => {
+	const calcSumm = (newVal: string[], price = 0, time = 0) => {
 		state.summ.price = Number(price);
 		state.summ.time = Number(time);
 		let mustRequired = false;
 
-		serviceList.value.forEach(service => {
+		services.value.forEach((service: Service) => {
 			if(newVal.includes(service._id)) {
-				if(['main', 'additional'].includes(service.type.code) && service._id !== reqService.value._id) {
+				if(['main', 'additional'].includes(service.type.code) && service._id !== reqService.value?._id) {
 					mustRequired = true;
 				}
 				state.summ.price += Number(service.price);
@@ -146,18 +147,11 @@
 			}
 		});
 
-		if(mustRequired && !state.selectedIds.includes(reqService.value._id)) {
-			state.selectedIds = [...state.selectedIds, reqService.value._id]
-			selectService({target: {checked: true}}, reqService.value);
+		if(mustRequired && reqService.value && !state.selectedIds.includes(reqService.value._id)) {
+			state.selectedIds = [...state.selectedIds, reqService.value?._id]
+			selectService({target: {checked: true}} as any, reqService.value);
 		}
 	}
-
-	const getPartsTime = (time) => {
-        const hours = Math.trunc(time / 60);
-        const minutes = time - hours * 60;
-
-      	return [hours, minutes ? (minutes < 10 ? '0' + minutes : minutes) : '00'];
-    }
 
 	const totalPartsTime = computed(() => {
 		const [hours, minutes] = getPartsTime(state.summ.time);
@@ -165,21 +159,21 @@
 	});
 
 	const pet = computed(() => {
-		return appointStore.stepsData.choose.pet;
+		return appointStore.stepsData.choose?.pet || {};
 	});
 
 	watch(
 		() => state.selectedIds, 
 		(newVal) => {
-		if(state.complex.summ) {
+		if(state.complex.summ !== 0) {
 			let containsAll = state.complex.parts.every(item => state.selectedIds.includes(item));
 			if(!containsAll) {
-				state.complex.summ = false;
+				state.complex.summ = 0;
 				state.complex.parts = [];
-				state.complex.id = 0;
+				state.complex.id = '';
 				calcSumm(newVal);
 			} else {
-				const complexService = serviceList.value.filter(service => service.bundle.length && service._id == state.complex.id)[0];
+				const complexService = services.value.filter(service => service.bundle.length && service._id == state.complex.id)[0];
 				const diffService = state.selectedIds.filter(id => !state.complex.parts.includes(id));
 				calcSumm(diffService, complexService.price, complexService.duration);
 			}
@@ -193,30 +187,7 @@
 	}, {deep: true});
 
 	onMounted(async () => {
-		typeList.value = await $api('/api/common/types');
-        const { list: list } = await $api(`/api/services`);
-		serviceList.value = list;
-		typeList.value.forEach(type => {
-			let group = serviceList.value.map(service => {
-				const serviceCopy = {...service};
-
-				if(serviceCopy.required) {
-					reqService.value = serviceCopy;
-				}
-
-				const [hours, minutes] = getPartsTime(serviceCopy.duration);
-				serviceCopy.duration = hours ? `${hours} час(a) ${minutes} минут` : `${minutes} минут`;
-
-				return serviceCopy;
-			}).filter(serviceCopy => {
-				if(serviceCopy.required) {
-					reqService.value = serviceCopy;
-				}
-
-				return serviceCopy.type.code == type.code;
-			});
-			groupedServiceList.value[type.code] = group;
-		});
+		await loadServices();
 
 		if(appointStore.isSaved) {
 			Object.assign(state, appointStore.stepsData.service);

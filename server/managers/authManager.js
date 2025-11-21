@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs';
 import { JwtManager } from "~/server/managers/jwtManager";
 import { UserManager } from "~/server/managers/userManager";
+import { User } from '~/types/user';
+// import type { H3Event, EventHandlerRequest } from 'h3';
 
 export const AuthManager = {
 	async login(event, email, password) {
@@ -30,7 +32,7 @@ export const AuthManager = {
 
 		return user;
 	},
-	async unlogin() {
+	async unlogin(event) {
 		JwtManager.clear(event);
 	}
 };

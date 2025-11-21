@@ -2,7 +2,7 @@
     <div>
         <section class="tw-relative tw-py-10 lg:tw-py-20">
             <div class="tw-container tw-mx-auto tw-text-center">
-                <h1 class="tw-font-heading tw-text-3xl md:tw-text-4xl lg:tw-text-6xl tw-font-bold tw-mb-6">
+                <h1 class="lcp-heading tw-font-heading tw-text-3xl md:tw-text-4xl lg:tw-text-6xl tw-font-bold tw-mb-6">
                     Профессиональный <span class="tw-text-custom-green">груминг</span><br>для вашего питомца
                 </h1>
                 <p class="tw-text-xl tw-text-custom-gray tw-max-w-2xl tw-mx-auto tw-mb-8">
@@ -148,5 +148,25 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+    useHead({
+    style: [{
+        innerHTML: `
+        /* КРИТИЧЕСКИЕ СТИЛИ ДЛЯ ЗАГОЛОВКА */
+        .lcp-heading {
+            font-family: Montserrat, system-ui, sans-serif;
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        @media (min-width: 768px) {
+            .lcp-heading { font-size: 2.25rem; }
+        }
+        @media (min-width: 1024px) {
+            .lcp-heading { font-size: 3.75rem; }
+        }
+        `
+    }]
+    })
 </script>

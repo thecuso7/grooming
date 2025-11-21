@@ -7,7 +7,7 @@
                     <v-text-field
                         class="mb-2"
                         v-model="data.email"
-                        :error-messages="v$.email.$errors.map(e => e.$message)"
+                        :error-messages="v$.email.$errors.map((e:any) => e.$message)"
                         @change="v$.email.$touch"
                         label="Email"
                         variant="outlined"
@@ -16,7 +16,7 @@
 
                     <v-text-field
                         v-model="data.password"
-                        :error-messages="v$.password.$errors.map(e => e.$message)"
+                        :error-messages="v$.password.$errors.map((e:any) => e.$message)"
                         @change="v$.password.$touch"
                         label="Пароль"
                         variant="outlined"
@@ -29,24 +29,21 @@
     </div> 
 </template>
 
-<script setup>
+<script setup lang="ts">
     import { reactive } from 'vue';
-    import { useAuthStore } from '~/stores/auth';
+    import { useAuth } from '~/composables/useAuth';
 
     const { validate } = useValidation();
-    const authStore = useAuthStore();
-
     const data = reactive({
         email: '',
         password: ''
     });
-
     const rulesFields = {
         email: ['required', 'email'],
         password: ['required'],
     };
-
     const { v$, updateValidateFromApi } = validate(data, rulesFields);
+    const { login } = useAuth({ updateValidateFromApi });
 
     const submit = async() => {
         if (v$.value.$invalid) {
@@ -54,19 +51,6 @@
             return;
         }
 
-        try {
-            const res = await $fetch('/api/auth/login', {
-                method: 'POST',
-                body: {
-                    email: data.email,
-                    password: data.password
-                }
-            });
-
-            authStore.setAccessToken(res.token);
-            navigateTo(res.redirect);
-        } catch(error) {
-            updateValidateFromApi(error.data);
-        }
+        await login(data.email, data.password);
     };
 </script>

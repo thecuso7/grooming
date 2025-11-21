@@ -38,5 +38,13 @@ export default {
     },
   },
   plugins: [],
+  content: [
+    './components/**/*.{vue,js,ts}',
+    './layouts/**/*.vue', 
+    './pages/**/*.vue',
+    './plugins/**/*.{js,ts}',
+    './app.vue',
+    './error.vue'
+  ]
 }
 

@@ -11,7 +11,7 @@
             <div class="tw-space-y-4 tw-mb-6">
                 <div class="tw-flex tw-justify-between tw-py-3">
                     <span class="tw-text-gray-600">Питомец:</span>
-                    <span class="tw-font-medium">{{pet.name}} ({{pet.breed}}, {{ pet.age }} года)</span>
+                    <span class="tw-font-medium">{{ petInfo }}</span>
                 </div>
                 
                 <div class="tw-flex tw-justify-between tw-py-3">
@@ -29,7 +29,7 @@
                 
                 <div class="tw-flex tw-justify-between tw-py-3">
                     <span class="tw-text-gray-600">Клиент:</span>
-                    <span class="tw-font-medium">{{ client.user.name }} {{ client.user.lastName }}</span>
+                    <span class="tw-font-medium">{{ client?.user?.name }} {{ client?.user?.lastName }}</span>
                 </div>
                 
                 <div class="tw-flex tw-justify-between tw-py-3">
@@ -39,7 +39,7 @@
 
                 <div class="tw-flex tw-justify-between tw-py-3 tw-border-t tw-border-gray-200 tw-pt-4">
                     <span class="tw-text-lg tw-font-semibold">Итого к оплате:</span>
-                    <span class="tw-text-lg tw-text-green-600 tw-font-bold">{{ services.summ.price }} ₽</span>
+                    <span class="tw-text-lg tw-text-green-600 tw-font-bold">{{ service?.summ?.price }} ₽</span>
                 </div>
             </div>
 
@@ -70,87 +70,96 @@
 </template>
 
 
-<script setup>
+<script setup lang="ts">
     const emit = defineEmits(['prev-step']);
+    import { getPartsTime, formatDate } from '~/utils/formatters';
 
     const appointStore = useAppointmentStore();
     const authStore = useAuthStore();
     const { $api } = useNuxtApp();
-
-    const services = appointStore.stepsData.service;
-    const client = appointStore.stepsData.client;
-    const pet = appointStore.stepsData.choose.pet;
-
-    const formatDate = (val) => {
-		const date = new Date(val);
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0');
-		const day = String(date.getDate()).padStart(2, '0');
-
-		return `${year}-${month}-${day}`;
-	}
+    const { service, client, choose } = appointStore.stepsData;
 
     const createShedule = async () => {
-        try {
-            await $api('/api/shedule', {
-                method: 'POST',
-                body: {
-                    workDate: formatDate(client.date.day),
-                    beginAt: client.date.slot.beginAt,
-                    beginAtMinutes: client.date.slot.beginAtMinutes,
-                    finishAt: client.date.slot.finishAt,
-                    data: appointStore.stepsData,
-                    user: authStore.isAuthenticated ? authStore.user.id : null,
-                },
-            });
+        if(service && client && choose) {
+            try {
+                await $api('/api/shedule', {
+                    method: 'POST',
+                    body: {
+                        workDate: formatDate(client.date.day),
+                        beginAt: client.date.slot.beginAt,
+                        beginAtMinutes: client.date.slot.beginAtMinutes,
+                        finishAt: client.date.slot.finishAt,
+                        data: appointStore.stepsData,
+                        user: authStore.isAuthenticated ? authStore.user?.id : null,
+                    },
+                });
 
-            appointStore.clearData();
-        } catch(error) {
-            console.log(error);
+                appointStore.clearData();
+            } catch(error) {
+                console.log(error);
+            }
         }
     }
 
     await createShedule();
 
+    const petInfo = computed(() => {
+        if(choose) {
+            if(!choose.pet) return '';
+
+            const details: string[] = [];
+
+            if(choose.pet.breed) {
+                details.push(choose.pet.breed);
+            }
+
+            if(choose.pet.age) {
+                details.push(choose.pet.age + ' года');
+            }
+
+            if(details.length) {
+                return `${choose.pet?.name} (${details.join(',')})`;
+            }
+            
+            return choose.pet?.name;
+        }
+        return '';
+    });
+
     const totalPartsTime = computed(() => {
-		const [hours, minutes] = getPartsTime(services.summ.time);
+		const [hours, minutes] = getPartsTime(service?.summ?.time ?? 0);
 		return hours ? `${hours} час(а) ${minutes} минут` : `${minutes} минут`;
 	});
 
-    const getPartsTime = (time) => {
-        const hours = Math.trunc(time / 60);
-        const minutes = time - hours * 60;
-
-        return [hours, minutes ? (minutes < 10 ? '0' + minutes : minutes) : '00'];
-    }
-
     const formatPhone = computed(() => {
-        const phone = client.user.phone;
-        return `+7 (${phone.slice(0, 3)}) ${phone.slice(3, 6)} - ${phone.slice(6, 10)}`
+        const phone = client?.user?.phone;
+        return phone !== undefined ? `+7 (${phone.slice(0, 3)}) ${phone.slice(3, 6)} - ${phone.slice(6, 10)}` : ''
     });
 
     const dateToShow = computed(() => {
-        const date = new Date(client.date.day);
+        const date = new Date(client?.date.day);
         const day = date.toLocaleString('default', { month: 'long', day: 'numeric' });
 
-        return `${day}, ${client.date.slot.beginAt} - ${client.date.slot.finishAt}`;
+        return `${day}, ${client?.date.slot.beginAt} - ${client?.date.slot.finishAt}`;
     });
 
     const serviceText = computed(() => {
-        let complex = true;
+        let complex = false;
+        const selected = service?.selected || [];
+        console.log('selected', selected);
 
-        const text = services.selected.reduce((sumText, item, index) => {
-            if(index == services.selected.length - 1) {
+        const text = selected.reduce((sumText, item, index) => {
+            if(index == selected.length - 1) {
                 return sumText + `${item.title}${complex ? ')' : ''}`;
             } else {
-                if(item.complex) {
+                if(item.bundle.length) {
                     complex = true;
                     return sumText + ` ${item.title} (`
                 }
 
                 return sumText + ` ${item.title} + `;
             }
-        }, '');
+        }, '') || '';
 
         return text;
     });

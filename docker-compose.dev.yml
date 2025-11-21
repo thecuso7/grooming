@@ -5,12 +5,14 @@ services:
     ports:
       - "3000:3000"
     environment:
+      - NODE_ENV=production
       - NUXT_HOST=0.0.0.0
-      - CHOKIDAR_USEPOLLING=true  # Для отслеживания изменений файлов
+      - CHOKIDAR_USEPOLLING=true  # Для отслеживания изменений файлов 
     volumes:
       - .:/app
       - /app/node_modules
-
+      - /app/.nuxt        # ✅ Исключает dev кеш
+      - /app/.output
   mongo:
     image: mongo:latest
     ports:

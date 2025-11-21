@@ -65,17 +65,8 @@
 
 <script setup lang="ts">
     import { ref, onMounted, watch } from 'vue';
+    import { type Pet } from '~/types/Pet';
     const { $api } = useNuxtApp();
-
-    interface Pet {
-		id: string,
-        name: string,
-		image: string,
-        age: string,
-		weight: string,
-        breed: string,
-        features: string
-	}
 
     interface PetsResponse {
         list: Pet[],

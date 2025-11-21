@@ -94,9 +94,8 @@
 
 	const appointStore = useAppointmentStore();
 	const authStore = useAuthStore();
-	const { $api } = useNuxtApp();
 	const { validate } = useValidation();
-	const petList = ref([]);
+	const { petList, loadPets } = useAppointment();
 
 	const initialData = reactive({
         isNew: false,
@@ -162,11 +161,7 @@
 
 	onMounted(async () => {
 		if(authStore.isAuthenticated) {
-			const { pets } = await $api('/api/users/me');
-			if(pets.length) {
-				const { list } = await $api(`/api/pets?id=${pets}`);
-				petList.value = list;
-			}
+			await loadPets();
 		}
 
 		if(appointStore.isSaved) {

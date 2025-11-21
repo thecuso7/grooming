@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 export const defaultShedule = [
   {
     _id: '661c0a1b8f1a2b3c4d4e6f1a',
-    workDate: '2025-10-01',
+    workDate: '2025-11-23',
     beginAt: '08:30',
     finishAt: '09:00',
     beginAtMinutes: 510,
@@ -12,7 +12,7 @@ export const defaultShedule = [
   },
   {
     _id: '661c0a1b8f1a2b3c4d4e6f1b',
-    workDate: '2025-10-02',
+    workDate: '2025-11-25',
     beginAt: '09:00',
     finishAt: '11:15',
     beginAtMinutes: 540,
@@ -21,7 +21,7 @@ export const defaultShedule = [
   },
   {
     _id: '661c0a1b8f1a2b3c4d4e6f1c',
-    workDate: '2025-10-02',
+    workDate: '2025-11-25',
     beginAt: '11:30',
     finishAt: '14:00',
     beginAtMinutes: 690,
@@ -30,7 +30,7 @@ export const defaultShedule = [
   },
   {
     _id: '661c0a1b8f1a2b3c4d4e6f1d',
-    workDate: '2025-10-03',
+    workDate: '2025-11-26',
     beginAt: '14:30',
     finishAt: '16:00',
     beginAtMinutes: 870,
@@ -39,7 +39,7 @@ export const defaultShedule = [
   },
   {
     _id: '661c0a1b8f1a2b3c4d4e6f1e',
-    workDate: '2025-10-03',
+    workDate: '2025-11-26',
     beginAt: '08:30',
     finishAt: '10:45',
     beginAtMinutes: 510,
@@ -48,7 +48,7 @@ export const defaultShedule = [
   },
   {
     _id: '661c0a1b8f1a2b3c4d4e6f2a',
-    workDate: '2025-10-04',
+    workDate: '2025-11-27',
     beginAt: '13:30',
     finishAt: '15:15',
     beginAtMinutes: 810,
@@ -57,7 +57,7 @@ export const defaultShedule = [
   },
   {
     _id: '661c0a1b8f1a2b3c4d4e6f2b',
-    workDate: '2025-10-06',
+    workDate: '2025-11-28',
     beginAt: '08:30',
     finishAt: '10:30',
     beginAtMinutes: 510,

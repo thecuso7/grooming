@@ -146,6 +146,10 @@
     const initialized = ref(false);
     const isDataSaved = ref(false);
 
+    // interface ShowFields {
+    //     [index: string]: boolean
+    // }
+
     const showFields = reactive({
         email: false,
         name: false,

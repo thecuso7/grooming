@@ -104,6 +104,7 @@
 <script setup>
 	import { onMounted, watch } from 'vue';
 	import { VMaskInput } from 'vuetify/labs/VMaskInput';
+	import { formatDate, getPartsTime } from '../../../utils/formatters';
 
 	const emit = defineEmits(['next-step', 'prev-step']);
 
@@ -231,22 +232,6 @@
 		return !v$.value.$invalid && Object.values(user).every(val => val !== '') && state.date.slot.key !== null;
 	});
 
-	const getPartsTime = (time) => {
-        const hours = Math.trunc(time / 60);
-        const minutes = time - hours * 60;
-
-        return [hours, minutes ? (minutes < 10 ? '0' + minutes : minutes) : '00'];
-    }
-
-	const formatDate = (val) => {
-		const date = new Date(val);
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0');
-		const day = String(date.getDate()).padStart(2, '0');
-
-		return `${year}-${month}-${day}`;
-	}
-
 	watch(() => state.date.day, () => {
 		if(!isInitialized.value) return;
 		state.date.slot = {key: null, text: ''};
@@ -277,7 +262,7 @@
 			Object.assign(user, response);
 		}
 
-		if(appointStore.isSaved) {
+		if(appointStore.isSaved && appointStore.stepsData.client) {
 			const saveData = appointStore.stepsData.client;
 			Object.assign(state.date, saveData.date);
 			Object.assign(user, saveData.user);

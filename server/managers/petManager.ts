@@ -1,10 +1,14 @@
-import { Pet } from "~/server/models";
+import { Pet as PetModel } from "~/server/models";
+import { type QueryObject } from "ufo";
+import { type Pet } from "~/types/Pet";
+import type { H3Event, EventHandlerRequest } from 'h3';
 import { writeFile } from 'fs/promises'
+import { type ParsedFile } from "~/types/ParsedData";
 
 export const PetManager = {
-	async getById(event, id, fields = '') {
+	async getById(event: H3Event, id: string, fields = '') {
 		try {
-			const pet = await Pet.findOne({id: id})
+			const pet = await PetModel.findOne({id: id})
 								.select(fields);
 	
 			if (!pet?._id.toString()) {
@@ -22,13 +26,11 @@ export const PetManager = {
 			});
 		}
 	},
-	async getAll(params, select = '') {
+	async getAll(params: QueryObject, select = ''): Promise<{list: Pet[], pagenParams: any}> {
 		try {
 			let pagenParams = {};
-
-			// передаем сюда правильне id в массиве
-			let query = Pet.find();
-			if(Object.keys(params).length && params?.id) {
+			let query = PetModel.find();
+			if(Object.keys(params).length && params?.id && typeof params.id === 'string') {
 				query = query.where('id').in(params.id.split(','));
 			};
 
@@ -61,7 +63,7 @@ export const PetManager = {
 			});
 		}
 	},
-	async create(event, fields, files) {
+	async create(event: H3Event, fields: Pet, files: Record<string, ParsedFile>) {
 		try {
 			fields.id = await getNextSequence('pet_id');
 			if(Object.keys(files).length) {
@@ -75,7 +77,7 @@ export const PetManager = {
 				fields.image = `/uploads/${filename}`;
 			}
 
-			const pet = await Pet.create(fields);
+			const pet = await PetModel.create(fields);
 	
 			return { id: pet.id };
 		} catch(error) {
@@ -88,7 +90,7 @@ export const PetManager = {
 			});
 		}
 	},
-	async update(event, fields, files) {
+	async update(event: H3Event, fields: Pet, files: Record<string, ParsedFile>) {
 		try {
 			if(Object.keys(files).length) {
 				const timestamp = Date.now();
@@ -101,7 +103,7 @@ export const PetManager = {
 				fields.image = `/uploads/${filename}`;
 			}
 
-			const pet = await Pet.findOneAndUpdate({id: fields.id}, fields);
+			const pet = await PetModel.findOneAndUpdate({id: fields.id}, fields);
 	
 			if (!pet?._id.toString()) {
 				return null;
@@ -118,9 +120,9 @@ export const PetManager = {
 			});
 		}
 	},
-	async delete(event, id) {
+	async delete(event: H3Event, id: string) {
 		try {
-			await Service.deleteOne({id: id});
+			await PetModel.deleteOne({id: id});
 			await minusSequence('pet_id');
 		} catch(error) {
 			throw createError({
