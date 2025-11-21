@@ -189,7 +189,7 @@
 	onMounted(async () => {
 		await loadServices();
 
-		if(appointStore.isSaved) {
+		if(appointStore.stepsData.service) {
 			Object.assign(state, appointStore.stepsData.service);
 		}
 	});

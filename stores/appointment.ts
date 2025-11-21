@@ -6,7 +6,7 @@ import { type Client } from "~/types/Client";
 
 interface LoadedData {
     isSaved: Boolean,
-    steps: StepsData,
+    stepsData: StepsData,
     step: string,
 }
 
@@ -14,18 +14,18 @@ const getStepsData = (): LoadedData => {
     try {
         const data = localStorage.getItem('appointment');
         if (!data || !JSON.parse(data)?.stepsData) {
+            console.log('no');
             return {
                 isSaved: false,
-                steps: {choose: null, service: null, client: null},
+                stepsData: {choose: null, service: null, client: null},
                 step: '1',
             };
         }
-        
-        return JSON.parse(data)?.stepsData;
+        return JSON.parse(data);
     } catch {
         return {
             isSaved: false,
-            steps: {choose: null, service: null, client: null},
+            stepsData: {choose: null, service: null, client: null},
             step: '1',
         };
     }
@@ -34,7 +34,7 @@ const getStepsData = (): LoadedData => {
 export const useAppointmentStore = defineStore('appointment', () => {
     const loadedData = getStepsData();
     const isSaved = ref(loadedData.isSaved);
-    const stepsData = reactive(loadedData.steps);
+    const stepsData = reactive(loadedData.stepsData);
     const currentStep = ref(loadedData.step);
 
     const steps = {

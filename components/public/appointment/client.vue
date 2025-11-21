@@ -262,7 +262,7 @@
 			Object.assign(user, response);
 		}
 
-		if(appointStore.isSaved && appointStore.stepsData.client) {
+		if(appointStore.stepsData.client) {
 			const saveData = appointStore.stepsData.client;
 			Object.assign(state.date, saveData.date);
 			Object.assign(user, saveData.user);

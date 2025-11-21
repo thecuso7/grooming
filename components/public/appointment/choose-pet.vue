@@ -164,7 +164,7 @@
 			await loadPets();
 		}
 
-		if(appointStore.isSaved) {
+		if(appointStore.stepsData.choose) {
 			const saveData = appointStore.stepsData.choose;
 			isNew.value = saveData.isNew;
 			Object.assign(pet, saveData.pet);
