@@ -140,7 +140,6 @@
             roleList.value.push({title: role.name, value: role._id.toString() });
         });
 
-        //Передать правильный _id
         resPets.list.forEach(pet => {
             petsList.value.push({title: pet.name, value: pet.id });
         });

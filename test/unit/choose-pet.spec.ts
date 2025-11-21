@@ -83,11 +83,6 @@ describe('Pets', () => {
   // });
 
   it('should display pets data', async () => {
-    // 1. Настраиваем ожидаемые данные
-    /**
-     * сюда надо как-то присобачить дефолтный pinia
-     * 
-     */
     const wrapper = mount(Appointment, {
       props: { ids: ['1', '2'] }
     });

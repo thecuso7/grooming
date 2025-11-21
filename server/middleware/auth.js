@@ -20,7 +20,7 @@ export default defineEventHandler((event) => {
 
     if(isPublicRoute) return;
 
-    if( // сделать что-нибудь с этим
+    if(
         url == '/api/auth/refresh' ||
         url == '/api/auth/login' ||
         url == '/api/auth/register' ||
@@ -43,7 +43,6 @@ export default defineEventHandler((event) => {
 
     try {
         const payload = JwtManager.verifyAccess(token);
-        // А восстановление должно быть?
         event.context.auth = payload;
     } catch(err) {
         throw createError({

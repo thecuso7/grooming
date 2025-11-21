@@ -49,6 +49,7 @@ mongo - База данных  MongoDB (порт 27017)
 ### Frontend
 - **Nuxt 3** - Vue.js фреймворк
 - **Vue 3** - Composition API
+- **TypeScript** - частично переведен
 - **Vuelidate 2** - Валидация форм
 - **Tailwind CSS** - Стилизация
 - **Vuetify CSS** - Готовые компоненты

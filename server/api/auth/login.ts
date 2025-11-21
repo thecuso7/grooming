@@ -4,9 +4,8 @@ import { JwtManager } from "~/server/managers/jwtManager";
 export default defineEventHandler(async (event) => {
 	const {email, password} = await readBody(event)
 	const user = await AuthManager.login(event, email, password);
-	const { token, refresh } = JwtManager.create(user); // менеджер уже должен выбросить ошибку
+	const { token, refresh } = JwtManager.create(user);
 
-	// и этого не надо тоже
 	if(!token || !refresh) {
 		throw createError({
 			statusCode: 500,

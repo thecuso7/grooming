@@ -6,7 +6,6 @@
 </template>
 
 <script setup>
-    // чпу адресация как правильно
     import { ref, onMounted } from 'vue';
     const { $api } = useNuxtApp();
     const service = ref([]);
