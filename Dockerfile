@@ -13,4 +13,4 @@ RUN yarn install --frozen-lockfile --ignore-engines
 COPY . .
 
 EXPOSE 3000
-CMD ["yarn", "dev"]
+CMD ["yarn", "build"]
