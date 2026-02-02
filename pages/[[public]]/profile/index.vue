@@ -5,7 +5,7 @@
             <div class="tw-w-full md:tw-w-8/12 tw-font-bold">
                 <div class="tw-mb-10">
                     <div class="tw-max-w-6xl tw-mx-auto">
-                        <pets v-if="valueFields.id" :ids="valueFields.pets"></pets>
+                        <pets :uid="uid"></pets>
                     </div>
                 </div>
                 <div class="tw-mb-10">
@@ -135,12 +135,19 @@
 </template>
 
 <script setup>
-    import { onMounted, watch, nextTick } from 'vue';
+    import { onMounted, watch } from 'vue';
     import Pets from '~/components/public/profile/pets.vue';
     import Shedule from '~/components/public/profile/shedule.vue';
 
+    import apolloClient from '~/plugins/apollo.client';
+    import { useQuery, provideApolloClient } from '@vue/apollo-composable';
+	import { GET_USER } from '@/graphql/queries';
+
     const { $api } = useNuxtApp();
     const { validate } = useValidation();
+    import { useAuthStore } from "~/stores/auth";
+    const authStore = useAuthStore();
+	const { handleError } = useErrorHandler();
 
     const dataUpdated = ref(false);
     const initialized = ref(false);
@@ -188,6 +195,8 @@
         }
     });
 
+    const uid = computed(() => authStore.user.id );
+
     watch (valueFields, () => {
         if (!initialized.value) return;
 
@@ -232,18 +241,29 @@
         });
     }
 
-    onMounted(async() => {
-        const resp = await $api('/api/users/me');
+    provideApolloClient(apolloClient);
+    const { result, onError: errorLoadUser } = useQuery(
+        GET_USER,
+        { id: authStore.user.id },
+        {
+            context: { 
+				batch: true,
+				headers: { 'X-Test': 'batch-test' }
+			}
+        }
+    );
 
-        valueFields.email = resp.email;
-        valueFields.name = resp.name;
-        valueFields.lastName = resp.lastName;
-        valueFields.id = resp.id;
-        valueFields.pets = resp.pets;
+    errorLoadUser((error) => handleError(error));
 
-        await nextTick();
+    watch(result, data => {
+        console.log('indexPet', result);
+        
+        valueFields.email = data.user.email;
+        valueFields.name = data.user.name;
+        valueFields.lastName = data.user.lastName;
 
         initialized.value = true;
+
     });
 </script>
 

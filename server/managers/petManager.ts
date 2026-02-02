@@ -2,7 +2,7 @@ import { Pet as PetModel } from "~/server/models";
 import { type QueryObject } from "ufo";
 import { type Pet } from "~/types/Pet";
 import type { H3Event, EventHandlerRequest } from 'h3';
-import { writeFile } from 'fs/promises'
+import { writeFile } from 'fs/promises';
 import { type ParsedFile } from "~/types/ParsedData";
 
 export const PetManager = {

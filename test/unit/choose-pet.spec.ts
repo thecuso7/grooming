@@ -78,7 +78,7 @@ describe('Pets', () => {
 	//   const pinia = createPinia();
   //   setActivePinia(pinia);
 
-  //   // mockApi.mockReset(); // Очищаем мок перед каждым тестом
+  //   // mockApi.mockReset();
 	//   // mockApi.mockResolvedValue(fetchPetsListResolved);
   // });
 

@@ -4,6 +4,7 @@ import seedCounters from './counters.js';
 import seedService from './services.js';
 import seedShedule from './shedule.js';
 import seedUsers from './users.js';
+import seedPets from './pets.js';
 
 async function runSeed() {
     try {
@@ -19,6 +20,9 @@ async function runSeed() {
         console.log('✅ Counters seeded');
         
         await seedUsers();
+        console.log('✅ Users seeded');
+
+        await seedPets();
         console.log('✅ Users seeded');
         
         await seedService();

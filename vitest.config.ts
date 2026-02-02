@@ -5,9 +5,8 @@ import { defineVitestProject } from '@nuxt/test-utils/config';
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
-  // любая необходимая пользовательская конфигурация Vitest
   plugins: [
-    vue() // ← ВАЖНО: добавьте плагин в конфиг
+    vue()
   ],
   test: {
     globals: true,
@@ -32,7 +31,6 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      // Настраиваем те же алиасы что и в nuxt.config.ts
       '~': resolve(__dirname, './'),
       '@': resolve(__dirname, './'),
       '~~': resolve(__dirname, './'),

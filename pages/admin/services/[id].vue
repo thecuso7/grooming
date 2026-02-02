@@ -234,7 +234,6 @@
             data[key] = service[key];
         }
 
-        // Прокидываем сюда время
         [data.hours, data.minutes] = getPartsTime(data.duration);
 
         resTypes.forEach(type => {

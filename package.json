@@ -13,14 +13,20 @@
     "test:docker": "docker exec grooming-nuxt-1 yarn test"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.0",
+    "@apollo/server": "^5.3.0",
+    "@as-integrations/h3": "^2.0.2",
     "@date-io/date-fns": "^3.2.1",
     "@mdi/font": "^7.4.47",
     "@mdi/js": "^7.4.47",
     "@pinia/nuxt": "^0.10.1",
     "@types/bcryptjs": "^3.0.0",
+    "@vue/apollo-composable": "^4.2.2",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "bcryptjs": "^2.4.3",
+    "graphql": "^16.12.0",
+    "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.12.0",
     "mongoose": "^8.9.5",
@@ -50,5 +56,8 @@
     "vitest": "^3.2.4",
     "vue-tsc": "^3.1.1",
     "vuetify": "^3.9.7"
+  },
+  "peerDependencies": {
+    "rxjs": "^7.0.0"
   }
 }

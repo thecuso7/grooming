@@ -26,13 +26,11 @@ export default {
         'custom-olive': '#7D9E89',
       },
       fontFamily: {
-        // 1. Создаем кастомное свойство 'script'
         'heading': ['Montserrat', 'sans-serif'],
-        // 2. ИЛИ переопределяем стандартное семейство 'sans'
         'body': ['Open Sans', 'sans-serif'],
       },
        borderColor: {
-        'custom-accent': '#BCADC3',    // Ваш акцентный цвет для границ
+        'custom-accent': '#BCADC3',
         'custom-olive': '#7D9E89',
       },
     },

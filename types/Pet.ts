@@ -6,4 +6,5 @@ export interface Pet {
     weight?: string,
     breed?: string,
     features?: string,
+    userId?: string,
 }

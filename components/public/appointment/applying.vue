@@ -146,7 +146,6 @@
     const serviceText = computed(() => {
         let complex = false;
         const selected = service?.selected || [];
-        console.log('selected', selected);
 
         const text = selected.reduce((sumText, item, index) => {
             if(index == selected.length - 1) {

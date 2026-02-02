@@ -156,7 +156,7 @@ const serviceSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  bundle: { // если выбран комплекс
+  bundle: {
     type: Array,
   },
   type: {

@@ -89,6 +89,11 @@ export default defineNuxtConfig({
         transformAssetUrls,
       },
     },
+    build: {
+      rollupOptions: {
+        external: ['rxjs']
+      }
+    }
   },
   postcss: {
     plugins: {

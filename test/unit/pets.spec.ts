@@ -4,12 +4,6 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import { ref } from 'vue';
 
-/**
- * 
- * component testing
- * или unit test
- */
-
 const fetchPetsListResolved = {
 	list: [
 		{ 
@@ -35,7 +29,7 @@ const fetchPetsListResolved = {
 
 const $apiMock = vi.fn().mockResolvedValue(fetchPetsListResolved);
 vi.stubGlobal('useNuxtApp', () => ({
-  $api: $apiMock, // фиктивный API-ответ
+  $api: $apiMock,
 }));
 
 const makeField = () => ({
@@ -78,12 +72,11 @@ describe('Pets', () => {
 	//   const pinia = createPinia();
   //   setActivePinia(pinia);
 
-  //   // mockApi.mockReset(); // Очищаем мок перед каждым тестом
+  //   // mockApi.mockReset();
 	//   // mockApi.mockResolvedValue(fetchPetsListResolved);
   // });
 
   it('should display pets data', async () => {
-    // 1. Настраиваем ожидаемые данные
     const wrapper = mount(Pets, {
       props: { ids: ['1', '2'] }
     });

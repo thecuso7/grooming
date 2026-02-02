@@ -22,6 +22,7 @@ export default defineNuxtPlugin((event) => {
                 if(isRefreshing && refreshPromise) {
                     try {
                         const { newToken } = await refreshPromise;
+                        // @ts-ignore - Excessive stack depth comparing types
                         return $fetch(request.toString(), {
                             ...options,
                             method: options.method as 'get' | 'post' | 'put' | 'delete' | 'patch',
